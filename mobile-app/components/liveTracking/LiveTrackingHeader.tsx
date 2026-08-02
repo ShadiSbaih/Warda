@@ -1,34 +1,45 @@
 import React from "react";
 import {
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Alert,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
 export default function LiveTrackingHeader() {
   const router = useRouter();
 
+  const handleHelp = () => {
+    Alert.alert(
+      "Customer Support",
+      "Need help with your gift delivery? Our 24/7 concierge is here to assist you.",
+      [
+        { text: "Cancel", style: "cancel" },
+        { text: "Call Concierge", onPress: () => {} },
+      ]
+    );
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.iconButton}
         onPress={() => router.back()}
+        activeOpacity={0.85}
       >
-        <Feather
-          name="x"
-          size={24}
-          color="#222"
-        />
+        <Feather name="x" size={20} color="#1E1E2D" />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.helpButton}>
-        <Text style={styles.helpText}>
-          Help
-        </Text>
+      <TouchableOpacity
+        style={styles.helpButton}
+        onPress={handleHelp}
+        activeOpacity={0.85}
+      >
+        <Feather name="headphones" size={15} color="#D4588A" />
+        <Text style={styles.helpText}>Help</Text>
       </TouchableOpacity>
     </View>
   );
@@ -36,48 +47,43 @@ export default function LiveTrackingHeader() {
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
-    top: 55,
-    left: 20,
-    right: 20,
-
+    paddingHorizontal: 20,
+    paddingTop: 8,
     flexDirection: "row",
     justifyContent: "space-between",
-
-    zIndex: 100,
+    alignItems: "center",
   },
-
   iconButton: {
-    width: 48,
-    height: 48,
-
-    borderRadius: 24,
-
-    backgroundColor: "#FFF",
-
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center",
-
-    elevation: 8,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 5,
   },
-
   helpButton: {
-    width: 72,
-    height: 48,
-
-    borderRadius: 24,
-
-    backgroundColor: "#FFF",
-
-    justifyContent: "center",
+    flexDirection: "row",
     alignItems: "center",
-
-    elevation: 8,
+    gap: 6,
+    paddingHorizontal: 16,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "#FFFFFF",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 5,
   },
-
   helpText: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#222",
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#1E1E2D",
   },
 });
