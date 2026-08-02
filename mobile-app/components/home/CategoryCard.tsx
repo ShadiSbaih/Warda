@@ -1,10 +1,10 @@
 import React from "react";
 import {
-    Image,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 interface Props {
@@ -20,7 +20,7 @@ export default function CategoryCard({
 }: Props) {
   return (
     <TouchableOpacity
-      activeOpacity={0.9}
+      activeOpacity={0.85}
       onPress={onPress}
       style={[
         styles.container,
@@ -41,6 +41,7 @@ export default function CategoryCard({
       </View>
 
       <Text
+        numberOfLines={2}
         style={[
           styles.title,
           selected && styles.activeTitle,
@@ -54,68 +55,65 @@ export default function CategoryCard({
 
 const styles = StyleSheet.create({
   container: {
-    width: 86,
-    height: 92,
-
-    backgroundColor: "#fff",
-
-    borderRadius: 20,
-
+    minWidth: 90,
+    height: 104,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 22,
     justifyContent: "center",
     alignItems: "center",
-
-    marginRight: 15,
-
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    marginRight: 14,
     shadowColor: "#000",
-
-    shadowOpacity: 0.08,
-
-    shadowRadius: 12,
-
+    shadowOpacity: 0.06,
+    shadowRadius: 10,
     shadowOffset: {
       width: 0,
-      height: 5,
+      height: 4,
     },
-
-    elevation: 4,
+    elevation: 3,
+    borderWidth: 1.5,
+    borderColor: "transparent",
   },
 
   activeContainer: {
     backgroundColor: "#D4588A",
+    borderColor: "#D4588A",
+    shadowColor: "#D4588A",
+    shadowOpacity: 0.3,
+    shadowRadius: 12,
+    elevation: 6,
   },
 
   imageContainer: {
     width: 46,
     height: 46,
-
     borderRadius: 23,
-
-    backgroundColor: "#FFF4F1",
-
+    backgroundColor: "#FFF0F5",
     justifyContent: "center",
     alignItems: "center",
   },
 
   activeImage: {
-    backgroundColor: "#fff",
+    backgroundColor: "rgba(255, 255, 255, 0.25)",
   },
 
   image: {
-    width: 34,
-    height: 34,
+    width: 32,
+    height: 32,
   },
 
   title: {
-    marginTop: 8,
-
-    fontSize: 15,
-
-    color: "#222",
-
+    marginTop: 6,
+    fontSize: 12.5,
+    color: "#333",
     fontWeight: "600",
+    textAlign: "center",
+    lineHeight: 16,
   },
 
   activeTitle: {
-    color: "#fff",
+    color: "#FFFFFF",
+    fontWeight: "700",
   },
 });

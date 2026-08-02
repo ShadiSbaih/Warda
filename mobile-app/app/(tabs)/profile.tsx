@@ -1,10 +1,10 @@
 import React from "react";
 import {
-  SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import HelpCard from "../../components/profile/HelpCard";
 import ProfileHeader from "../../components/profile/ProfileHeader";

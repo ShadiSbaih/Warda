@@ -17,7 +17,7 @@ export default function MenuHeader({
   return (
     <View style={styles.container}>
       {/* Title */}
-
+      <Text style={styles.title}>
         Menu
       </Text>
 

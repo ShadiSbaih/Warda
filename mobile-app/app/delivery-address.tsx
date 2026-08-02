@@ -1,11 +1,11 @@
 import { useRouter } from "expo-router";
 import React from "react";
 import {
-    SafeAreaView,
     StatusBar,
     StyleSheet,
     View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import AddressCard from "../components/delivery/AddressCard";
 import ConfirmButton from "../components/delivery/ConfirmButton";
 import DeliveryHeader from "../components/delivery/DeliveryHeader";

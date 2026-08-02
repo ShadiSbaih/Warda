@@ -1,10 +1,10 @@
 import React from "react";
 import {
-    SafeAreaView,
     StatusBar,
     StyleSheet,
     View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import DriverCard from "../components/liveTracking/DriverCard";
 import LiveTrackingHeader from "../components/liveTracking/LiveTrackingHeader";

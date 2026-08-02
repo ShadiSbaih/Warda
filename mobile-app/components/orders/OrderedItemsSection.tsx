@@ -24,6 +24,7 @@ export default function OrderedItemsSection() {
         </Text>
 
         <TouchableOpacity>
+          <Text style={styles.seeAll}>
             See All
           </Text>
         </TouchableOpacity>

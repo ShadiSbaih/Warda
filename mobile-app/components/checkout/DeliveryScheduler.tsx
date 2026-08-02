@@ -6,7 +6,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import DateTimePicker, {
+  DateTimePickerAndroid,
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
 import { Feather } from "@expo/vector-icons";
 
 interface Props {
@@ -14,10 +17,10 @@ interface Props {
 }
 
 const quickOptions = [
-  { id: "now",           label: "Now",           icon: "zap" },
-  { id: "this-evening",  label: "This Evening",      icon: "sunset" },
-  { id: "tomorrow-am",   label: "Tomorrow Morning",     icon: "sun" },
-  { id: "custom",        label: "Custom Date",      icon: "calendar" },
+  { id: "now", label: "Now", icon: "zap" },
+  { id: "this-evening", label: "This Evening", icon: "sunset" },
+  { id: "tomorrow-am", label: "Tomorrow Morning", icon: "sun" },
+  { id: "custom", label: "Custom Date", icon: "calendar" },
 ] as const;
 
 type OptionId = typeof quickOptions[number]["id"];
@@ -26,6 +29,27 @@ export default function DeliveryScheduler({ onDateChange }: Props) {
   const [selectedOption, setSelectedOption] = useState<OptionId>("now");
   const [showPicker, setShowPicker] = useState(false);
   const [customDate, setCustomDate] = useState(new Date());
+
+  const openAndroidPicker = () => {
+    try {
+      if (DateTimePickerAndroid && typeof DateTimePickerAndroid.open === "function") {
+        DateTimePickerAndroid.open({
+          value: customDate,
+          mode: "date",
+          is24Hour: true,
+          minimumDate: new Date(),
+          onChange: (event: DateTimePickerEvent, date?: Date) => {
+            if (event.type === "set" && date) {
+              setCustomDate(date);
+              onDateChange?.(date);
+            }
+          },
+        });
+      }
+    } catch (err) {
+      console.warn("DateTimePickerAndroid error:", err);
+    }
+  };
 
   const handleOptionPress = (id: OptionId) => {
     setSelectedOption(id);
@@ -42,22 +66,26 @@ export default function DeliveryScheduler({ onDateChange }: Props) {
       d.setHours(9, 0, 0, 0);
       onDateChange?.(d);
     } else if (id === "custom") {
-      setShowPicker(true);
+      if (Platform.OS === "android") {
+        openAndroidPicker();
+      } else {
+        setShowPicker(true);
+      }
     }
   };
 
   const handleDatePicked = (_: any, date?: Date) => {
-    setShowPicker(Platform.OS === "ios");
+    setShowPicker(false);
     if (date) {
       setCustomDate(date);
       onDateChange?.(date);
     }
   };
 
-  const formattedDate = customDate.toLocaleDateString("ar-SA", {
-    weekday: "long",
+  const formattedDate = customDate.toLocaleDateString("en-US", {
+    weekday: "short",
     day: "numeric",
-    month: "long",
+    month: "short",
     hour: "2-digit",
     minute: "2-digit",
   });
@@ -69,7 +97,7 @@ export default function DeliveryScheduler({ onDateChange }: Props) {
         <View style={styles.iconWrap}>
           <Feather name="clock" size={18} color="#D4588A" />
         </View>
-        <Text style={styles.headerTitle}>Delivery Date</Text>
+        <Text style={styles.headerTitle}>Delivery Schedule</Text>
       </View>
 
       {/* Options */}
@@ -105,7 +133,13 @@ export default function DeliveryScheduler({ onDateChange }: Props) {
       {selectedOption === "custom" && (
         <TouchableOpacity
           style={styles.datePreview}
-          onPress={() => setShowPicker(true)}
+          onPress={() => {
+            if (Platform.OS === "android") {
+              openAndroidPicker();
+            } else {
+              setShowPicker(true);
+            }
+          }}
           activeOpacity={0.8}
         >
           <Feather name="calendar" size={15} color="#D4588A" />
@@ -114,14 +148,13 @@ export default function DeliveryScheduler({ onDateChange }: Props) {
         </TouchableOpacity>
       )}
 
-      {showPicker && (
+      {Platform.OS === "ios" && showPicker && (
         <DateTimePicker
           value={customDate}
-          mode="datetime"
-          display={Platform.OS === "ios" ? "spinner" : "default"}
+          mode="date"
+          display="spinner"
           onChange={handleDatePicked}
           minimumDate={new Date()}
-          locale="ar"
         />
       )}
     </View>

@@ -5,7 +5,7 @@ export const checkoutItems = [
     description:
       "A beautiful arrangement of fresh red roses",
     price: "$85",
-    image: require("../assets/images/orders/red-roses.png"),
+    image: require("../assets/gifts/red-roses.png"),
   },
 
   {
@@ -14,6 +14,6 @@ export const checkoutItems = [
     description:
       "Premium handcrafted chocolate assortment",
     price: "$120",
-    image: require("../assets/images/orders/red-roses.png"),
+    image: require("../assets/gifts/chocolate-box.png"),
   },
 ];

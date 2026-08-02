@@ -6,7 +6,7 @@ const {
   updateReminder,
   deleteReminder,
 } = require("../controllers/reminderController");
-const { protect } = require("../middleware/authMiddleware");
+const protect = require("../middleware/auth");
 
 router.use(protect);
 

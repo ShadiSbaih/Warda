@@ -1,12 +1,12 @@
 import React from "react";
 import {
-    Image,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 interface Props {
@@ -14,60 +14,57 @@ interface Props {
   onPress: () => void;
 }
 
-export default function GiftCard({
-  item,
-  onPress,
-}: Props) {
+const { width } = Dimensions.get("window");
+const CARD_WIDTH = (width - 54) / 2;
+
+export default function GiftCard({ item, onPress }: Props) {
   return (
     <TouchableOpacity
-      activeOpacity={0.9}
+      activeOpacity={0.88}
       style={styles.card}
       onPress={onPress}
     >
-      {/* Image */}
-
-      <Image
-        source={item.image}
-        resizeMode="contain"
-        style={styles.image}
-      />
+      {/* Image Container */}
+      <View style={styles.imageWrapper}>
+        <Image
+          source={item.image}
+          resizeMode="contain"
+          style={styles.image}
+        />
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={styles.favoriteButton}
+        >
+          <Ionicons
+            name={item.favorite ? "heart" : "heart-outline"}
+            size={18}
+            color={item.favorite ? "#D4588A" : "#888"}
+          />
+        </TouchableOpacity>
+      </View>
 
       {/* Name */}
-
-      <Text style={styles.title}>
+      <Text numberOfLines={1} style={styles.title}>
         {item.name}
       </Text>
 
-      {/* Bottom */}
-
-      <View style={styles.bottomRow}>
-        <View style={styles.ratingRow}>
-          <Ionicons
-            name="star"
-            size={14}
-            color="#D4588A"
-          />
-
-          <Text style={styles.rating}>
-            {item.rating}
-          </Text>
-
-          <Text style={styles.time}>
-            • {item.time}
-          </Text>
+      {/* Details Row: Rating & Delivery Time */}
+      <View style={styles.detailsRow}>
+        <View style={styles.ratingBadge}>
+          <Ionicons name="star" size={12} color="#FFA726" />
+          <Text style={styles.ratingText}>{item.rating}</Text>
         </View>
+        <Text style={styles.timeText}>{item.time}</Text>
+      </View>
 
-        <TouchableOpacity activeOpacity={0.8}>
-          <Ionicons
-            name={
-              item.favorite
-                ? "heart"
-                : "heart-outline"
-            }
-            size={22}
-            color="#D4588A"
-          />
-        </TouchableOpacity>
+      {/* Price Row */}
+      <View style={styles.priceRow}>
+        <Text style={styles.price}>
+          ${item.price}
+        </Text>
+        <View style={styles.plusButton}>
+          <Ionicons name="add" size={16} color="#FFFFFF" />
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -75,78 +72,104 @@ export default function GiftCard({
 
 const styles = StyleSheet.create({
   card: {
-    width: 165,
-
-    backgroundColor: "#fff",
-
-    borderRadius: 22,
-
-    padding: 14,
-
-    marginBottom: 18,
-
-    shadowColor: "#000",
-
+    width: CARD_WIDTH,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 20,
+    padding: 10,
+    marginBottom: 16,
+    shadowColor: "#D4588A",
     shadowOpacity: 0.08,
-
-    shadowRadius: 12,
-
+    shadowRadius: 10,
     shadowOffset: {
       width: 0,
-      height: 6,
+      height: 4,
     },
+    elevation: 3,
+  },
 
-    elevation: 5,
+  imageWrapper: {
+    width: "100%",
+    height: 125,
+    borderRadius: 16,
+    backgroundColor: "#FCF6F8",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+    overflow: "hidden",
   },
 
   image: {
-    width: 120,
-    height: 120,
+    width: 105,
+    height: 105,
+  },
 
-    alignSelf: "center",
-
-    marginTop: 4,
-
-    marginBottom: 12,
+  favoriteButton: {
+    position: "absolute",
+    top: 8,
+    right: 8,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
+    elevation: 2,
   },
 
   title: {
-    fontSize: 20,
-
+    fontSize: 15,
     fontWeight: "700",
-
-    color: "#222",
-
-    marginBottom: 10,
+    color: "#22223B",
+    marginTop: 10,
+    marginBottom: 4,
   },
 
-  bottomRow: {
+  detailsRow: {
     flexDirection: "row",
-
+    alignItems: "center",
     justifyContent: "space-between",
-
-    alignItems: "center",
+    marginBottom: 8,
   },
 
-  ratingRow: {
+  ratingBadge: {
     flexDirection: "row",
-
     alignItems: "center",
+    gap: 3,
   },
 
-  rating: {
-    marginLeft: 4,
-
-    fontSize: 15,
-
-    color: "#666",
+  ratingText: {
+    fontSize: 12.5,
+    fontWeight: "600",
+    color: "#4A4E69",
   },
 
-  time: {
-    marginLeft: 4,
+  timeText: {
+    fontSize: 12,
+    color: "#9A9A9A",
+  },
 
-    fontSize: 15,
+  priceRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 2,
+  },
 
-    color: "#888",
+  price: {
+    fontSize: 16.5,
+    fontWeight: "800",
+    color: "#D4588A",
+  },
+
+  plusButton: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: "#D4588A",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

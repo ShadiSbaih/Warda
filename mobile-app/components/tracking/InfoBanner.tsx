@@ -8,6 +8,7 @@ import {
 export default function InfoBanner() {
   return (
     <View style={styles.container}>
+      <Text style={styles.text}>
         👍 Your gift is being carefully prepared.
         It will arrive soon!
       </Text>

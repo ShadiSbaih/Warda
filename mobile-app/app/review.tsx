@@ -1,10 +1,10 @@
 import React from "react";
 import {
-    SafeAreaView,
     ScrollView,
     StatusBar,
     StyleSheet,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import DeliveryInfoCard from "../components/review/DeliveryInfoCard";
 import DeliverySummaryCard from "../components/review/DeliverySummaryCard";

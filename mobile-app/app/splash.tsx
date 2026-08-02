@@ -3,12 +3,12 @@ import { useEffect } from "react";
 import {
   Dimensions,
   Image,
-  SafeAreaView,
   StatusBar,
   StyleSheet,
   Text,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const { width } = Dimensions.get("window");
 
@@ -31,14 +31,18 @@ export default function SplashScreen() {
       />
 
       <SafeAreaView style={styles.container}>
-        {/* Logo */}
-
+        {/* Center Logo */}
         <View style={styles.center}>
-          <Text style={styles.logo}>Warda 🌹</Text>
+          <Image
+            source={require("../assets/images/icon.png")}
+            resizeMode="contain"
+            style={styles.logoImage}
+          />
+          <Text style={styles.logo}>Warda</Text>
+          <Text style={styles.tagline}>Gifts & Flowers Delivery</Text>
         </View>
 
         {/* Gift Image */}
-
         <Image
           source={require("../assets/gifts/mixed-bouquet.png")}
           resizeMode="contain"
@@ -62,11 +66,31 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
+  logoImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 28,
+    marginBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.2,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+
   logo: {
     color: "#fff",
-    fontSize: 44,
-    fontWeight: "700",
+    fontSize: 40,
+    fontWeight: "800",
     letterSpacing: 0.5,
+  },
+
+  tagline: {
+    color: "rgba(255, 255, 255, 0.85)",
+    fontSize: 16,
+    fontWeight: "500",
+    marginTop: 6,
+    letterSpacing: 0.3,
   },
 
   image: {

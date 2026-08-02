@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from "react";
 import {
-    SafeAreaView,
     ScrollView,
     StatusBar,
     StyleSheet,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import NotificationCard from "../components/notification/NotificationCard";
 import NotificationHeader from "../components/notification/NotificationHeader";

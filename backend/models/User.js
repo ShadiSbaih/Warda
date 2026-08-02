@@ -29,19 +29,21 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+
+    role: {
+      type: String,
+      enum: ["user", "admin", "delivery"],
+      default: "user",
+    },
+
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
-  },role: {
-    type: String,
-    enum: ["user", "admin", "delivery"],
-    default: "user",
-},
-
-isVerified: {
-    type: Boolean,
-    default: false,
-},
+  }
 );
 
 module.exports = mongoose.model("User", userSchema);
