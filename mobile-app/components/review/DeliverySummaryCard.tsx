@@ -1,40 +1,32 @@
 import React from "react";
 import {
-    Image,
-    StyleSheet,
-    Text,
-    View,
+  Image,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function DeliverySummaryCard() {
   return (
     <View style={styles.card}>
       <View style={styles.topRow}>
         <View style={styles.left}>
-          <Image
-            source={require("../../assets/images/review/store.png")}
-            style={styles.logo}
-          />
+          <View style={styles.logoBadge}>
+            <Ionicons name="sparkles" size={18} color="#D4588A" />
+          </View>
 
-          <Text style={styles.store}>
-            Warda Gifts
-          </Text>
+          <Text style={styles.store}>Warda Luxury Gifts</Text>
         </View>
 
         <View style={styles.badge}>
-          <Text style={styles.badgeText}>
-            #ORD-8452
-          </Text>
+          <Text style={styles.badgeText}>#ORD-8452</Text>
         </View>
       </View>
 
-      <Text style={styles.label}>
-        Total paid: $23.00
-      </Text>
+      <Text style={styles.label}>Total paid: $23.00</Text>
 
-      <Text style={styles.status}>
-        Order Delivered
-      </Text>
+      <Text style={styles.status}>Order Delivered</Text>
 
       <Image
         source={require("../../assets/gifts/custom-hamper.png")}
@@ -56,58 +48,56 @@ const styles = StyleSheet.create({
     shadowRadius: 14,
     shadowOffset: { width: 0, height: 4 },
     elevation: 4,
+    position: "relative",
   },
-
   topRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-
   left: {
     flexDirection: "row",
     alignItems: "center",
   },
-
-  logo: {
-    width: 38,
-    height: 38,
-    marginRight: 12,
+  logoBadge: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: "#FFF0F5",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 10,
+    borderWidth: 1,
+    borderColor: "#F8D7E8",
   },
-
   store: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "800",
     color: "#1E1E2D",
   },
-
   badge: {
     backgroundColor: "#FFF0F5",
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 14,
   },
-
   badgeText: {
     color: "#D4588A",
     fontSize: 12,
     fontWeight: "700",
   },
-
   label: {
     marginTop: 18,
     color: "#8E8292",
     fontSize: 14,
     fontWeight: "500",
   },
-
   status: {
     marginTop: 4,
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: "800",
     color: "#1E1E2D",
   },
-
   gift: {
     position: "absolute",
     right: 18,

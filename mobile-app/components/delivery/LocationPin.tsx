@@ -8,7 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 export default function LocationPin() {
   return (
-    <View style={styles.container} pointerEvents="none">
+    <View style={styles.container}>
       <View style={styles.tooltip}>
         <Text style={styles.tooltipText}>
           Your gift will be delivered here 🌸

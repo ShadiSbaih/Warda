@@ -1,12 +1,10 @@
 import React from "react";
 import {
-    Image,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-
 import { Feather } from "@expo/vector-icons";
 
 export default function DeliveryInfoCard() {
@@ -25,35 +23,21 @@ export default function DeliveryInfoCard() {
       <View style={styles.divider} />
 
       <View style={styles.driverRow}>
-        <Image
-          source={require("../../assets/images/review/driver.png")}
-          style={styles.avatar}
-        />
-
-        <View style={{ flex: 1 }}>
-          <Text style={styles.driverTitle}>
-            Delivered by
-          </Text>
-
-          <Text style={styles.driverName}>
-            Ahmad Ali
-          </Text>
+        <View style={styles.avatarBox}>
+          <Text style={styles.avatarText}>A</Text>
         </View>
 
-        <TouchableOpacity style={styles.icon}>
-          <Feather
-            name="message-circle"
-            size={20}
-            color="#666"
-          />
+        <View style={{ flex: 1 }}>
+          <Text style={styles.driverTitle}>Delivered by</Text>
+          <Text style={styles.driverName}>Ahmad Ali</Text>
+        </View>
+
+        <TouchableOpacity style={styles.icon} activeOpacity={0.8}>
+          <Feather name="message-circle" size={18} color="#D4588A" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.icon}>
-          <Feather
-            name="phone"
-            size={20}
-            color="#666"
-          />
+        <TouchableOpacity style={styles.icon} activeOpacity={0.8}>
+          <Feather name="phone" size={18} color="#10B981" />
         </TouchableOpacity>
       </View>
     </View>
@@ -64,65 +48,73 @@ const styles = StyleSheet.create({
   card: {
     marginHorizontal: 20,
     marginTop: 18,
-    backgroundColor: "#FFF",
+    backgroundColor: "#FFFFFF",
     borderRadius: 24,
-    padding: 18,
-    elevation: 5,
+    padding: 20,
+    shadowColor: "#D4588A",
+    shadowOpacity: 0.08,
+    shadowRadius: 14,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
   },
-
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 16,
   },
-
   label: {
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: "600",
-    color: "#222",
+    color: "#1E1E2D",
   },
-
   value: {
-    fontSize: 17,
-    color: "#777",
+    fontSize: 15,
+    fontWeight: "500",
+    color: "#7E7E8F",
   },
-
   divider: {
     height: 1,
-    backgroundColor: "#ECECEC",
-    marginVertical: 8,
+    backgroundColor: "#F0EEF2",
+    marginVertical: 6,
   },
-
   driverRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 12,
   },
-
-  avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 12,
+  avatarBox: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "#FFF0F5",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 14,
+    borderWidth: 1.5,
+    borderColor: "#F8D7E8",
   },
-
+  avatarText: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: "#D4588A",
+  },
   driverTitle: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: "700",
+    color: "#1E1E2D",
   },
-
   driverName: {
-    color: "#888",
+    fontSize: 13,
+    color: "#7E7E8F",
     marginTop: 2,
   },
-
   icon: {
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: "#F9F9FB",
     justifyContent: "center",
     alignItems: "center",
-    marginLeft: 10,
+    marginLeft: 8,
   },
 });
