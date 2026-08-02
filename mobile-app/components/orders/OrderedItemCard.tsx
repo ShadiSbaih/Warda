@@ -45,7 +45,7 @@ export default function OrderedItemCard({
           Delivery · {item.address}
         </Text>
 
-        <Text style={styles.restaurant}>
+        <Text style={styles.shop}>
           From {item.shop}
         </Text>
 
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     color: "#8A8A8A",
   },
 
-  restaurant: {
+  shop: {
     marginTop: 4,
 
     fontSize: 15,

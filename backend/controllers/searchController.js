@@ -1,4 +1,4 @@
-const Restaurant = require("../models/Restaurant");
+const Shop = require("../models/Shop");
 const Product = require("../models/Product");
 
 // Global Search
@@ -6,7 +6,7 @@ exports.search = async (req, res) => {
   try {
     const keyword = req.query.keyword || "";
 
-    const restaurants = await Restaurant.find({
+    const shops = await Shop.find({
       name: {
         $regex: keyword,
         $options: "i",
@@ -18,11 +18,11 @@ exports.search = async (req, res) => {
         $regex: keyword,
         $options: "i",
       },
-    }).populate("restaurant", "name");
+    }).populate("shop", "name");
 
     res.json({
       success: true,
-      restaurants,
+      shops,
       products,
     });
   } catch (error) {
@@ -33,13 +33,13 @@ exports.search = async (req, res) => {
   }
 };
 
-// Search Restaurants Only
-exports.searchRestaurants = async (
+// Search Shops Only
+exports.searchShops = async (
   req,
   res
 ) => {
   try {
-    const restaurants = await Restaurant.find({
+    const shops = await Shop.find({
       name: {
         $regex: req.query.keyword,
         $options: "i",
@@ -48,7 +48,7 @@ exports.searchRestaurants = async (
 
     res.json({
       success: true,
-      restaurants,
+      shops,
     });
   } catch (error) {
     res.status(500).json({
@@ -69,7 +69,7 @@ exports.searchProducts = async (
         $regex: req.query.keyword,
         $options: "i",
       },
-    }).populate("restaurant", "name");
+    }).populate("shop", "name");
 
     res.json({
       success: true,

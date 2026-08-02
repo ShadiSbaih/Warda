@@ -14,7 +14,7 @@ interface Props {
   onPress: () => void;
 }
 
-export default function SushiCard({
+export default function GiftCard({
   item,
   onPress,
 }: Props) {

@@ -4,7 +4,7 @@ const Product = require("../models/Product");
 exports.getProducts = async (req, res) => {
   try {
     const products = await Product.find().populate(
-      "restaurant",
+      "shop",
       "name image"
     );
 
@@ -21,14 +21,14 @@ exports.getProducts = async (req, res) => {
   }
 };
 
-// Get products by restaurant
-exports.getRestaurantProducts = async (
+// Get products by shop
+exports.getShopProducts = async (
   req,
   res
 ) => {
   try {
     const products = await Product.find({
-      restaurant: req.params.restaurantId,
+      shop: req.params.shopId,
     });
 
     res.json({

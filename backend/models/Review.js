@@ -8,9 +8,9 @@ const reviewSchema = new mongoose.Schema(
       required: true,
     },
 
-    restaurant: {
+    shop: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Restaurant",
+      ref: "Shop",
       required: true,
     },
 

@@ -1,19 +1,19 @@
 export const checkoutItems = [
   {
     id: 1,
-    title: "Salmon Nigiri Set",
+    title: "Red Roses Bouquet",
     description:
-      "Delicious salmon nigiri with fresh wasabi",
-    price: "$12.50",
-    image: require("../assets/images/orders/salmon-nigiri.png"),
+      "A beautiful arrangement of fresh red roses",
+    price: "$85",
+    image: require("../assets/images/orders/red-roses.png"),
   },
 
   {
     id: 2,
-    title: "Salmon Sashimi",
+    title: "Luxury Chocolate Box",
     description:
-      "Fresh salmon sashimi with wasabi and soy sauce",
-    price: "$14.00",
-    image: require("../assets/images/orders/salmon-sashimi.png"),
+      "Premium handcrafted chocolate assortment",
+    price: "$120",
+    image: require("../assets/images/orders/red-roses.png"),
   },
 ];

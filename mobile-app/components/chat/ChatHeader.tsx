@@ -26,7 +26,7 @@ export default function ChatHeader() {
       </TouchableOpacity>
 
       <Text style={styles.title}>
-        Alexei
+        Ahmad
       </Text>
 
       <TouchableOpacity style={styles.iconButton}>

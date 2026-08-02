@@ -36,7 +36,7 @@ export default function DeliveryInfoCard() {
           </Text>
 
           <Text style={styles.driverName}>
-            Alexei Volkov
+            Ahmad Ali
           </Text>
         </View>
 

@@ -26,7 +26,7 @@ exports.getOrders = async (req, res) => {
     const orders = await Order.find({
       user: req.user._id,
     })
-      .populate("restaurant")
+      .populate("shop")
       .populate("items.product")
       .sort({ createdAt: -1 });
 
@@ -48,7 +48,7 @@ exports.getOrder = async (req, res) => {
     const order = await Order.findById(
       req.params.id
     )
-      .populate("restaurant")
+      .populate("shop")
       .populate("items.product");
 
     if (!order) {

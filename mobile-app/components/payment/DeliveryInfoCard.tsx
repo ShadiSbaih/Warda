@@ -33,7 +33,7 @@ export default function DeliveryInfoCard() {
             </Text>
 
             <Text style={styles.subtitle}>
-              123 Tokyo Lane
+              123 Flower Lane
             </Text>
           </View>
         </View>
@@ -65,7 +65,7 @@ export default function DeliveryInfoCard() {
             </Text>
 
             <Text style={styles.subtitle}>
-              +81 03-4567-8901
+              +966 050 123 4567
             </Text>
           </View>
         </View>

@@ -6,7 +6,7 @@ const protect = require("../middleware/auth");
 
 const {
   addReview,
-  getRestaurantReviews,
+  getShopReviews,
   updateReview,
   deleteReview,
 } = require("../controllers/reviewController");
@@ -14,8 +14,8 @@ const {
 router.post("/", protect, addReview);
 
 router.get(
-  "/:restaurantId",
-  getRestaurantReviews
+  "/:shopId",
+  getShopReviews
 );
 
 router.put("/:id", protect, updateReview);

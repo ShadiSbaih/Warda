@@ -6,7 +6,7 @@ exports.getFavorites = async (req, res) => {
     const favorites = await Favorite.find({
       user: req.user._id,
     })
-      .populate("restaurant")
+      .populate("shop")
       .populate("product");
 
     res.json({
@@ -25,11 +25,11 @@ exports.getFavorites = async (req, res) => {
 // Add favorite
 exports.addFavorite = async (req, res) => {
   try {
-    const { restaurant, product } = req.body;
+    const { shop, product } = req.body;
 
     const exists = await Favorite.findOne({
       user: req.user._id,
-      restaurant,
+      shop,
       product,
     });
 
@@ -42,7 +42,7 @@ exports.addFavorite = async (req, res) => {
 
     const favorite = await Favorite.create({
       user: req.user._id,
-      restaurant,
+      shop,
       product,
     });
 

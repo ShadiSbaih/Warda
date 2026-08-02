@@ -1,5 +1,5 @@
 const User = require("../models/User");
-const Restaurant = require("../models/Restaurant");
+const Shop = require("../models/Shop");
 const Product = require("../models/Product");
 const Order = require("../models/Order");
 
@@ -7,8 +7,8 @@ exports.dashboard = async (req, res) => {
   try {
     const users = await User.countDocuments();
 
-    const restaurants =
-      await Restaurant.countDocuments();
+    const shops =
+      await Shop.countDocuments();
 
     const products =
       await Product.countDocuments();
@@ -31,7 +31,7 @@ exports.dashboard = async (req, res) => {
       success: true,
       dashboard: {
         users,
-        restaurants,
+        shops,
         products,
         orders,
         revenue:

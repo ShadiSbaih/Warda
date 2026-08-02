@@ -28,7 +28,7 @@ export default function RelatedProductCard({
       activeOpacity={0.9}
       style={styles.card}
     >
-      {/* Sushi Image */}
+      {/* Gift Image */}
 
       <Image
         source={item.image}

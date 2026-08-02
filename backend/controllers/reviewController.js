@@ -20,14 +20,14 @@ exports.addReview = async (req, res) => {
   }
 };
 
-// Get Restaurant Reviews
-exports.getRestaurantReviews = async (
+// Get Shop Reviews
+exports.getShopReviews = async (
   req,
   res
 ) => {
   try {
     const reviews = await Review.find({
-      restaurant: req.params.restaurantId,
+      shop: req.params.shopId,
     }).populate("user", "name");
 
     res.json({

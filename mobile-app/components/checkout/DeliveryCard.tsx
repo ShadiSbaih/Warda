@@ -34,7 +34,7 @@ export default function DeliveryCard() {
           </View>
 
           <Text style={styles.text}>
-            Deliver to: M. Takahashi
+            Deliver to: My Address
           </Text>
         </View>
 

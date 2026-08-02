@@ -24,9 +24,9 @@ export const notifications: NotificationItem[] = [
     id: 2,
     category: "Promotions",
     icon: "tag",
-    title: "Get 20% off Nigiri sets today only",
+    title: "20% off Rose Bouquets today only!",
     message:
-      "Today only! Treat yourself to fresh salmon nigiri 🍣",
+      "Today only! Send a beautiful bouquet to someone special 🌹",
     time: "1h",
   },
 
@@ -56,7 +56,7 @@ export const notifications: NotificationItem[] = [
     icon: "trending-up",
     title: "Trending Near You",
     message:
-      "Tokyo Delights is getting popular, 100+ orders this week!",
+      "Warda Gifts is getting popular, 100+ orders this week!",
     time: "8h",
   },
 ];

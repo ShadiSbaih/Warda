@@ -19,7 +19,7 @@ export default function DriverCard() {
 
       <View style={styles.info}>
         <Text style={styles.name}>Courier</Text>
-        <Text style={styles.driver}>Alexei Volkov</Text>
+        <Text style={styles.driver}>Ahmad Ali</Text>
       </View>
 
       <TouchableOpacity style={styles.icon}>

@@ -6,9 +6,9 @@ const options = {
     openapi: "3.0.0",
 
     info: {
-      title: "Food Delivery API",
+      title: "Warda Gifts & Flowers Delivery API",
       version: "1.0.0",
-      description: "Food Delivery Backend Documentation",
+      description: "Backend API documentation for the Warda gifts and flowers delivery platform.",
     },
 
     servers: [

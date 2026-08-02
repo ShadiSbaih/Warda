@@ -54,7 +54,7 @@ export default function BottomTabs({
         {active === "menu" && <View style={styles.activeLine} />}
 
         <MaterialCommunityIcons
-          name="silverware-fork-knife"
+          name="flower-tulip"
           size={24}
           color={active === "menu" ? activeColor : inactiveColor}
         />

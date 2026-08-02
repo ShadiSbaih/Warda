@@ -61,8 +61,8 @@ app.use(
 // Authentication
 const authRoutes = require("./routes/authRoutes");
 
-// Restaurant
-const restaurantRoutes = require("./routes/restaurantRoutes");
+// Shop
+const shopRoutes = require("./routes/shopRoutes");
 
 // Category
 const categoryRoutes = require("./routes/categoryRoutes");
@@ -139,7 +139,7 @@ const reminderRoutes = require("./routes/reminderRoutes");
 
 app.use("/api/auth", authRoutes);
 
-app.use("/api/restaurants", restaurantRoutes);
+app.use("/api/shops", shopRoutes);
 
 app.use("/api/categories", categoryRoutes);
 
@@ -232,7 +232,7 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => {
-  logger.info(`Food Delivery API Started`);
+  logger.info(`Gifts Delivery API Started`);
   console.log(
     `🚀 Server Running on http://localhost:${PORT}`
   );

@@ -8,7 +8,7 @@ import {
 } from "react-native";
 
 import { giftsData } from "../../constants/homeData";
-import SushiCard from "./SushiCard";
+import GiftCard from "./GiftCard";
 
 export default function PopularSection() {
   return (
@@ -36,7 +36,7 @@ export default function PopularSection() {
         scrollEnabled={false}
         columnWrapperStyle={styles.row}
         renderItem={({ item }) => (
-          <SushiCard
+          <GiftCard
             item={item}
             onPress={() => {}}
           />

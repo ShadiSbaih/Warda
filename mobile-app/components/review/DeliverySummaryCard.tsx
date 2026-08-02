@@ -38,7 +38,7 @@ export default function DeliverySummaryCard() {
 
       <Image
         source={require("../../assets/gifts/custom-hamper.png")}
-        style={styles.sushi}
+        style={styles.gift}
       />
     </View>
   );
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     color: "#222",
   },
 
-  sushi: {
+  gift: {
     position: "absolute",
     right: 18,
     bottom: 18,

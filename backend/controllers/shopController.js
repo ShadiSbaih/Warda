@@ -1,14 +1,14 @@
-const Restaurant = require("../models/Restaurant");
+const Shop = require("../models/Shop");
 
-// Get all restaurants
-exports.getRestaurants = async (req, res) => {
+// Get all shops
+exports.getShops = async (req, res) => {
   try {
-    const restaurants = await Restaurant.find().sort({ createdAt: -1 });
+    const shops = await Shop.find().sort({ createdAt: -1 });
 
     res.json({
       success: true,
-      count: restaurants.length,
-      restaurants,
+      count: shops.length,
+      shops,
     });
   } catch (error) {
     res.status(500).json({
@@ -18,16 +18,16 @@ exports.getRestaurants = async (req, res) => {
   }
 };
 
-// Get featured restaurants
-exports.getFeaturedRestaurants = async (req, res) => {
+// Get featured shops
+exports.getFeaturedShops = async (req, res) => {
   try {
-    const restaurants = await Restaurant.find({
+    const shops = await Shop.find({
       featured: true,
     });
 
     res.json({
       success: true,
-      restaurants,
+      shops,
     });
   } catch (error) {
     res.status(500).json({
@@ -37,16 +37,16 @@ exports.getFeaturedRestaurants = async (req, res) => {
   }
 };
 
-// Get popular restaurants
-exports.getPopularRestaurants = async (req, res) => {
+// Get popular shops
+exports.getPopularShops = async (req, res) => {
   try {
-    const restaurants = await Restaurant.find({
+    const shops = await Shop.find({
       popular: true,
     });
 
     res.json({
       success: true,
-      restaurants,
+      shops,
     });
   } catch (error) {
     res.status(500).json({
@@ -56,21 +56,21 @@ exports.getPopularRestaurants = async (req, res) => {
   }
 };
 
-// Get restaurant by ID
-exports.getRestaurant = async (req, res) => {
+// Get shop by ID
+exports.getShop = async (req, res) => {
   try {
-    const restaurant = await Restaurant.findById(req.params.id);
+    const shop = await Shop.findById(req.params.id);
 
-    if (!restaurant) {
+    if (!shop) {
       return res.status(404).json({
         success: false,
-        message: "Restaurant not found",
+        message: "Shop not found",
       });
     }
 
     res.json({
       success: true,
-      restaurant,
+      shop,
     });
   } catch (error) {
     res.status(500).json({

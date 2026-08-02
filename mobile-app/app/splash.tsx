@@ -34,10 +34,10 @@ export default function SplashScreen() {
         {/* Logo */}
 
         <View style={styles.center}>
-          <Text style={styles.logo}>Oroshi</Text>
+          <Text style={styles.logo}>Warda 🌹</Text>
         </View>
 
-        {/* Sushi Image */}
+        {/* Gift Image */}
 
         <Image
           source={require("../assets/gifts/mixed-bouquet.png")}

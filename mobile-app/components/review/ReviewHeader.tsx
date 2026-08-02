@@ -25,7 +25,7 @@ export default function ReviewHeader() {
       </TouchableOpacity>
 
       <Text style={styles.title}>
-        Enjoy your meal!
+        Your gift is on its way! 🌹
       </Text>
     </>
   );

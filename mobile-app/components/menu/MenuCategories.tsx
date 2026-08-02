@@ -9,7 +9,7 @@ import {
 import { menuCategories } from "../../data/menuCategories";
 
 export default function MenuCategories() {
-  const [selected, setSelected] = useState("Nigiri");
+  const [selected, setSelected] = useState("Rose Bouquets");
 
   return (
     <FlatList

@@ -38,7 +38,7 @@ export default function OrderStatusCard() {
 
       <Image
         source={require("../../assets/gifts/custom-hamper.png")}
-        style={styles.sushi}
+        style={styles.gift}
       />
     </View>
   );
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     color: "#222",
   },
 
-  sushi: {
+  gift: {
     position: "absolute",
 
     right: 20,

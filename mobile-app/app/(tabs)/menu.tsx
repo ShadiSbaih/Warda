@@ -40,7 +40,7 @@ export default function MenuScreen() {
 
           <OfferBanner />
 
-          {/* Popular Dishes */}
+          {/* Popular Gifts */}
 
           <PopularSection />
         </ScrollView>

@@ -4,7 +4,7 @@ const router = express.Router();
 
 const {
   getProducts,
-  getRestaurantProducts,
+  getShopProducts,
   getCategoryProducts,
   getProduct,
 } = require("../controllers/productController");
@@ -12,8 +12,8 @@ const {
 router.get("/", getProducts);
 
 router.get(
-  "/restaurant/:restaurantId",
-  getRestaurantProducts
+  "/shop/:shopId",
+  getShopProducts
 );
 
 router.get(
