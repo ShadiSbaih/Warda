@@ -29,12 +29,13 @@ const getBaseUrl = (): string => {
 
 export const API_BASE_URL = getBaseUrl();
 
-interface ApiResponse<T = any> {
+export interface ApiResponse<T = any> {
   success: boolean;
   message?: string;
   data?: T;
   token?: string;
   user?: StoredUser;
+  [key: string]: any;
 }
 
 export async function request<T = any>(
@@ -57,7 +58,7 @@ export async function request<T = any>(
 
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 8000);
+    const timeoutId = setTimeout(() => controller.abort(), 6000);
 
     const response = await fetch(url, {
       ...options,
@@ -81,7 +82,7 @@ export async function request<T = any>(
     if (error.name === "AbortError") {
       return {
         success: false,
-        message: "Request timed out. Please check your connection.",
+        message: "Request timed out. Using offline cache.",
       };
     }
     return {
@@ -91,6 +92,7 @@ export async function request<T = any>(
   }
 }
 
+// 1. Authentication API
 export const authAPI = {
   async register(body: {
     name: string;
@@ -114,6 +116,126 @@ export const authAPI = {
   async getProfile() {
     return request("/auth/profile", {
       method: "GET",
+    });
+  },
+
+  async updateProfile(body: Partial<StoredUser>) {
+    return request("/profile/update", {
+      method: "PUT",
+      body: JSON.stringify(body),
+    });
+  },
+};
+
+// 2. Products & Catalog API
+export const productsAPI = {
+  async getProducts(params?: { category?: string; search?: string }) {
+    const query = params ? `?category=${params.category || ""}&search=${params.search || ""}` : "";
+    return request(`/products${query}`, { method: "GET" });
+  },
+
+  async getProductById(id: string | number) {
+    return request(`/products/${id}`, { method: "GET" });
+  },
+
+  async getCategories() {
+    return request("/categories", { method: "GET" });
+  },
+};
+
+// 3. Orders API
+export const ordersAPI = {
+  async getOrders() {
+    return request("/orders", { method: "GET" });
+  },
+
+  async getOrderById(id: string) {
+    return request(`/orders/${id}`, { method: "GET" });
+  },
+
+  async createOrder(orderData: any) {
+    return request("/orders", {
+      method: "POST",
+      body: JSON.stringify(orderData),
+    });
+  },
+
+  async cancelOrder(id: string) {
+    return request(`/orders/${id}/status`, {
+      method: "PATCH",
+      body: JSON.stringify({ status: "cancelled" }),
+    });
+  },
+};
+
+// 4. Cart API
+export const cartAPI = {
+  async getCart() {
+    return request("/cart", { method: "GET" });
+  },
+
+  async syncCart(items: any[]) {
+    return request("/cart/sync", {
+      method: "POST",
+      body: JSON.stringify({ items }),
+    });
+  },
+
+  async addToCart(productId: string | number, quantity: number, options?: any) {
+    return request("/cart/add", {
+      method: "POST",
+      body: JSON.stringify({ productId, quantity, ...options }),
+    });
+  },
+};
+
+// 5. Reminders API
+export const remindersAPI = {
+  async getReminders() {
+    return request("/reminders", { method: "GET" });
+  },
+
+  async createReminder(reminder: any) {
+    return request("/reminders", {
+      method: "POST",
+      body: JSON.stringify(reminder),
+    });
+  },
+
+  async deleteReminder(id: string | number) {
+    return request(`/reminders/${id}`, { method: "DELETE" });
+  },
+};
+
+// 6. Reviews API
+export const reviewsAPI = {
+  async submitReview(reviewData: { orderId: string; rating: number; tags?: string[]; comment?: string }) {
+    return request("/reviews", {
+      method: "POST",
+      body: JSON.stringify(reviewData),
+    });
+  },
+};
+
+// 7. Coupons API
+export const couponsAPI = {
+  async validateCoupon(code: string) {
+    return request(`/coupons/validate?code=${encodeURIComponent(code)}`, {
+      method: "GET",
+    });
+  },
+};
+
+// 8. Chat API
+export const chatAPI = {
+  async getMessages(orderId: string) {
+    return request(`/chat/${orderId}`, { method: "GET" });
+  },
+
+  async sendMessage(orderId: string, message: string) {
+    return request(`/chat/${orderId}`, {
+      method: "POST",
+      body: JSON.stringify({ message }),
     });
   },
 };
