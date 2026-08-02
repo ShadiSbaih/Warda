@@ -1,118 +1,113 @@
 import React from "react";
-import {
-    Image,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Feather } from "@expo/vector-icons";
 
-import StatsCard from "./StatsCard";
+interface MenuItemProps {
+  icon: keyof typeof Feather.glyphMap;
+  title: string;
+  subtitle?: string;
+  badge?: string;
+  badgeColor?: string;
+  iconBgColor?: string;
+  iconColor?: string;
+  isDestructive?: boolean;
+  onPress: () => void;
+  showDivider?: boolean;
+}
 
-export default function UserCard() {
+export default function MenuItem({
+  icon,
+  title,
+  subtitle,
+  badge,
+  badgeColor = "#D4588A",
+  iconBgColor = "#FFF0F5",
+  iconColor = "#D4588A",
+  isDestructive = false,
+  onPress,
+  showDivider = true,
+}: MenuItemProps) {
   return (
-    <View style={styles.card}>
-      <View style={styles.top}>
-        <Image
-          source={require("../../assets/images/profile/avatar.png")}
-          style={styles.avatar}
+    <TouchableOpacity
+      activeOpacity={0.7}
+      style={styles.container}
+      onPress={onPress}
+    >
+      <View
+        style={[
+          styles.iconBox,
+          { backgroundColor: isDestructive ? "#FFF0F0" : iconBgColor },
+        ]}
+      >
+        <Feather
+          name={icon}
+          size={18}
+          color={isDestructive ? "#E53935" : iconColor}
         />
+      </View>
 
-        <Text style={styles.name}>
-          John Doe
+      <View style={styles.textContainer}>
+        <Text
+          style={[
+            styles.title,
+            isDestructive && { color: "#E53935", fontWeight: "700" },
+          ]}
+        >
+          {title}
         </Text>
-
-        <TouchableOpacity style={styles.edit}>
-          <Text style={styles.editText}>
-            Edit
-          </Text>
-        </TouchableOpacity>
+        {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
       </View>
 
-      <View style={styles.divider} />
+      {badge && (
+        <View style={[styles.badge, { backgroundColor: badgeColor }]}>
+          <Text style={styles.badgeText}>{badge}</Text>
+        </View>
+      )}
 
-      <View style={styles.stats}>
-        <StatsCard
-          number="45"
-          label="Orders"
-        />
-
-        <StatsCard
-          number="12"
-          label="Favorites"
-        />
-
-        <StatsCard
-          number="5"
-          label="Vouchers"
-        />
-      </View>
-    </View>
+      {!isDestructive && (
+        <Feather name="chevron-right" size={18} color="#C4C4C4" />
+      )}
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {
-    marginHorizontal: 20,
-    marginTop: 20,
-
-    backgroundColor: "#FFF",
-
-    borderRadius: 24,
-
-    padding: 18,
-
-    shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-
-    elevation: 5,
-  },
-
-  top: {
+  container: {
     flexDirection: "row",
     alignItems: "center",
-  },
-
-  avatar: {
-    width: 68,
-    height: 68,
-    borderRadius: 34,
-  },
-
-  name: {
-    flex: 1,
-
-    marginLeft: 14,
-
-    fontSize: 28,
-
-    fontWeight: "700",
-
-    color: "#222",
-  },
-
-  edit: {
-    backgroundColor: "#FFF1EF",
-
+    paddingVertical: 14,
     paddingHorizontal: 16,
-    paddingVertical: 8,
-
-    borderRadius: 20,
   },
-
-  editText: {
-    color: "#D4588A",
+  iconBox: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  textContainer: {
+    flex: 1,
+    marginLeft: 14,
+  },
+  title: {
+    fontSize: 15,
     fontWeight: "600",
+    color: "#1E1E2D",
   },
-
-  divider: {
-    height: 1,
-    backgroundColor: "#ECECEC",
-    marginVertical: 20,
+  subtitle: {
+    fontSize: 12,
+    color: "#888",
+    marginTop: 2,
   },
-
-  stats: {
-    flexDirection: "row",
+  badge: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 10,
+    marginRight: 8,
+  },
+  badgeText: {
+    color: "#FFFFFF",
+    fontSize: 11,
+    fontWeight: "700",
   },
 });

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   ScrollView,
   StatusBar,
@@ -12,37 +12,34 @@ import OfferBanner from "../../components/menu/OfferBanner";
 import PopularSection from "../../components/menu/PopularSection";
 
 export default function MenuScreen() {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
   return (
     <>
       <StatusBar
         barStyle="dark-content"
-        backgroundColor="#F8F8F8"
+        backgroundColor="#FDF6F9"
       />
 
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.content}
         >
           {/* Header */}
-
-          <MenuHeader
-            onSearchPress={() =>
-              console.log("Search")
-            }
-          />
+          <MenuHeader />
 
           {/* Categories */}
-
-          <MenuCategories />
+          <MenuCategories
+            selectedCategory={selectedCategory}
+            onSelectCategory={setSelectedCategory}
+          />
 
           {/* Offer Banner */}
-
           <OfferBanner />
 
-          {/* Popular Gifts */}
-
-          <PopularSection />
+          {/* Popular Gifts Grid */}
+          <PopularSection selectedCategory={selectedCategory} />
         </ScrollView>
       </SafeAreaView>
     </>
@@ -52,10 +49,9 @@ export default function MenuScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F8F8F8",
+    backgroundColor: "#FDF6F9",
   },
-
   content: {
-    paddingBottom: 120,
+    paddingBottom: 130,
   },
 });

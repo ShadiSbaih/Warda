@@ -13,11 +13,10 @@ import PaymentHeader from "../components/payment/PaymentHeader";
 import PaymentMethodsCard, {
   type PaymentResult,
 } from "../components/payment/PaymentMethodsCard";
-
-// Hard-coded demo amount — replace with cart total from your store
-const ORDER_AMOUNT = 23.0;
+import { useCart } from "../context/CartContext";
 
 export default function PaymentScreen() {
+  const { total } = useCart();
   const [paymentMethod, setPaymentMethod] = useState<
     "apple" | "card_saved" | "card_new"
   >("apple");
@@ -30,11 +29,13 @@ export default function PaymentScreen() {
     setCompletedPayment(result);
   };
 
+  const orderAmount = total > 0 ? total : 85.0;
+
   return (
     <>
-      <StatusBar backgroundColor="#F8F8F8" barStyle="dark-content" />
+      <StatusBar backgroundColor="#FDF6F9" barStyle="dark-content" />
 
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.content}
@@ -43,21 +44,21 @@ export default function PaymentScreen() {
           {/* Header */}
           <PaymentHeader />
 
-          {/* Map */}
+          {/* Map Preview */}
           <MapCard />
 
           {/* Delivery Information */}
           <DeliveryInfoCard />
 
-          {/* Payment Methods — opens card modal when "New Card" is tapped */}
+          {/* Payment Methods */}
           <PaymentMethodsCard
-            amount={ORDER_AMOUNT}
+            amount={orderAmount}
             onPaymentComplete={handlePaymentComplete}
           />
 
           {/* Place Order button */}
           <BottomPlaceOrder
-            amount={ORDER_AMOUNT}
+            amount={orderAmount}
             paymentMethod={paymentMethod}
             paymentIntentId={completedPayment?.paymentIntentId}
           />
@@ -70,9 +71,8 @@ export default function PaymentScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F8F8F8",
+    backgroundColor: "#FDF6F9",
   },
-
   content: {
     paddingTop: 10,
     paddingBottom: 40,

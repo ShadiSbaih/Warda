@@ -7,52 +7,80 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-
+import { useCart } from "../../context/CartContext";
+import { useOrders } from "../../context/OrdersContext";
 import MockStripe from "../../services/mockStripe";
 
 interface Props {
-  /** Total order amount in dollars */
   amount?: number;
-  /** Selected payment method key */
   paymentMethod?: "apple" | "card_saved" | "card_new";
-  /** For non-card methods that don't open a modal, call MockStripe directly */
   paymentIntentId?: string;
 }
 
 export default function BottomPlaceOrder({
-  amount = 23.0,
+  amount,
   paymentMethod = "apple",
   paymentIntentId,
 }: Props) {
   const router = useRouter();
+  const { items, total, clearCart, appliedPromo, deliveryFee } = useCart();
+  const { createOrder } = useOrders();
   const [loading, setLoading] = useState(false);
 
-  const handlePlaceOrder = async () => {
-    // If paying by card via new-card flow, the CardInputForm already handled
-    // the confirm step. Just navigate to tracking.
-    if (paymentMethod === "card_new") {
-      router.push("/tracking");
-      return;
-    }
+  const finalAmount = amount !== undefined ? amount : (total > 0 ? total : 85.0);
 
-    // For Apple Pay / saved card: simulate a quick mock charge
+  const handlePlaceOrder = async () => {
     setLoading(true);
     try {
-      const { paymentIntentId: piId } = await MockStripe.createPaymentIntent(amount);
+      if (paymentMethod !== "card_new") {
+        const { paymentIntentId: piId } = await MockStripe.createPaymentIntent(finalAmount);
+        await MockStripe.confirmPaymentIntent(piId, {
+          number: "4242424242424242",
+          exp_month: 12,
+          exp_year: new Date().getFullYear() + 2,
+          cvc: "123",
+          holder_name: "Warda VIP Customer",
+        });
+      }
 
-      // Simulate a generic stored card confirm (no real card details needed for Apple Pay mock)
-      await MockStripe.confirmPaymentIntent(piId, {
-        number: "4242424242424242", // Visa test card (always succeeds)
-        exp_month: 12,
-        exp_year: new Date().getFullYear() + 2,
-        cvc: "123",
-        holder_name: "Mock Wallet",
+      // Record order in OrdersContext
+      const orderItems = items.length > 0 ? items : [
+        {
+          id: "fallback-item-1",
+          productId: 1,
+          title: "Velvet Red Roses Bouquet",
+          price: 85.0,
+          image: require("../../assets/gifts/red-roses.png"),
+          quantity: 1,
+          wrappingColor: "#E53935",
+          wrappingName: "Velvet Red",
+          category: "Rose Bouquets",
+        },
+      ];
+
+      const newOrder = await createOrder({
+        items: orderItems,
+        total: finalAmount,
+        address: "King Fahd Branch Rd, Building 42, Apt 301, Riyadh",
+        paymentMethod:
+          paymentMethod === "apple"
+            ? "Apple Pay"
+            : paymentMethod === "card_saved"
+            ? "Saved Visa (•••• 4242)"
+            : "Credit Card (Mock Stripe)",
+        recipientName: "Sarah Al-Otaibi",
+        giftMessage: "A special gift filled with love and elegance. 🌸",
       });
 
-      router.push("/tracking");
+      clearCart();
+
+      // Navigate to tracking
+      router.replace({
+        pathname: "/tracking",
+        params: { orderId: newOrder.id },
+      });
     } catch (err: any) {
       Alert.alert(
         "Payment Failed",
@@ -68,8 +96,8 @@ export default function BottomPlaceOrder({
     <View style={styles.container}>
       {/* Total */}
       <View style={styles.priceContainer}>
-        <Text style={styles.label}>Total</Text>
-        <Text style={styles.price}>${amount.toFixed(2)}</Text>
+        <Text style={styles.label}>Total Amount</Text>
+        <Text style={styles.price}>${finalAmount.toFixed(2)}</Text>
       </View>
 
       {/* Place Order Button */}
@@ -83,7 +111,7 @@ export default function BottomPlaceOrder({
           <ActivityIndicator color="#FFFFFF" />
         ) : (
           <>
-            <Text style={styles.buttonText}>Place Order</Text>
+            <Text style={styles.buttonText}>Confirm & Place Order</Text>
             <Feather name="arrow-right" size={22} color="#FFFFFF" />
           </>
         )}
@@ -98,48 +126,42 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginBottom: 40,
   },
-
   priceContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 18,
   },
-
   label: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "600",
     color: "#666",
   },
-
   price: {
-    fontSize: 30,
-    fontWeight: "800",
+    fontSize: 28,
+    fontWeight: "900",
     color: "#D4588A",
   },
-
   button: {
-    height: 60,
-    borderRadius: 30,
+    height: 58,
+    borderRadius: 29,
     backgroundColor: "#D4588A",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    gap: 10,
     shadowColor: "#D4588A",
     shadowOpacity: 0.35,
     shadowRadius: 12,
     shadowOffset: { width: 0, height: 6 },
-    elevation: 10,
+    elevation: 8,
   },
-
   buttonLoading: {
     opacity: 0.75,
   },
-
   buttonText: {
     color: "#FFFFFF",
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: "700",
-    marginRight: 10,
   },
 });

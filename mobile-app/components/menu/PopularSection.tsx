@@ -1,39 +1,38 @@
-import { useRouter } from "expo-router";
 import React from "react";
 import {
-    FlatList,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
-
-import { menuProducts } from "../../data/menuProducts";
+import { useRouter } from "expo-router";
+import { ALL_PRODUCTS } from "../../data/productsData";
 import MenuCard from "./MenuCard";
 
-export default function PopularSection() {
+interface Props {
+  selectedCategory?: string;
+}
+
+export default function PopularSection({ selectedCategory = "All" }: Props) {
   const router = useRouter();
+
+  const filtered = selectedCategory === "All"
+    ? ALL_PRODUCTS
+    : ALL_PRODUCTS.filter((p) => p.category === selectedCategory);
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-
       <View style={styles.header}>
         <Text style={styles.title}>
-          Popular Gifts
+          {selectedCategory === "All" ? "All Gifts" : selectedCategory}
         </Text>
-
-        <TouchableOpacity>
-          <Text style={styles.seeAll}>
-            See All
-          </Text>
-        </TouchableOpacity>
+        <Text style={styles.countText}>
+          {filtered.length} {filtered.length === 1 ? "item" : "items"}
+        </Text>
       </View>
 
-      {/* Products */}
-
       <FlatList
-        data={menuProducts}
+        data={filtered}
         keyExtractor={(item) => item.id.toString()}
         numColumns={2}
         scrollEnabled={false}
@@ -43,7 +42,7 @@ export default function PopularSection() {
         renderItem={({ item }) => (
           <MenuCard
             item={item}
-            onPress={() => router.push("/details")}
+            onPress={() => router.push(`/details/${item.id}` as any)}
           />
         )}
       />
@@ -53,44 +52,31 @@ export default function PopularSection() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 28,
+    marginTop: 20,
   },
-
   header: {
     marginHorizontal: 20,
-
     flexDirection: "row",
-
     justifyContent: "space-between",
-
     alignItems: "center",
-
-    marginBottom: 18,
+    marginBottom: 14,
   },
-
   title: {
-    fontSize: 24,
-
-    fontWeight: "700",
-
-    color: "#222",
+    fontSize: 20,
+    fontWeight: "800",
+    color: "#1E1E2D",
   },
-
-  seeAll: {
-    fontSize: 15,
-
+  countText: {
+    fontSize: 13,
+    color: "#888",
     fontWeight: "600",
-
-    color: "#D4588A",
   },
-
   list: {
     paddingHorizontal: 20,
     paddingBottom: 20,
   },
-
   row: {
     justifyContent: "space-between",
-    marginBottom: 18,
+    marginBottom: 6,
   },
 });

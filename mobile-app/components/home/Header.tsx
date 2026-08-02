@@ -1,55 +1,56 @@
 import React from "react";
 import {
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-
 import { Feather, Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
 export default function Header() {
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
-      {/* Left Section */}
-
-      <View style={styles.leftContainer}>
-        <TouchableOpacity style={styles.iconButton}>
+      {/* Location */}
+      <TouchableOpacity
+        style={styles.leftContainer}
+        activeOpacity={0.8}
+        onPress={() => router.push("/delivery-address")}
+      >
+        <View style={styles.iconButton}>
           <Ionicons
             name="location-outline"
-            size={24}
-            color="#2B2B2B"
+            size={22}
+            color="#D4588A"
           />
-        </TouchableOpacity>
+        </View>
 
         <View style={styles.locationContainer}>
-          <Text style={styles.deliveryText}>
-            Delivering to
-          </Text>
-
+          <Text style={styles.deliveryText}>Delivering to</Text>
           <View style={styles.row}>
-            <Text style={styles.address}>
-              Al Nuzha
-            </Text>
-
+            <Text style={styles.address}>Al Olaya, Riyadh</Text>
             <Feather
               name="chevron-down"
-              size={18}
+              size={16}
               color="#666"
             />
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
 
-      {/* Right Section */}
-
-      <TouchableOpacity style={styles.iconButton}>
+      {/* Notifications */}
+      <TouchableOpacity
+        style={styles.iconButton}
+        activeOpacity={0.8}
+        onPress={() => router.push("/notifications")}
+      >
         <Ionicons
           name="notifications-outline"
-          size={24}
-          color="#2B2B2B"
+          size={22}
+          color="#1E1E2D"
         />
-
         <View style={styles.dot} />
       </TouchableOpacity>
     </View>
@@ -58,95 +59,58 @@ export default function Header() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 18,
-
-    paddingHorizontal: 22,
-
+    marginTop: 12,
+    paddingHorizontal: 20,
     flexDirection: "row",
-
     justifyContent: "space-between",
-
     alignItems: "center",
   },
-
   leftContainer: {
     flexDirection: "row",
-
     alignItems: "center",
+    flex: 1,
   },
-
   iconButton: {
-    width: 48,
-
-    height: 48,
-
-    borderRadius: 24,
-
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     backgroundColor: "#FFFFFF",
-
     justifyContent: "center",
-
     alignItems: "center",
-
-    shadowColor: "#000",
-
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-
+    shadowColor: "#D4588A",
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.08,
-
     shadowRadius: 6,
-
-    elevation: 5,
+    elevation: 3,
   },
-
   locationContainer: {
-    marginLeft: 12,
+    marginLeft: 10,
   },
-
   deliveryText: {
     color: "#8A8A8A",
-
-    fontSize: 14,
+    fontSize: 12,
+    fontWeight: "500",
   },
-
   row: {
     flexDirection: "row",
-
     alignItems: "center",
-
     marginTop: 2,
   },
-
   address: {
-    fontSize: 22,
-
-    fontWeight: "700",
-
-    color: "#222",
-
+    fontSize: 16,
+    fontWeight: "800",
+    color: "#1E1E2D",
     marginRight: 4,
   },
-
   dot: {
     position: "absolute",
-
-    right: 14,
-
-    top: 12,
-
-    width: 10,
-
-    height: 10,
-
-    borderRadius: 5,
-
+    right: 12,
+    top: 10,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
     backgroundColor: "#D4588A",
-
-    borderWidth: 2,
-
+    borderWidth: 1.5,
     borderColor: "#FFFFFF",
   },
 });

@@ -1,16 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import {
-    FlatList,
-    StyleSheet,
-    View,
+  FlatList,
+  StyleSheet,
+  View,
 } from "react-native";
-
 import { categories } from "../../constants/homeData";
 import CategoryCard from "./CategoryCard";
 
-export default function Categories() {
-  const [selected, setSelected] = useState(0);
+interface Props {
+  selectedCategoryName?: string | null;
+  onSelectCategory: (name: string | null) => void;
+}
 
+export default function Categories({
+  selectedCategoryName,
+  onSelectCategory,
+}: Props) {
   return (
     <View style={styles.container}>
       <FlatList
@@ -19,13 +24,22 @@ export default function Categories() {
         keyExtractor={(item) => item.id.toString()}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.list}
-        renderItem={({ item, index }) => (
-          <CategoryCard
-            item={item}
-            selected={selected === index}
-            onPress={() => setSelected(index)}
-          />
-        )}
+        renderItem={({ item }) => {
+          const isSelected = selectedCategoryName === item.name;
+          return (
+            <CategoryCard
+              item={item}
+              selected={isSelected}
+              onPress={() => {
+                if (isSelected) {
+                  onSelectCategory(null);
+                } else {
+                  onSelectCategory(item.name);
+                }
+              }}
+            />
+          );
+        }}
       />
     </View>
   );
@@ -33,11 +47,10 @@ export default function Categories() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 28,
+    marginTop: 22,
   },
-
   list: {
     paddingHorizontal: 20,
-    paddingRight: 5,
+    paddingRight: 6,
   },
 });

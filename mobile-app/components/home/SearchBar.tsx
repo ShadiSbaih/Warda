@@ -1,97 +1,61 @@
 import React from "react";
 import {
-    StyleSheet,
-    TextInput,
-    TouchableOpacity,
-    View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-
 import { Feather, Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
-interface Props {
-  value: string;
-  onChangeText: (text: string) => void;
-}
+export default function SearchBar() {
+  const router = useRouter();
 
-export default function SearchBar({
-  value,
-  onChangeText,
-}: Props) {
   return (
-    <View style={styles.container}>
-      {/* Search Icon */}
-
-      <Feather
-        name="search"
-        size={22}
-        color="#9A9A9A"
-      />
-
-      {/* Input */}
-
-      <TextInput
-        value={value}
-        onChangeText={onChangeText}
-        placeholder="Search gifts..."
-        placeholderTextColor="#A0A0A0"
-        style={styles.input}
-      />
-
-      {/* Filter Button */}
-
-      <TouchableOpacity style={styles.filterButton}>
-        <Ionicons
-          name="options-outline"
-          size={20}
-          color="#FFFFFF"
-        />
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity
+      activeOpacity={0.88}
+      style={styles.container}
+      onPress={() => router.push("/(tabs)/search")}
+    >
+      <Feather name="search" size={20} color="#9A9A9A" />
+      <Text style={styles.placeholder}>
+        Search roses, chocolates, gift boxes...
+      </Text>
+      <View style={styles.filterButton}>
+        <Ionicons name="options-outline" size={18} color="#FFFFFF" />
+      </View>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 24,
+    marginTop: 18,
     marginHorizontal: 20,
-
-    height: 60,
-
+    height: 56,
     backgroundColor: "#FFFFFF",
-
     borderRadius: 20,
-
     flexDirection: "row",
     alignItems: "center",
-
     paddingLeft: 18,
-    paddingRight: 8,
-
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
+    paddingRight: 6,
+    shadowColor: "#D4588A",
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
     shadowRadius: 10,
-    elevation: 5,
+    elevation: 3,
   },
-
-  input: {
+  placeholder: {
     flex: 1,
     marginLeft: 12,
-    fontSize: 16,
-    color: "#222",
+    fontSize: 14,
+    color: "#9A9A9A",
   },
-
   filterButton: {
-    width: 46,
-    height: 46,
-
+    width: 44,
+    height: 44,
     borderRadius: 15,
-
     backgroundColor: "#D4588A",
-
     justifyContent: "center",
     alignItems: "center",
   },

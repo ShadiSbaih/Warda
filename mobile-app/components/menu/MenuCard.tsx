@@ -1,76 +1,79 @@
-import { Feather, Ionicons } from "@expo/vector-icons";
 import React from "react";
 import {
-    Image,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
+import { Feather, Ionicons } from "@expo/vector-icons";
+import { useFavorites } from "../../context/FavoritesContext";
+import { useCart } from "../../context/CartContext";
+
+const { width } = Dimensions.get("window");
+const CARD_WIDTH = (width - 54) / 2;
 
 interface Props {
-  item: {
-    id: number;
-    title: string;
-    price: string;
-    image: any;
-    category: string;
-  };
-
+  item: any;
   onPress?: () => void;
 }
 
-export default function MenuCard({
-  item,
-  onPress,
-}: Props) {
+export default function MenuCard({ item, onPress }: Props) {
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const { addToCart } = useCart();
+
+  const fav = isFavorite(item.id);
+
   return (
     <TouchableOpacity
       activeOpacity={0.9}
       style={styles.card}
       onPress={onPress}
     >
-      {/* Favourite */}
-
-      <TouchableOpacity style={styles.favorite}>
+      {/* Favourite Button */}
+      <TouchableOpacity
+        style={styles.favorite}
+        activeOpacity={0.8}
+        onPress={() => toggleFavorite(item)}
+      >
         <Ionicons
-          name="heart-outline"
+          name={fav ? "heart" : "heart-outline"}
           size={18}
-          color="#888"
+          color={fav ? "#D4588A" : "#888"}
         />
       </TouchableOpacity>
 
       {/* Image */}
-
-      <Image
-        source={item.image}
-        resizeMode="contain"
-        style={styles.image}
-      />
+      <View style={styles.imageBox}>
+        <Image
+          source={item.image}
+          resizeMode="contain"
+          style={styles.image}
+        />
+      </View>
 
       {/* Category */}
-
-      <Text style={styles.category}>
+      <Text style={styles.category} numberOfLines={1}>
         {item.category}
       </Text>
 
       {/* Title */}
-
-      <Text
-        numberOfLines={2}
-        style={styles.title}
-      >
-        {item.title}
+      <Text numberOfLines={2} style={styles.title}>
+        {item.name || item.title}
       </Text>
 
       {/* Bottom */}
-
       <View style={styles.bottomRow}>
         <Text style={styles.price}>
-          {item.price}
+          ${item.price}
         </Text>
 
-        <TouchableOpacity style={styles.addButton}>
+        <TouchableOpacity
+          style={styles.addButton}
+          activeOpacity={0.8}
+          onPress={() => addToCart(item, 1)}
+        >
           <Feather
             name="plus"
             size={18}
@@ -84,104 +87,82 @@ export default function MenuCard({
 
 const styles = StyleSheet.create({
   card: {
-    width: 170,
-
+    width: CARD_WIDTH,
     backgroundColor: "#FFFFFF",
-
-    borderRadius: 24,
-
-    padding: 14,
-
-    marginBottom: 18,
-
-    shadowColor: "#000",
+    borderRadius: 22,
+    padding: 12,
+    marginBottom: 16,
+    shadowColor: "#D4588A",
     shadowOpacity: 0.08,
-    shadowRadius: 12,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-
-    elevation: 5,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 3,
   },
-
   favorite: {
     position: "absolute",
-
-    top: 12,
-    right: 12,
-
-    width: 34,
-    height: 34,
-
-    borderRadius: 17,
-
-    backgroundColor: "#FFF",
-
+    top: 10,
+    right: 10,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
     justifyContent: "center",
     alignItems: "center",
-
     zIndex: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
+    elevation: 2,
   },
-
-  image: {
-    width: 120,
+  imageBox: {
+    width: "100%",
     height: 120,
-
-    alignSelf: "center",
-
-    marginTop: 10,
+    borderRadius: 16,
+    backgroundColor: "#FCF6F8",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 4,
   },
-
+  image: {
+    width: 100,
+    height: 100,
+  },
   category: {
-    marginTop: 12,
-
-    fontSize: 13,
-
+    marginTop: 10,
+    fontSize: 11.5,
     color: "#999",
+    fontWeight: "600",
+    textTransform: "uppercase",
   },
-
   title: {
-    marginTop: 5,
-
-    fontSize: 17,
-
+    marginTop: 4,
+    fontSize: 15,
     fontWeight: "700",
-
-    color: "#222",
-
-    lineHeight: 24,
-
-    minHeight: 48,
+    color: "#1E1E2D",
+    lineHeight: 20,
+    minHeight: 40,
   },
-
   bottomRow: {
-    marginTop: 16,
-
+    marginTop: 10,
     flexDirection: "row",
-
     justifyContent: "space-between",
-
     alignItems: "center",
   },
-
   price: {
-    fontSize: 18,
-
-    fontWeight: "700",
-
+    fontSize: 17,
+    fontWeight: "800",
     color: "#D4588A",
   },
-
   addButton: {
-    width: 36,
-    height: 36,
-
-    borderRadius: 18,
-
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     backgroundColor: "#D4588A",
-
     justifyContent: "center",
     alignItems: "center",
+    shadowColor: "#D4588A",
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 2,
   },
 });

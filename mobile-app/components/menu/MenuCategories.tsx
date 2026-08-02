@@ -1,41 +1,45 @@
-import React, { useState } from "react";
+import React from "react";
 import {
-    FlatList,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
 } from "react-native";
-
 import { menuCategories } from "../../data/menuCategories";
 
-export default function MenuCategories() {
-  const [selected, setSelected] = useState("Rose Bouquets");
+const ALL_CATEGORY = { id: 0, title: "All Gifts", active: true };
+const CATEGORIES = [ALL_CATEGORY, ...menuCategories];
 
+interface Props {
+  selectedCategory: string;
+  onSelectCategory: (category: string) => void;
+}
+
+export default function MenuCategories({
+  selectedCategory,
+  onSelectCategory,
+}: Props) {
   return (
     <FlatList
       horizontal
       showsHorizontalScrollIndicator={false}
-      data={menuCategories}
+      data={CATEGORIES}
       keyExtractor={(item) => item.id.toString()}
       contentContainerStyle={styles.list}
       renderItem={({ item }) => {
-        const active = selected === item.title;
+        const active =
+          selectedCategory === item.title ||
+          (selectedCategory === "All" && item.title === "All Gifts");
 
         return (
           <TouchableOpacity
             activeOpacity={0.85}
-            onPress={() => setSelected(item.title)}
-            style={[
-              styles.chip,
-              active && styles.activeChip,
-            ]}
+            onPress={() =>
+              onSelectCategory(item.title === "All Gifts" ? "All" : item.title)
+            }
+            style={[styles.chip, active && styles.activeChip]}
           >
-            <Text
-              style={[
-                styles.text,
-                active && styles.activeText,
-              ]}
-            >
+            <Text style={[styles.text, active && styles.activeText]}>
               {item.title}
             </Text>
           </TouchableOpacity>
@@ -48,47 +52,36 @@ export default function MenuCategories() {
 const styles = StyleSheet.create({
   list: {
     paddingHorizontal: 20,
-    paddingTop: 20,
+    paddingTop: 16,
     paddingBottom: 8,
   },
-
   chip: {
-    height: 42,
-
-    paddingHorizontal: 18,
-
-    borderRadius: 21,
-
+    height: 40,
+    paddingHorizontal: 16,
+    borderRadius: 20,
     backgroundColor: "#FFFFFF",
-
     justifyContent: "center",
     alignItems: "center",
-
-    marginRight: 12,
-
-    shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-
-    elevation: 4,
+    marginRight: 10,
+    shadowColor: "#D4588A",
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 2,
+    borderWidth: 1,
+    borderColor: "#EAEAEA",
   },
-
   activeChip: {
     backgroundColor: "#D4588A",
+    borderColor: "#D4588A",
   },
-
   text: {
-    fontSize: 15,
-    fontWeight: "500",
-    color: "#7B7B7B",
+    fontSize: 13.5,
+    fontWeight: "600",
+    color: "#666",
   },
-
   activeText: {
     color: "#FFFFFF",
-    fontWeight: "600",
+    fontWeight: "700",
   },
 });

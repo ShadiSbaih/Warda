@@ -9,19 +9,27 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAuth } from "../context/AuthContext";
 
 const { width } = Dimensions.get("window");
 
 export default function SplashScreen() {
   const router = useRouter();
+  const { isAuthenticated, isLoading } = useAuth();
 
   useEffect(() => {
+    if (isLoading) return;
+
     const timer = setTimeout(() => {
-     router.replace("/(auth)/login");
-    }, 2500);
+      if (isAuthenticated) {
+        router.replace("/(tabs)/home");
+      } else {
+        router.replace("/(auth)/login");
+      }
+    }, 1800);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [isLoading, isAuthenticated, router]);
 
   return (
     <>
