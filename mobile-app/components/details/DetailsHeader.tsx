@@ -62,8 +62,8 @@ export default function DetailsHeader({ image }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 275,
-    backgroundColor: "#FFF2E9",
+    height: 290,
+    backgroundColor: "#FCF6F8",
     alignItems: "center",
     justifyContent: "flex-end",
   },
@@ -71,26 +71,26 @@ const styles = StyleSheet.create({
   background: {
     position: "absolute",
     width: width,
-    height: 275,
-    backgroundColor: "#FFF2E9",
+    height: 290,
+    backgroundColor: "#FCF6F8",
   },
 
   circleButton: {
     position: "absolute",
     top: 55,
 
-    width: 42,
-    height: 42,
-    borderRadius: 21,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
 
     backgroundColor: "#FFFFFF",
 
     justifyContent: "center",
     alignItems: "center",
 
-    shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
+    shadowColor: "#D4588A",
+    shadowOpacity: 0.12,
+    shadowRadius: 10,
     shadowOffset: {
       width: 0,
       height: 3,
@@ -102,8 +102,8 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: 300,
-    height: 220,
-    marginBottom: -10,
+    width: 260,
+    height: 240,
+    marginBottom: 10,
   },
 });

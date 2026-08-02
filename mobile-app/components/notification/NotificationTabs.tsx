@@ -51,44 +51,43 @@ export default function NotificationTabs({
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-
     marginHorizontal: 20,
-    marginTop: 24,
-    marginBottom: 20,
+    marginTop: 18,
+    marginBottom: 16,
   },
 
   tab: {
-    height: 42,
-
-    paddingHorizontal: 20,
-
-    borderRadius: 21,
-
+    height: 40,
+    paddingHorizontal: 18,
+    borderRadius: 20,
     backgroundColor: "#FFFFFF",
-
     justifyContent: "center",
-
-    marginRight: 12,
-
-    shadowColor: "#000",
+    marginRight: 10,
+    shadowColor: "#D4588A",
     shadowOpacity: 0.06,
     shadowRadius: 8,
     shadowOffset: {
       width: 0,
       height: 3,
     },
-
-    elevation: 4,
+    elevation: 2,
+    borderWidth: 1,
+    borderColor: "#F3E5ED",
   },
 
   activeTab: {
     backgroundColor: "#D4588A",
+    borderColor: "#D4588A",
+    shadowColor: "#D4588A",
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
   },
 
   text: {
-    fontSize: 15,
-    color: "#777",
-    fontWeight: "500",
+    fontSize: 13.5,
+    color: "#8E8292",
+    fontWeight: "600",
   },
 
   activeText: {

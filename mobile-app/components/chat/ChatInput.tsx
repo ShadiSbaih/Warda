@@ -31,55 +31,44 @@ export default function ChatInput() {
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-
     left: 20,
     right: 20,
-    bottom: 30,
-
+    bottom: 24,
     flexDirection: "row",
-
     alignItems: "center",
   },
 
   input: {
     flex: 1,
-
-    height: 54,
-
-    backgroundColor: "#F5F5F5",
-
-    borderRadius: 27,
-
+    height: 50,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 25,
     paddingHorizontal: 18,
-
-    fontSize: 16,
-
-    marginRight: 12,
+    fontSize: 15,
+    marginRight: 10,
+    borderWidth: 1.5,
+    borderColor: "#F3E5ED",
+    color: "#1E1E2D",
+    shadowColor: "#D4588A",
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 3,
   },
 
   sendButton: {
-    width: 54,
-    height: 54,
-
-    borderRadius: 27,
-
-    backgroundColor: "#FFFFFF",
-
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: "#D4588A",
     justifyContent: "center",
-
     alignItems: "center",
-
-    shadowColor: "#000",
-
-    shadowOpacity: 0.08,
-
-    shadowRadius: 10,
-
+    shadowColor: "#D4588A",
+    shadowOpacity: 0.35,
+    shadowRadius: 8,
     shadowOffset: {
       width: 0,
-      height: 4,
+      height: 3,
     },
-
     elevation: 5,
   },
 });

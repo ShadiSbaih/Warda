@@ -48,18 +48,14 @@ const styles = StyleSheet.create({
   card: {
     marginHorizontal: 20,
     marginTop: 20,
-
-    backgroundColor: "#FFF",
-
+    backgroundColor: "#FFFFFF",
     borderRadius: 24,
-
-    padding: 18,
-
-    shadowColor: "#000",
+    padding: 20,
+    shadowColor: "#D4588A",
     shadowOpacity: 0.08,
-    shadowRadius: 12,
-
-    elevation: 5,
+    shadowRadius: 14,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
   },
 
   topRow: {
@@ -74,60 +70,49 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    width: 36,
-    height: 36,
-
+    width: 38,
+    height: 38,
     marginRight: 12,
   },
 
   store: {
     fontSize: 18,
-    fontWeight: "700",
-    color: "#222",
+    fontWeight: "800",
+    color: "#1E1E2D",
   },
 
   badge: {
-    backgroundColor: "#FFF2EF",
-
+    backgroundColor: "#FFF0F5",
     paddingHorizontal: 12,
     paddingVertical: 6,
-
-    borderRadius: 12,
+    borderRadius: 14,
   },
 
   badgeText: {
     color: "#D4588A",
-
     fontSize: 12,
-
-    fontWeight: "600",
+    fontWeight: "700",
   },
 
   label: {
     marginTop: 18,
-
-    color: "#888",
-
-    fontSize: 16,
+    color: "#8E8292",
+    fontSize: 14,
+    fontWeight: "500",
   },
 
   time: {
     marginTop: 4,
-
-    fontSize: 36,
-
+    fontSize: 32,
     fontWeight: "800",
-
-    color: "#222",
+    color: "#1E1E2D",
   },
 
   gift: {
     position: "absolute",
-
     right: 20,
     bottom: 16,
-
-    width: 70,
-    height: 70,
+    width: 76,
+    height: 76,
   },
 });

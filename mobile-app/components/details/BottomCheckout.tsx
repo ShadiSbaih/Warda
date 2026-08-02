@@ -79,91 +79,72 @@ export default function BottomCheckout({
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-
     left: 0,
     right: 0,
     bottom: 0,
-
     backgroundColor: "#FFFFFF",
-
     paddingHorizontal: 20,
-    paddingVertical: 18,
-
+    paddingVertical: 16,
     flexDirection: "row",
     alignItems: "center",
-
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-
-    shadowColor: "#000",
+    borderTopLeftRadius: 26,
+    borderTopRightRadius: 26,
+    shadowColor: "#D4588A",
     shadowOpacity: 0.12,
-    shadowRadius: 14,
+    shadowRadius: 16,
     shadowOffset: {
       width: 0,
-      height: -3,
+      height: -4,
     },
-
     elevation: 18,
   },
 
   quantityContainer: {
     flexDirection: "row",
-
     alignItems: "center",
-
-    backgroundColor: "#FFF4F1",
-
-    borderRadius: 18,
-
-    paddingHorizontal: 10,
-
-    height: 56,
+    backgroundColor: "#FFF0F5",
+    borderRadius: 20,
+    paddingHorizontal: 8,
+    height: 52,
   },
 
   button: {
-    width: 40,
-    height: 40,
-
-    borderRadius: 20,
-
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     backgroundColor: "#FFFFFF",
-
     justifyContent: "center",
     alignItems: "center",
-
+    shadowColor: "#000",
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
     elevation: 2,
   },
 
   quantity: {
-    marginHorizontal: 18,
-
-    fontSize: 18,
-
-    fontWeight: "700",
-
-    color: "#222",
+    marginHorizontal: 16,
+    fontSize: 17,
+    fontWeight: "800",
+    color: "#1E1E2D",
   },
 
   cartButton: {
     flex: 1,
-
-    marginLeft: 16,
-
-    height: 56,
-
-    borderRadius: 18,
-
+    marginLeft: 14,
+    height: 52,
+    borderRadius: 20,
     backgroundColor: "#D4588A",
-
     justifyContent: "center",
     alignItems: "center",
+    shadowColor: "#D4588A",
+    shadowOpacity: 0.35,
+    shadowRadius: 10,
+    elevation: 6,
   },
 
   cartText: {
     color: "#FFFFFF",
-
-    fontSize: 17,
-
+    fontSize: 16,
     fontWeight: "700",
   },
 });

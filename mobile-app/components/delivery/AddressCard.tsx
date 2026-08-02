@@ -45,12 +45,18 @@ export default function AddressCard() {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-
     justifyContent: "space-between",
-
     alignItems: "center",
-
     padding: 20,
+    backgroundColor: "#FFFFFF",
+    marginHorizontal: 20,
+    marginTop: 14,
+    borderRadius: 22,
+    shadowColor: "#D4588A",
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 3,
   },
 
   left: {
@@ -59,30 +65,25 @@ const styles = StyleSheet.create({
   },
 
   icon: {
-    width: 40,
-    height: 40,
-
-    borderRadius: 20,
-
-    backgroundColor: "#F5F5F5",
-
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "#FFF0F5",
     justifyContent: "center",
     alignItems: "center",
-
     marginRight: 14,
   },
 
   label: {
-    color: "#9A9A9A",
-    fontSize: 14,
+    color: "#8E8292",
+    fontSize: 13,
+    fontWeight: "500",
   },
 
   address: {
-    marginTop: 4,
-
-    fontSize: 20,
-    fontWeight: "700",
-
-    color: "#222",
+    marginTop: 3,
+    fontSize: 16,
+    fontWeight: "800",
+    color: "#1E1E2D",
   },
 });

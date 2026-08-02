@@ -101,22 +101,14 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
     marginTop: 18,
-
-    backgroundColor: "#FFF",
-
-    borderRadius: 22,
-
-    padding: 14,
-
-    shadowColor: "#000",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 24,
+    padding: 18,
+    shadowColor: "#D4588A",
     shadowOpacity: 0.08,
-    shadowRadius: 12,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-
-    elevation: 6,
+    shadowRadius: 14,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
   },
 
   top: {
@@ -125,96 +117,97 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: 95,
-    height: 95,
+    width: 85,
+    height: 85,
+    borderRadius: 16,
+    backgroundColor: "#FCF6F8",
   },
 
   info: {
     flex: 1,
-    marginLeft: 12,
+    marginLeft: 14,
   },
 
   title: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#222",
+    fontSize: 17,
+    fontWeight: "800",
+    color: "#1E1E2D",
   },
 
   description: {
-    marginTop: 6,
-    color: "#777",
-    lineHeight: 22,
-    fontSize: 15,
+    marginTop: 4,
+    color: "#8E8292",
+    lineHeight: 18,
+    fontSize: 13,
   },
 
   price: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#222",
+    fontSize: 18,
+    fontWeight: "800",
+    color: "#D4588A",
   },
 
   quantityRow: {
     alignItems: "flex-end",
-    marginTop: 14,
+    marginTop: 12,
   },
 
   quantity: {
-    width: 95,
-    height: 38,
-
-    borderRadius: 19,
-
-    backgroundColor: "#F3F3F3",
-
+    width: 96,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: "#FFF0F5",
     flexDirection: "row",
-
     justifyContent: "space-evenly",
-
     alignItems: "center",
   },
 
   qty: {
-    fontSize: 17,
-    fontWeight: "600",
+    fontSize: 15,
+    fontWeight: "700",
+    color: "#1E1E2D",
   },
 
   line: {
-    marginVertical: 18,
+    marginVertical: 16,
     height: 1,
-    backgroundColor: "#EFEFEF",
+    backgroundColor: "#F3E5ED",
   },
 
   bottom: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 18,
+    alignItems: "center",
+    marginBottom: 16,
   },
 
   items: {
-    color: "#777",
-    fontSize: 15,
+    color: "#8E8292",
+    fontSize: 14,
+    fontWeight: "500",
   },
 
   total: {
-    fontSize: 22,
-    fontWeight: "700",
-    color: "#222",
+    fontSize: 20,
+    fontWeight: "800",
+    color: "#1E1E2D",
   },
 
   button: {
-    height: 54,
-
-    borderRadius: 27,
-
+    height: 50,
+    borderRadius: 25,
     backgroundColor: "#D4588A",
-
     justifyContent: "center",
     alignItems: "center",
+    shadowColor: "#D4588A",
+    shadowOpacity: 0.35,
+    shadowRadius: 10,
+    elevation: 5,
   },
 
   buttonText: {
-    color: "#FFF",
-    fontSize: 18,
+    color: "#FFFFFF",
+    fontSize: 16,
     fontWeight: "700",
   },
 });

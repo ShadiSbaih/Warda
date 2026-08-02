@@ -20,19 +20,17 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
     marginTop: 20,
-
-    backgroundColor: "#FFF3EA",
-
+    backgroundColor: "#FFF0F5",
     borderRadius: 18,
-
     padding: 18,
+    borderWidth: 1,
+    borderColor: "#F8D7E8",
   },
 
   text: {
-    color: "#777",
-
-    fontSize: 16,
-
-    lineHeight: 24,
+    color: "#D4588A",
+    fontSize: 15,
+    fontWeight: "600",
+    lineHeight: 22,
   },
 });

@@ -78,90 +78,76 @@ export default function OrderedItemCard({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FFFFFF",
-
-    borderRadius: 22,
-
+    borderRadius: 24,
     marginHorizontal: 20,
-
-    marginBottom: 18,
-
-    padding: 14,
-
+    marginBottom: 16,
+    padding: 16,
     flexDirection: "row",
-
     alignItems: "center",
-
-    shadowColor: "#000",
+    shadowColor: "#D4588A",
     shadowOpacity: 0.08,
-    shadowRadius: 10,
+    shadowRadius: 12,
     shadowOffset: {
       width: 0,
       height: 4,
     },
-
-    elevation: 5,
+    elevation: 4,
   },
 
   image: {
-    width: 88,
-    height: 88,
+    width: 80,
+    height: 80,
+    borderRadius: 16,
+    backgroundColor: "#FCF6F8",
   },
 
   info: {
     flex: 1,
-
-    marginLeft: 12,
+    marginLeft: 14,
   },
 
   title: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#222",
+    fontSize: 16,
+    fontWeight: "800",
+    color: "#1E1E2D",
   },
 
   address: {
-    marginTop: 8,
-
-    fontSize: 15,
-
-    color: "#8A8A8A",
+    marginTop: 4,
+    fontSize: 13,
+    color: "#8E8292",
   },
 
   shop: {
-    marginTop: 4,
-
-    fontSize: 15,
-
-    color: "#8A8A8A",
-  },
-
-  status: {
-    marginTop: 12,
-
-    fontSize: 15,
-
+    marginTop: 2,
+    fontSize: 12,
+    color: "#D4588A",
     fontWeight: "600",
   },
 
+  status: {
+    marginTop: 8,
+    fontSize: 13,
+    fontWeight: "700",
+  },
+
   trackButton: {
-    width: 82,
-    height: 40,
-
-    borderRadius: 20,
-
+    paddingHorizontal: 16,
+    height: 36,
+    borderRadius: 18,
     backgroundColor: "#D4588A",
-
     justifyContent: "center",
     alignItems: "center",
-
-    alignSelf: "flex-end",
+    alignSelf: "center",
+    shadowColor: "#D4588A",
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 3,
   },
 
   trackText: {
     color: "#FFFFFF",
-
-    fontSize: 15,
-
+    fontSize: 13,
     fontWeight: "700",
   },
 });

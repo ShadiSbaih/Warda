@@ -62,7 +62,7 @@ export default function ChatBubble({
 const styles = StyleSheet.create({
   wrapper: {
     marginHorizontal: 20,
-    marginTop: 18,
+    marginTop: 14,
   },
 
   rightWrapper: {
@@ -75,51 +75,55 @@ const styles = StyleSheet.create({
 
   bubble: {
     maxWidth: "80%",
-
-    paddingHorizontal: 18,
-
-    paddingVertical: 14,
-
-    borderRadius: 22,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 20,
   },
 
   myBubble: {
     backgroundColor: "#D4588A",
-
-    borderBottomRightRadius: 6,
+    borderBottomRightRadius: 4,
+    shadowColor: "#D4588A",
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    elevation: 3,
   },
 
   driverBubble: {
-    backgroundColor: "#F2F2F7",
-
-    borderBottomLeftRadius: 6,
+    backgroundColor: "#FFFFFF",
+    borderBottomLeftRadius: 4,
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 6,
+    elevation: 2,
+    borderWidth: 1,
+    borderColor: "#F3E5ED",
   },
 
   message: {
-    fontSize: 17,
-
-    color: "#666",
-
-    lineHeight: 24,
+    fontSize: 15,
+    color: "#1E1E2D",
+    lineHeight: 22,
   },
 
   myMessage: {
     color: "#FFFFFF",
+    fontWeight: "500",
   },
 
   time: {
-    marginTop: 6,
-
-    fontSize: 13,
-
-    color: "#999",
+    marginTop: 4,
+    fontSize: 11,
+    color: "#B4A8B8",
   },
 
   timeRight: {
     textAlign: "right",
+    marginRight: 4,
   },
 
   timeLeft: {
     textAlign: "left",
+    marginLeft: 4,
   },
 });

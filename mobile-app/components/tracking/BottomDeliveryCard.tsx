@@ -34,55 +34,41 @@ export default function BottomDeliveryCard() {
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-
     left: 20,
     right: 20,
     bottom: 30,
-
-    backgroundColor: "#FFF",
-
-    borderRadius: 22,
-
+    backgroundColor: "#FFFFFF",
+    borderRadius: 24,
     padding: 18,
-
     flexDirection: "row",
-
     alignItems: "center",
-
-    shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-
-    elevation: 5,
+    shadowColor: "#D4588A",
+    shadowOpacity: 0.12,
+    shadowRadius: 14,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 6,
   },
 
   icon: {
-    width: 42,
-    height: 42,
-
-    borderRadius: 21,
-
-    backgroundColor: "#FFF3EA",
-
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "#FFF0F5",
     justifyContent: "center",
-
     alignItems: "center",
-
     marginRight: 14,
   },
 
   label: {
-    color: "#999",
-    fontSize: 14,
+    color: "#8E8292",
+    fontSize: 13,
+    fontWeight: "500",
   },
 
   address: {
-    marginTop: 4,
-
-    fontSize: 20,
-
-    fontWeight: "700",
-
-    color: "#222",
+    marginTop: 3,
+    fontSize: 17,
+    fontWeight: "800",
+    color: "#1E1E2D",
   },
 });

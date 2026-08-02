@@ -52,27 +52,20 @@ export default function NotificationCard({
 const styles = StyleSheet.create({
   card: {
     marginHorizontal: 20,
-    marginBottom: 16,
-
+    marginBottom: 14,
     backgroundColor: "#FFFFFF",
-
     borderRadius: 22,
-
     padding: 16,
-
     flexDirection: "row",
-
     justifyContent: "space-between",
-
-    shadowColor: "#000",
+    shadowColor: "#D4588A",
     shadowOpacity: 0.08,
     shadowRadius: 12,
     shadowOffset: {
       width: 0,
       height: 4,
     },
-
-    elevation: 5,
+    elevation: 3,
   },
 
   left: {
@@ -81,45 +74,36 @@ const styles = StyleSheet.create({
   },
 
   iconCircle: {
-    width: 46,
-    height: 46,
-
-    borderRadius: 23,
-
-    backgroundColor: "#FFF2EF",
-
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "#FFF0F5",
     justifyContent: "center",
     alignItems: "center",
-
     marginRight: 14,
   },
 
   content: {
     flex: 1,
-    paddingRight: 10,
+    paddingRight: 8,
   },
 
   title: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#222",
+    fontSize: 16,
+    fontWeight: "800",
+    color: "#1E1E2D",
   },
 
   message: {
     marginTop: 4,
-
-    fontSize: 16,
-
-    color: "#777",
-
-    lineHeight: 24,
+    fontSize: 13.5,
+    color: "#8E8292",
+    lineHeight: 19,
   },
 
   time: {
-    fontSize: 13,
-
-    color: "#999",
-
-    marginLeft: 10,
+    fontSize: 12,
+    color: "#B4A8B8",
+    marginLeft: 6,
   },
 });

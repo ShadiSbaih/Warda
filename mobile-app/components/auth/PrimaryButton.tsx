@@ -37,17 +37,22 @@ export default function PrimaryButton({
 
 const styles = StyleSheet.create({
   button: {
-    height: 58,
+    height: 54,
     backgroundColor: "#D4588A",
-    borderRadius: 16,
+    borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 12,
+    marginTop: 14,
+    shadowColor: "#D4588A",
+    shadowOpacity: 0.35,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 6,
   },
 
   text: {
     color: "#FFFFFF",
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "700",
   },
 });

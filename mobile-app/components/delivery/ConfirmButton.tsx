@@ -25,21 +25,21 @@ export default function ConfirmButton() {
 const styles = StyleSheet.create({
   button: {
     marginHorizontal: 20,
-    marginBottom: 20,
-
-    height: 58,
-
-    borderRadius: 29,
-
+    marginBottom: 24,
+    height: 54,
+    borderRadius: 27,
     backgroundColor: "#D4588A",
-
     justifyContent: "center",
     alignItems: "center",
+    shadowColor: "#D4588A",
+    shadowOpacity: 0.35,
+    shadowRadius: 10,
+    elevation: 6,
   },
 
   text: {
-    color: "#FFF",
-    fontSize: 18,
+    color: "#FFFFFF",
+    fontSize: 16,
     fontWeight: "700",
   },
 });
