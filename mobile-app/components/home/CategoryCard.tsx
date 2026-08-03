@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  View,
 } from "react-native";
 
 interface Props {
@@ -22,16 +23,15 @@ export default function CategoryCard({
     <TouchableOpacity
       activeOpacity={0.85}
       onPress={onPress}
-      style={[
-        styles.container,
-        selected && styles.activeContainer,
-      ]}
+      style={styles.container}
     >
-      <Image 
-        source={{ uri: item.image }} 
-        resizeMode="contain" 
-        style={styles.image} 
-      />
+      <View style={[styles.imageContainer, selected && styles.activeImageContainer]}>
+        <Image 
+          source={{ uri: item.image }} 
+          resizeMode="cover" 
+          style={styles.image} 
+        />
+      </View>
       <Text 
         numberOfLines={2} 
         style={[
@@ -47,41 +47,39 @@ export default function CategoryCard({
 
 const styles = StyleSheet.create({
   container: {
-    minWidth: 85,
-    height: 100,
-    borderRadius: RainbowRadii.cards,
+    width: 76,
+    alignItems: "center",
+    marginRight: 12,
+  },
+  imageContainer: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 8,
-    paddingVertical: 10,
-    backgroundColor: RainbowColors.pureWhite,
-    marginRight: 14,
+    marginBottom: 8,
+    overflow: "hidden",
     borderWidth: 1,
     borderColor: RainbowColors.cloudSurface,
   },
-  activeContainer: {
-    backgroundColor: RainbowColors.tangerine,
+  activeImageContainer: {
     borderColor: RainbowColors.tangerine,
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
+    borderWidth: 2,
   },
   image: {
-    width: 44,
-    height: 44,
-    marginBottom: 8,
+    width: "100%",
+    height: "100%",
   },
   title: {
-    fontSize: 12.5,
+    fontSize: 11,
     color: RainbowColors.inkBlack,
-    fontWeight: "600",
+    fontWeight: "500",
     textAlign: "center",
-    lineHeight: 16,
+    lineHeight: 14,
   },
   activeTitle: {
-    color: RainbowColors.pureWhite,
+    color: RainbowColors.tangerine,
     fontWeight: "700",
   },
 });

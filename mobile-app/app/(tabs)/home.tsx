@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -19,20 +19,39 @@ import SearchBar from "../../components/home/SearchBar";
 import Categories from "../../components/home/Categories";
 import PopularSection from "../../components/home/PopularSection";
 
+const FILTER_PILLS = ["Gifts", "For Whom", "Occasion", "Price", "Sets", "Flowers"];
+
 export default function HomeScreen() {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [activeFilter, setActiveFilter] = useState("Gifts");
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.pureWhite} />
+      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.porcelainCanvas} />
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollContent}
         >
-          {/* Top Location & Notifications */}
+          {/* Location & Notifications Header */}
           <Header />
+
+          {/* Search Bar at the very top */}
+          <View style={styles.searchContainer}>
+            <SearchBar />
+          </View>
+
+
+ 
+
+          {/* Categories Carousel (Circular) */}
+          <View style={styles.categoriesContainer}>
+            <Categories
+              selectedCategoryName={selectedCategory}
+              onSelectCategory={setSelectedCategory}
+            />
+          </View>
 
           {/* Luxury Banner */}
           <TouchableOpacity
@@ -67,16 +86,6 @@ export default function HomeScreen() {
             </LinearGradient>
           </TouchableOpacity>
 
-          {/* Search Bar */}
-          <SearchBar />
-
-          {/* Categories Carousel */}
-          <Categories
-            selectedCategoryName={selectedCategory}
-            onSelectCategory={setSelectedCategory}
-          />
-
-
           {/* Popular / Filtered Gifts */}
           <PopularSection selectedCategoryName={selectedCategory} />
         </ScrollView>
@@ -88,10 +97,50 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: RainbowColors.porcelainCanvas,
   },
   scrollContent: {
     paddingBottom: 120,
+  },
+  searchContainer: {
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "800",
+    color: RainbowColors.inkBlack,
+    marginHorizontal: 20,
+    marginBottom: 12,
+  },
+  pillsContainer: {
+    paddingHorizontal: 20,
+    paddingRight: 6,
+    gap: 8,
+  },
+  pill: {
+    backgroundColor: RainbowColors.pureWhite,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: RainbowColors.cloudSurface,
+  },
+  activePill: {
+    backgroundColor: RainbowColors.peachBadge,
+    borderColor: RainbowColors.peachBadge,
+  },
+  pillText: {
+    fontSize: 13,
+    color: RainbowColors.stone,
+    fontWeight: "600",
+  },
+  activePillText: {
+    color: RainbowColors.tangerine,
+    fontWeight: "700",
+  },
+  categoriesContainer: {
+    marginBottom: 6,
   },
   banner: {
     marginHorizontal: 20,
@@ -102,10 +151,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     shadowColor: RainbowColors.inkBlack,
-    shadowOpacity: 0.1,
-    shadowRadius: 14,
-    shadowOffset: { width: 0, height: 6 },
-    elevation: 6,
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 3,
     overflow: "hidden",
   },
   bannerContent: {
@@ -113,7 +162,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   bannerBadge: {
-    backgroundColor: "rgba(255, 255, 255, 0.25)",
+    backgroundColor: "rgba(255, 255, 255, 0.4)",
     alignSelf: "flex-start",
     paddingHorizontal: 10,
     paddingVertical: 4,
@@ -121,9 +170,9 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   bannerBadgeText: {
-    color: RainbowColors.pureWhite,
+    color: RainbowColors.tangerine,
     fontSize: 11,
-    fontWeight: "700",
+    fontWeight: "800",
     textTransform: "uppercase",
     letterSpacing: 0.5,
   },
@@ -157,34 +206,5 @@ const styles = StyleSheet.create({
   bannerImage: {
     width: 105,
     height: 105,
-  },
-  occasionBar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginHorizontal: 20,
-    marginTop: 18,
-    gap: 12,
-  },
-  occasionPill: {
-    flex: 1,
-    backgroundColor: RainbowColors.pureWhite,
-    borderRadius: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 14,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-    shadowColor: RainbowColors.inkBlack,
-    shadowOpacity: 0.05,
-    shadowRadius: 6,
-    elevation: 2,
-    borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
-  },
-  occasionText: {
-    fontSize: 13,
-    fontWeight: "700",
-    color: RainbowColors.inkBlack,
   },
 });

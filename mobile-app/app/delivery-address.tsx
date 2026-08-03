@@ -8,13 +8,20 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import MapView, { Region } from "react-native-maps";
 import * as Location from "expo-location";
 
 import AddressCard from "../components/delivery/AddressCard";
 import ConfirmButton from "../components/delivery/ConfirmButton";
 import DeliveryHeader from "../components/delivery/DeliveryHeader";
-import LocationPin from "../components/delivery/LocationPin";
+import AddressMap from "../components/delivery/AddressMap";
+
+// A small fallback Region type to replace the one from react-native-maps
+export interface Region {
+  latitude: number;
+  longitude: number;
+  latitudeDelta: number;
+  longitudeDelta: number;
+}
 
 export default function DeliveryAddressScreen() {
     const router = useRouter();
@@ -101,16 +108,10 @@ export default function DeliveryAddressScreen() {
         <DeliveryHeader />
 
         {/* Map */}
-
-        <View style={styles.mapContainer}>
-          <MapView 
-            style={StyleSheet.absoluteFillObject}
-            initialRegion={region}
-            onRegionChangeComplete={handleRegionChangeComplete}
-            showsUserLocation={true}
-          />
-          <LocationPin />
-        </View>
+        <AddressMap 
+          region={region} 
+          onRegionChangeComplete={handleRegionChangeComplete} 
+        />
 
         {/* Bottom Card */}
 

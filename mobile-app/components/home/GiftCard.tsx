@@ -8,9 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { Feather } from "@expo/vector-icons";
 import { useFavorites } from "../../context/FavoritesContext";
 import { useCart } from "../../context/CartContext";
 
@@ -52,37 +50,12 @@ export default function GiftCard({ item, onPress, onFavoriteToggle, onAddToCart 
       style={styles.card}
       onPress={onPress}
     >
-      {/* 3D Inset Gloss Highlight — top edge shimmer */}
-      <LinearGradient
-        colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.0)"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 1 }}
-        style={styles.gloss}
-        pointerEvents="none"
-      />
-
       {/* Image Container */}
       <View style={styles.imageWrapper}>
-        {/* Pastel radial atmosphere inside image well */}
-        <LinearGradient
-          colors={["#fff", RainbowColors.cloudSurface as string]}
-          start={{ x: 0.5, y: 0 }}
-          end={{ x: 0.5, y: 1 }}
-          style={StyleSheet.absoluteFillObject}
-        />
         <Image
           source={{ uri: item.image }}
-          resizeMode="contain"
+          resizeMode="cover"
           style={styles.image}
-        />
-
-        {/* Inner top-edge highlight for 3D depth */}
-        <LinearGradient
-          colors={["rgba(255,255,255,0.6)", "rgba(255,255,255,0)"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 0.5 }}
-          style={[StyleSheet.absoluteFillObject, { borderRadius: 22 }]}
-          pointerEvents="none"
         />
 
         <TouchableOpacity
@@ -93,41 +66,41 @@ export default function GiftCard({ item, onPress, onFavoriteToggle, onAddToCart 
           <Ionicons
             name={fav ? "heart" : "heart-outline"}
             size={18}
-            color={fav ? RainbowColors.tangerine : RainbowColors.stone}
+            color={fav ? RainbowColors.tangerine : RainbowColors.inkBlack}
           />
         </TouchableOpacity>
       </View>
 
-      {/* Name */}
-      <Text numberOfLines={1} style={styles.title}>
-        {item.name || item.title}
-      </Text>
+      <View style={styles.content}>
+        {/* Name */}
+        <Text numberOfLines={2} style={styles.title}>
+          {item.name || item.title}
+        </Text>
 
-      {/* Details Row: Rating & Delivery Time */}
-      <View style={styles.detailsRow}>
-        <View style={styles.ratingBadge}>
-          <Ionicons name="star" size={12} color="#FFA726" />
-          <Text style={styles.ratingText}>{item.rating || "4.9"}</Text>
+        {/* Details Row: Rating & Stock */}
+        <View style={styles.detailsRow}>
+          <View style={styles.ratingBadge}>
+            <Ionicons name="star" size={12} color={RainbowColors.tangerine} />
+            <Text style={styles.ratingText}>{item.rating || "4.89"}</Text>
+          </View>
+          <Text style={styles.reviewsText}>14k reviews</Text>
         </View>
-        <Text style={styles.timeText}>{item.time || "45 mins"}</Text>
-      </View>
 
-      {/* Price Row */}
-      <View style={styles.priceRow}>
-        <Text style={styles.price}>${item.price}</Text>
+        <Text style={styles.stockText}>3 items left in stock</Text>
+
+        {/* Price Row */}
+        <View style={styles.priceRow}>
+          <Text style={styles.price}>${item.price}</Text>
+          <Text style={styles.oldPrice}>${Math.floor(item.price * 1.5)}</Text>
+        </View>
+
+        {/* Full width add to cart button */}
         <TouchableOpacity
-          style={styles.plusButton}
+          style={styles.cartButton}
           activeOpacity={0.8}
           onPress={handleAdd}
         >
-          {/* 3D Button gloss */}
-          <LinearGradient
-            colors={["rgba(255,255,255,0.3)", "rgba(255,255,255,0)"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 0, y: 1 }}
-            style={StyleSheet.absoluteFillObject}
-          />
-          <Feather name="plus" size={16} color={RainbowColors.pureWhite} />
+          <Text style={styles.cartButtonText}>Add to cart</Text>
         </TouchableOpacity>
       </View>
     </TouchableOpacity>
@@ -139,70 +112,50 @@ const styles = StyleSheet.create({
     width: CARD_WIDTH,
     backgroundColor: RainbowColors.pureWhite,
     borderRadius: RainbowRadii.cards,
-    padding: 10,
     marginBottom: 16,
-    // Outer lift shadow
-    shadowColor: "#7a7a8c",
-    shadowOpacity: 0.14,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 6,
-    overflow: "visible",
-  },
-  // Full-card top-edge white gloss — the "3D inflated pill" effect from Rainbow
-  gloss: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    height: "55%",
-    borderRadius: RainbowRadii.cards,
-    zIndex: 1,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: RainbowColors.cloudSurface,
   },
   imageWrapper: {
     width: "100%",
-    height: 125,
-    borderRadius: 22,
-    overflow: "hidden",
+    height: 150,
+    backgroundColor: "#eef1f4",
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
   },
   image: {
-    width: 105,
-    height: 105,
+    width: "100%",
+    height: "100%",
     zIndex: 1,
   },
   favoriteButton: {
     position: "absolute",
-    top: 8,
-    right: 8,
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: "rgba(255, 255, 255, 0.92)",
+    top: 10,
+    right: 10,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
     zIndex: 2,
-    // Glazed glass look
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
+  },
+  content: {
+    padding: 12,
   },
   title: {
-    fontSize: 14.5,
-    fontWeight: "700",
+    fontSize: 13,
+    fontWeight: "600",
     color: RainbowColors.inkBlack,
-    marginTop: 10,
     marginBottom: 4,
-    zIndex: 2,
+    lineHeight: 18,
   },
   detailsRow: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 8,
+    marginBottom: 4,
   },
   ratingBadge: {
     flexDirection: "row",
@@ -210,38 +163,47 @@ const styles = StyleSheet.create({
     gap: 3,
   },
   ratingText: {
-    fontSize: 12,
-    fontWeight: "600",
-    color: "#4A4E69",
+    fontSize: 11,
+    fontWeight: "700",
+    color: RainbowColors.inkBlack,
   },
-  timeText: {
-    fontSize: 11.5,
+  reviewsText: {
+    fontSize: 11,
     color: RainbowColors.stone,
+    marginLeft: 4,
+  },
+  stockText: {
+    fontSize: 11,
+    color: RainbowColors.tangerine,
+    marginBottom: 8,
   },
   priceRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 2,
+    marginBottom: 12,
   },
   price: {
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: "800",
-    color: RainbowColors.tangerine,
+    color: RainbowColors.inkBlack,
+    marginRight: 6,
   },
-  plusButton: {
-    width: 30,
-    height: 30,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.tangerine,
+  oldPrice: {
+    fontSize: 12,
+    color: RainbowColors.stone,
+    textDecorationLine: "line-through",
+  },
+  cartButton: {
+    width: "100%",
+    height: 36,
+    borderRadius: 12,
+    backgroundColor: "#F2F2F2",
     justifyContent: "center",
     alignItems: "center",
-    overflow: "hidden",
-    // 3D raised shadow for the button
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.45,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 4,
+  },
+  cartButtonText: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: RainbowColors.inkBlack,
   },
 });
