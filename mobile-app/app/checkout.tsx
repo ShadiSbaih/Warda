@@ -11,7 +11,9 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { useRouter, useFocusEffect } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as ImagePicker from "expo-image-picker";
 
 import ReviewHeader from "../components/checkout/ReviewHeader";
 import PriceSummary from "../components/checkout/PriceSummary";
@@ -35,9 +37,47 @@ export default function CheckoutScreen() {
   const [recipientPhone, setRecipientPhone] = useState("");
   const [giftNote, setGiftNote] = useState("");
   const [hasPhoto, setHasPhoto] = useState(false);
+  const [photoUri, setPhotoUri] = useState<string | null>(null);
+  const [deliveryAddress, setDeliveryAddress] = useState({
+    title: "Home / Al Olaya",
+    subtitle: "King Fahd Branch Rd, Building 42, Apt 301, Riyadh"
+  });
+
+  useFocusEffect(
+    React.useCallback(() => {
+      AsyncStorage.getItem("@warda_selected_address").then((res) => {
+        if (res) setDeliveryAddress(JSON.parse(res));
+      });
+    }, [])
+  );
 
   // If cart is completely empty, use first product as a demo preview item or show empty state
   const displayItems = items.length > 0 ? items : [];
+
+  const handlePhotoUpload = async () => {
+    if (hasPhoto) {
+      setHasPhoto(false);
+      setPhotoUri(null);
+      return;
+    }
+
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      alert('Sorry, we need camera roll permissions to make this work!');
+      return;
+    }
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      quality: 0.8,
+    });
+
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      setPhotoUri(result.assets[0].uri);
+      setHasPhoto(true);
+    }
+  };
 
   return (
     <>
@@ -139,9 +179,9 @@ export default function CheckoutScreen() {
                 <Ionicons name="location-sharp" size={20} color="#D4588A" />
               </View>
               <View style={{ flex: 1, marginLeft: 12 }}>
-                <Text style={styles.addressTitle}>Home / Al Olaya</Text>
+                <Text style={styles.addressTitle}>{deliveryAddress.title}</Text>
                 <Text style={styles.addressSubtitle}>
-                  King Fahd Branch Rd, Building 42, Apt 301, Riyadh
+                  {deliveryAddress.subtitle}
                 </Text>
               </View>
               <Feather name="chevron-right" size={18} color="#AAA" />
@@ -238,7 +278,7 @@ export default function CheckoutScreen() {
                 hasPhoto && styles.photoUploadRowActive,
               ]}
               activeOpacity={0.85}
-              onPress={() => setHasPhoto(!hasPhoto)}
+              onPress={handlePhotoUpload}
             >
               <View style={styles.photoIcon}>
                 <Feather
@@ -249,7 +289,7 @@ export default function CheckoutScreen() {
               </View>
               <View style={{ flex: 1, marginLeft: 12 }}>
                 <Text style={styles.photoTitle}>
-                  {hasPhoto ? "Photo Attached (photo_card.jpg)" : "Attach Printed Photo Card (Free)"}
+                  {hasPhoto ? "Photo Attached" : "Attach Printed Photo Card (Free)"}
                 </Text>
                 <Text style={styles.photoSub}>
                   {hasPhoto ? "High-res glossy photo will be included" : "Tap to attach memory photo"}
@@ -302,7 +342,21 @@ export default function CheckoutScreen() {
               ]}
               disabled={displayItems.length === 0}
               activeOpacity={0.9}
-              onPress={() => router.push("/payment")}
+              onPress={() => router.push({
+                pathname: "/payment",
+                params: {
+                  checkoutState: JSON.stringify({
+                    recipientName,
+                    recipientPhone,
+                    giftNote,
+                    isAnonymous,
+                    selectedSlot,
+                    hasPhoto,
+                    photoUri,
+                    deliveryAddress: deliveryAddress.subtitle
+                  })
+                }
+              })}
             >
               <Text style={styles.proceedBtnText}>Proceed to Payment</Text>
               <Feather name="arrow-right" size={20} color="#FFFFFF" />

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CartItem } from "./CartContext";
+import { ordersAPI } from "../services/api";
 
 export interface OrderDriver {
   name: string;
@@ -52,102 +53,7 @@ export interface OrdersContextType {
 
 const ORDERS_STORAGE_KEY = "@warda_orders_v1";
 
-const initialOrders: Order[] = [
-  {
-    id: "ord-1",
-    orderNumber: "#WD-7821",
-    title: "Red Roses & Luxury Chocolate Box",
-    items: [
-      {
-        id: "item-1",
-        productId: 1,
-        title: "Red Roses Bouquet",
-        price: 85,
-        image: require("../assets/gifts/red-roses.png"),
-        quantity: 1,
-        wrappingColor: "#E53935",
-        wrappingName: "Velvet Red",
-        giftMessage: "Happy Birthday my love! 🌹✨",
-        recipientName: "Noura Al-Dosari",
-      },
-      {
-        id: "item-2",
-        productId: 2,
-        title: "Luxury Chocolate Box",
-        price: 120,
-        image: require("../assets/gifts/chocolate-box.png"),
-        quantity: 1,
-        wrappingColor: "#FFD700",
-        wrappingName: "Royal Gold",
-        recipientName: "Noura Al-Dosari",
-      },
-    ],
-    subtotal: 205,
-    discount: 41,
-    deliveryFee: 0,
-    wrappingTotal: 5,
-    total: 169,
-    status: "on_the_way",
-    address: "King Fahd Road, Al Olaya, Riyadh",
-    shop: "Warda Luxury Boutique - Riyadh Main",
-    recipientName: "Noura Al-Dosari",
-    giftMessage: "Happy Birthday my love! 🌹✨",
-    isAnonymous: false,
-    paymentMethod: "Apple Pay",
-    createdAt: "Today, 4:30 PM",
-    deliveryTimeSlot: "Today (Evening 6:00 PM - 8:00 PM)",
-    driver: {
-      name: "Ahmed Al-Otaibi",
-      phone: "+966 50 123 4567",
-      plate: "KSA 4821",
-      rating: 4.9,
-      vehicle: "White Lexus ES",
-    },
-  },
-  {
-    id: "ord-2",
-    orderNumber: "#WD-6512",
-    title: "Special Graduation Gift Box",
-    items: [
-      {
-        id: "item-3",
-        productId: 3,
-        title: "Special Graduation Gift",
-        price: 150,
-        image: require("../assets/gifts/graduation-box.png"),
-        quantity: 1,
-        wrappingColor: "#4A235A",
-        wrappingName: "Royal Purple",
-        giftMessage: "Congratulations on your graduation! 🎓",
-        recipientName: "Majed",
-      },
-    ],
-    subtotal: 150,
-    discount: 15,
-    deliveryFee: 10,
-    wrappingTotal: 5,
-    total: 150,
-    status: "delivered",
-    address: "Al Nuzha, Jeddah",
-    shop: "Warda Luxury Boutique - Jeddah",
-    recipientName: "Majed",
-    giftMessage: "Congratulations on your graduation! 🎓",
-    paymentMethod: "Credit Card (Visa •••• 4242)",
-    createdAt: "Yesterday, 2:15 PM",
-    driver: {
-      name: "Sultan Al-Harbi",
-      phone: "+966 55 987 6543",
-      plate: "JED 9021",
-      rating: 5.0,
-      vehicle: "Black Camry",
-    },
-    review: {
-      rating: 5,
-      tags: ["Beautiful Wrapping", "Super Fast Delivery", "Fresh Flowers"],
-      comment: "Absolutely gorgeous presentation and fast delivery! Highly recommended.",
-    },
-  },
-];
+const initialOrders: Order[] = [];
 
 const OrdersContext = createContext<OrdersContextType | undefined>(undefined);
 
@@ -157,11 +63,17 @@ export const OrdersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   useEffect(() => {
     (async () => {
       try {
-        const saved = await AsyncStorage.getItem(ORDERS_STORAGE_KEY);
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            setOrders(parsed);
+        const res = await ordersAPI.getOrders();
+        if (res.success && res.orders) {
+          setOrders(res.orders);
+        } else {
+          // Fallback to local storage if API fails or is unavailable
+          const saved = await AsyncStorage.getItem(ORDERS_STORAGE_KEY);
+          if (saved) {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              setOrders(parsed);
+            }
           }
         }
       } catch (e) {
@@ -202,7 +114,7 @@ export const OrdersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       giftMessage: orderData.giftMessage || "Enjoy your special surprise 🌹",
       isAnonymous: orderData.isAnonymous || false,
       paymentMethod: orderData.paymentMethod || "Credit Card",
-      createdAt: "Just now",
+      createdAt: new Date().toISOString(),
       deliveryTimeSlot: orderData.deliveryTimeSlot || "Today (Express 1-Hour)",
       driver: {
         name: "Ahmed Al-Otaibi",
@@ -213,12 +125,24 @@ export const OrdersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       },
     };
 
+    try {
+      await ordersAPI.createOrder(newOrder);
+    } catch (e) {
+      console.log("Failed to sync order to backend:", e);
+    }
+
     const updated = [newOrder, ...orders];
     await saveOrders(updated);
     return newOrder;
   };
 
-  const cancelOrder = (id: string) => {
+  const cancelOrder = async (id: string) => {
+    try {
+      await ordersAPI.cancelOrder(id);
+    } catch (e) {
+      console.log("Failed to cancel order on backend:", e);
+    }
+
     const updated = orders.map((o) =>
       o.id === id ? { ...o, status: "cancelled" as const } : o
     );

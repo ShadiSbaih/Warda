@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   FlatList,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { menuCategories } from "../../data/menuCategories";
+import { productsAPI } from "../../services/api";
 
 const ALL_CATEGORY = { id: 0, title: "All Gifts", active: true };
 const CATEGORIES = [ALL_CATEGORY, ...menuCategories];
@@ -19,11 +20,26 @@ export default function MenuCategories({
   selectedCategory,
   onSelectCategory,
 }: Props) {
+  const [categories, setCategories] = useState(CATEGORIES);
+
+  useEffect(() => {
+    productsAPI.getCategories().then((res) => {
+      if (res.success && res.data && Array.isArray(res.data)) {
+        const mapped = res.data.map((c: any, index: number) => ({
+          id: c._id || index + 1,
+          title: c.name || c,
+          active: false,
+        }));
+        setCategories([ALL_CATEGORY, ...mapped]);
+      }
+    }).catch(() => {});
+  }, []);
+
   return (
     <FlatList
       horizontal
       showsHorizontalScrollIndicator={false}
-      data={CATEGORIES}
+      data={categories}
       keyExtractor={(item) => item.id.toString()}
       contentContainerStyle={styles.list}
       renderItem={({ item }) => {

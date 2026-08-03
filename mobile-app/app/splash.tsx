@@ -9,6 +9,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../context/AuthContext";
 
 const { width } = Dimensions.get("window");
@@ -20,11 +21,25 @@ export default function SplashScreen() {
   useEffect(() => {
     if (isLoading) return;
 
-    const timer = setTimeout(() => {
-      if (isAuthenticated) {
-        router.replace("/(tabs)/home");
-      } else {
-        router.replace("/(auth)/login");
+    const timer = setTimeout(async () => {
+      try {
+        const hasSeenOnboarding = await AsyncStorage.getItem("hasSeenOnboarding");
+        if (hasSeenOnboarding !== "true") {
+          router.replace("/onboarding");
+          return;
+        }
+
+        if (isAuthenticated) {
+          router.replace("/(tabs)/home");
+        } else {
+          router.replace("/(auth)/login");
+        }
+      } catch (error) {
+        if (isAuthenticated) {
+          router.replace("/(tabs)/home");
+        } else {
+          router.replace("/(auth)/login");
+        }
       }
     }, 1800);
 

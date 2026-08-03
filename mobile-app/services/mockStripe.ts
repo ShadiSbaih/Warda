@@ -9,8 +9,9 @@
  *   const result = await MockStripe.confirmPaymentIntent(paymentIntentId, cardDetails);
  */
 
-const BASE_URL =
-  (process.env.EXPO_PUBLIC_API_URL ?? "http://localhost:3000/api") + "/stripe";
+import { API_BASE_URL } from "./api";
+
+const BASE_URL = API_BASE_URL + "/stripe";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { favoritesAPI } from "../services/api";
 
 export interface FavoriteProduct {
   id: number;
@@ -54,11 +55,16 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   useEffect(() => {
     (async () => {
       try {
-        const saved = await AsyncStorage.getItem(FAVORITES_STORAGE_KEY);
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            setFavorites(parsed);
+        const res = await favoritesAPI.getFavorites();
+        if (res.success && res.data) {
+          setFavorites(res.data);
+        } else {
+          const saved = await AsyncStorage.getItem(FAVORITES_STORAGE_KEY);
+          if (saved) {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              setFavorites(parsed);
+            }
           }
         }
       } catch (e) {
@@ -98,6 +104,9 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       };
       saveFavorites([newFav, ...favorites]);
     }
+    
+    // Sync with backend
+    favoritesAPI.toggleFavorite(id).catch(() => {});
   };
 
   const removeFavorite = (id: number) => {

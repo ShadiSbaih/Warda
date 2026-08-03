@@ -17,12 +17,14 @@ interface Props {
   amount?: number;
   paymentMethod?: "apple" | "card_saved" | "card_new";
   paymentIntentId?: string;
+  checkoutState?: any;
 }
 
 export default function BottomPlaceOrder({
   amount,
   paymentMethod = "apple",
   paymentIntentId,
+  checkoutState = {},
 }: Props) {
   const router = useRouter();
   const { items, total, clearCart, appliedPromo, deliveryFee } = useCart();
@@ -63,15 +65,16 @@ export default function BottomPlaceOrder({
       const newOrder = await createOrder({
         items: orderItems,
         total: finalAmount,
-        address: "King Fahd Branch Rd, Building 42, Apt 301, Riyadh",
+        address: checkoutState?.deliveryAddress || "King Fahd Branch Rd, Building 42, Apt 301, Riyadh",
         paymentMethod:
           paymentMethod === "apple"
             ? "Apple Pay"
             : paymentMethod === "card_saved"
             ? "Saved Visa (•••• 4242)"
             : "Credit Card (Mock Stripe)",
-        recipientName: "Sarah Al-Otaibi",
-        giftMessage: "A special gift filled with love and elegance. 🌸",
+        recipientName: checkoutState?.recipientName || "Sarah Al-Otaibi",
+        giftMessage: checkoutState?.giftMessage || checkoutState?.giftNote || "A special gift filled with love and elegance. 🌸",
+        isAnonymous: checkoutState?.isAnonymous || false,
       });
 
       clearCart();

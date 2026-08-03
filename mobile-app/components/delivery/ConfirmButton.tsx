@@ -7,13 +7,17 @@ import {
 
 import { useRouter } from "expo-router";
 
-export default function ConfirmButton() {
+interface Props {
+  onPress?: () => void;
+}
+
+export default function ConfirmButton({ onPress }: Props) {
   const router = useRouter();
 
   return (
     <TouchableOpacity
       style={styles.button}
-      onPress={() => router.back()}
+      onPress={onPress || (() => router.back())}
     >
       <Text style={styles.text}>
         Confirm Pin Location

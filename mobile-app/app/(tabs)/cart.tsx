@@ -36,10 +36,10 @@ export default function CartScreen() {
   const [promoInput, setPromoInput] = useState("");
   const [promoFeedback, setPromoFeedback] = useState<string | null>(null);
 
-  const handleApplyPromo = (codeToApply?: string) => {
+  const handleApplyPromo = async (codeToApply?: string) => {
     const code = codeToApply || promoInput;
     if (!code.trim()) return;
-    const res = applyPromo(code);
+    const res = await applyPromo(code);
     setPromoFeedback(res.message);
     if (res.success) {
       setPromoInput("");

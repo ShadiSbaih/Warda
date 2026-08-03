@@ -1,5 +1,6 @@
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
+import { authAPI } from "../../services/api";
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -30,11 +31,18 @@ export default function ForgotPasswordScreen() {
     setErrorMsg(null);
     setLoading(true);
 
-    // Simulate password reset email send
-    setTimeout(() => {
+    try {
+      const res = await authAPI.forgotPassword({ email });
+      if (res.success) {
+        setSent(true);
+      } else {
+        setErrorMsg(res.message || "Failed to send reset link.");
+      }
+    } catch (e) {
+      setErrorMsg("An unexpected error occurred.");
+    } finally {
       setLoading(false);
-      setSent(true);
-    }, 1000);
+    }
   };
 
   return (

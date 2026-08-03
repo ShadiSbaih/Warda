@@ -57,8 +57,8 @@ export default function ProfileScreen() {
     ]);
   };
 
-  const handleApplyVoucher = (code: string) => {
-    applyPromo(code);
+  const handleApplyVoucher = async (code: string) => {
+    await applyPromo(code);
     setCopiedCode(code);
     setTimeout(() => {
       setCopiedCode(null);
@@ -93,12 +93,7 @@ export default function ProfileScreen() {
           <UserCard
             name={user?.name || "Sarah Al-Ghamdi"}
             email={user?.email || "sarah@warda.app"}
-            onEditPress={() =>
-              Alert.alert(
-                "Edit Profile",
-                "Profile editing is available in account settings."
-              )
-            }
+            onEditPress={() => router.push("/edit-profile")}
           />
 
           {/* Stats Bar */}

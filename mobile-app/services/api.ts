@@ -125,6 +125,13 @@ export const authAPI = {
       body: JSON.stringify(body),
     });
   },
+
+  async forgotPassword(body: { email: string }) {
+    return request("/auth/forgot-password", {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+  },
 };
 
 // 2. Products & Catalog API
@@ -236,6 +243,19 @@ export const chatAPI = {
     return request(`/chat/${orderId}`, {
       method: "POST",
       body: JSON.stringify({ message }),
+    });
+  },
+};
+
+// 9. Favorites API
+export const favoritesAPI = {
+  async getFavorites() {
+    return request("/favorites", { method: "GET" });
+  },
+
+  async toggleFavorite(productId: string | number) {
+    return request(`/favorites/${productId}/toggle`, {
+      method: "POST",
     });
   },
 };

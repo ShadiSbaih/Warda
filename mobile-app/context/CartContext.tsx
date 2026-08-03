@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { cartAPI, couponsAPI } from "../services/api";
 
 export interface CartItem {
   id: string; // unique cart item id (e.g. productId-wrapping)
@@ -43,46 +44,19 @@ interface CartContextType {
   removeFromCart: (cartItemId: string) => void;
   updateQuantity: (cartItemId: string, quantity: number) => void;
   clearCart: () => void;
-  applyPromo: (code: string) => { success: boolean; message: string };
+  applyPromo: (code: string) => Promise<{ success: boolean; message: string }>;
   removePromo: () => void;
 }
 
 const CART_STORAGE_KEY = "@warda_cart_v1";
 
-const initialCartItems: CartItem[] = [
-  {
-    id: "demo-1",
-    productId: 1,
-    title: "Red Roses Bouquet",
-    price: 85,
-    image: require("../assets/gifts/red-roses.png"),
-    quantity: 1,
-    wrappingColor: "#E53935",
-    wrappingName: "Velvet Red",
-    category: "Rose Bouquets",
-    giftMessage: "With all my love and best wishes! 🌹",
-    recipientName: "Sarah",
-  },
-  {
-    id: "demo-2",
-    productId: 2,
-    title: "Luxury Chocolate Box",
-    price: 120,
-    image: require("../assets/gifts/chocolate-box.png"),
-    quantity: 1,
-    wrappingColor: "#FFD700",
-    wrappingName: "Royal Gold",
-    category: "Chocolate",
-    giftMessage: "Enjoy these sweet handcrafted moments! ✨",
-    recipientName: "Sarah",
-  },
-];
+const initialCartItems: CartItem[] = [];
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<CartItem[]>(initialCartItems);
-  const [appliedPromo, setAppliedPromo] = useState<PromoCode | null>(VALID_PROMOS["WARDA20"]);
+  const [appliedPromo, setAppliedPromo] = useState<PromoCode | null>(null);
 
   // Load from storage
   useEffect(() => {
@@ -101,11 +75,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     })();
   }, []);
 
-  // Save to storage
+  // Save to storage and sync to backend
   const saveCart = async (newItems: CartItem[]) => {
     setItems(newItems);
     try {
       await AsyncStorage.setItem(CART_STORAGE_KEY, JSON.stringify(newItems));
+      // Fire-and-forget sync to backend
+      cartAPI.syncCart(newItems).catch(() => {});
     } catch (e) {
       console.log("Error saving cart:", e);
     }
@@ -166,8 +142,20 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     saveCart([]);
   };
 
-  const applyPromo = (code: string) => {
+  const applyPromo = async (code: string) => {
     const normalized = code.trim().toUpperCase();
+    
+    try {
+      const res = await couponsAPI.validateCoupon(normalized);
+      if (res.success && res.data) {
+        setAppliedPromo(res.data);
+        return { success: true, message: `Promo '${res.data.code}' applied successfully!` };
+      }
+    } catch (e) {
+      console.log("Coupon validation error:", e);
+    }
+
+    // Fallback to local hardcoded promos if API fails
     const promo = VALID_PROMOS[normalized];
     if (promo) {
       setAppliedPromo(promo);

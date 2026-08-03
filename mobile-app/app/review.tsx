@@ -14,6 +14,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useOrders } from "../context/OrdersContext";
+import { reviewsAPI } from "../services/api";
 
 const REVIEW_TAGS = [
   "Fresh & Vibrant Flowers 🌸",
@@ -48,11 +49,20 @@ export default function ReviewScreen() {
     setIsSubmitting(true);
     try {
       if (targetOrder) {
+        const reviewComment = `${selectedTags.join(", ")}. ${comment}`.trim();
         await addReview(
           targetOrder.id,
           rating,
-          `${selectedTags.join(", ")}. ${comment}`.trim()
+          reviewComment
         );
+        
+        // Sync with backend
+        await reviewsAPI.submitReview({
+          orderId: targetOrder.id,
+          rating,
+          tags: selectedTags,
+          comment: reviewComment
+        }).catch(() => {}); // Fire and forget fallback
       }
       Alert.alert(
         "Review Submitted! 🌟",

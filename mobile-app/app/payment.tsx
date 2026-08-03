@@ -6,6 +6,8 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { useLocalSearchParams } from "expo-router";
+
 import BottomPlaceOrder from "../components/payment/BottomPlaceOrder";
 import DeliveryInfoCard from "../components/payment/DeliveryInfoCard";
 import MapCard from "../components/payment/MapCard";
@@ -16,6 +18,9 @@ import PaymentMethodsCard, {
 import { useCart } from "../context/CartContext";
 
 export default function PaymentScreen() {
+  const { checkoutState } = useLocalSearchParams();
+  const parsedCheckoutState = checkoutState ? JSON.parse(checkoutState as string) : {};
+
   const { total } = useCart();
   const [paymentMethod, setPaymentMethod] = useState<
     "apple" | "card_saved" | "card_new"
@@ -61,6 +66,7 @@ export default function PaymentScreen() {
             amount={orderAmount}
             paymentMethod={paymentMethod}
             paymentIntentId={completedPayment?.paymentIntentId}
+            checkoutState={parsedCheckoutState}
           />
         </ScrollView>
       </SafeAreaView>

@@ -5,52 +5,55 @@ import {
   Text,
   View,
 } from "react-native";
+import MapView, { Marker, Polyline } from "react-native-maps";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function MapSection() {
   return (
     <View style={styles.container}>
       {/* Base Map */}
-      <Image
-        source={require("../../assets/images/tracking/map.png")}
+      <MapView
         style={styles.map}
-        resizeMode="cover"
-      />
+        initialRegion={{
+          latitude: 24.7136,
+          longitude: 46.6753,
+          latitudeDelta: 0.05,
+          longitudeDelta: 0.05,
+        }}
+      >
+        <Polyline
+          coordinates={[
+            { latitude: 24.7336, longitude: 46.6953 },
+            { latitude: 24.7136, longitude: 46.6753 },
+          ]}
+          strokeColor="#D4588A"
+          strokeWidth={4}
+        />
+        
+        <Marker coordinate={{ latitude: 24.7336, longitude: 46.6953 }}>
+          <View style={styles.courierMarker}>
+            <View style={styles.courierPulse} />
+            <View style={styles.courierIconBox}>
+              <MaterialCommunityIcons name="moped" size={22} color="#FFFFFF" />
+            </View>
+            <View style={styles.courierPill}>
+              <View style={styles.activeDot} />
+              <Text style={styles.courierPillText}>Tariq · 4 min away</Text>
+            </View>
+          </View>
+        </Marker>
 
-      {/* Map Overlay Tint */}
-      <View style={styles.mapOverlay} />
-
-      {/* GPS Route Path */}
-      <View style={styles.routeContainer}>
-        {/* Route Line 1 */}
-        <View style={styles.routeSegment1} />
-        {/* Route Line 2 */}
-        <View style={styles.routeSegment2} />
-        {/* Route Waypoint */}
-        <View style={styles.waypoint} />
-      </View>
-
-      {/* Courier Marker (Moving) */}
-      <View style={styles.courierMarker}>
-        <View style={styles.courierPulse} />
-        <View style={styles.courierIconBox}>
-          <MaterialCommunityIcons name="moped" size={22} color="#FFFFFF" />
-        </View>
-        <View style={styles.courierPill}>
-          <View style={styles.activeDot} />
-          <Text style={styles.courierPillText}>Tariq · 4 min away</Text>
-        </View>
-      </View>
-
-      {/* Destination Marker (Home) */}
-      <View style={styles.destinationMarker}>
-        <View style={styles.destinationPill}>
-          <Text style={styles.destinationPillText}>Delivery Address</Text>
-        </View>
-        <View style={styles.destinationIconBox}>
-          <Ionicons name="location-sharp" size={26} color="#D4588A" />
-        </View>
-      </View>
+        <Marker coordinate={{ latitude: 24.7136, longitude: 46.6753 }}>
+          <View style={styles.destinationMarker}>
+            <View style={styles.destinationPill}>
+              <Text style={styles.destinationPillText}>Delivery Address</Text>
+            </View>
+            <View style={styles.destinationIconBox}>
+              <Ionicons name="location-sharp" size={26} color="#D4588A" />
+            </View>
+          </View>
+        </Marker>
+      </MapView>
     </View>
   );
 }
@@ -112,9 +115,6 @@ const styles = StyleSheet.create({
     borderColor: "#FFFFFF",
   },
   courierMarker: {
-    position: "absolute",
-    top: 145,
-    left: 60,
     alignItems: "center",
   },
   courierPulse: {
@@ -166,9 +166,6 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   destinationMarker: {
-    position: "absolute",
-    top: 105,
-    right: 50,
     alignItems: "center",
   },
   destinationPill: {

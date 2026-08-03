@@ -6,6 +6,8 @@ import {
     View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import AddressCard from "../components/delivery/AddressCard";
 import ConfirmButton from "../components/delivery/ConfirmButton";
 import DeliveryHeader from "../components/delivery/DeliveryHeader";
@@ -14,6 +16,15 @@ import LocationPin from "../components/delivery/LocationPin";
 
 export default function DeliveryAddressScreen() {
     const router = useRouter();
+
+    const handleConfirm = async () => {
+      await AsyncStorage.setItem("@warda_selected_address", JSON.stringify({
+        title: "Selected Location",
+        subtitle: "123 New Street, Riyadh" // Placeholder for phase 2
+      }));
+      router.back();
+    };
+
   return (
     <>
       <StatusBar
@@ -37,7 +48,7 @@ export default function DeliveryAddressScreen() {
 
         <View style={styles.bottomCard}>
           <AddressCard />
-          <ConfirmButton />
+          <ConfirmButton onPress={handleConfirm} />
         </View>
       </SafeAreaView>
     </>

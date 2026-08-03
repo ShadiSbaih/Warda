@@ -1,4 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { io, Socket } from "socket.io-client";
+import { chatAPI, API_BASE_URL } from "../services/api";
 import {
   Image,
   KeyboardAvoidingView,
@@ -15,11 +17,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
-interface Message {
+export interface Message {
   id: number;
   sender: "me" | "driver" | "support";
   text: string;
   time: string;
+  createdAt?: string;
 }
 
 const INITIAL_MESSAGES: Message[] = [
@@ -47,12 +50,53 @@ const QUICK_REPLIES = [
 export default function ChatScreen() {
   const router = useRouter();
   const { orderId } = useLocalSearchParams();
-  const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
+  const socketRef = useRef<Socket | null>(null);
 
-  const sendMessage = (textToSend?: string) => {
+  useEffect(() => {
+    // 1. Fetch history
+    if (orderId) {
+      chatAPI.getMessages(orderId as string).then((res) => {
+        if (res.success && res.data) {
+          setMessages(res.data);
+          setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 200);
+        } else {
+          setMessages(INITIAL_MESSAGES);
+        }
+      }).catch(() => setMessages(INITIAL_MESSAGES));
+
+      // 2. Setup Socket
+      // URL should just be the host without /api
+      const socketUrl = API_BASE_URL.replace("/api", "");
+      const socket = io(socketUrl, {
+        query: { orderId },
+        transports: ['websocket'],
+      });
+      socketRef.current = socket;
+
+      socket.on("connect", () => {
+        console.log("Socket connected for chat");
+      });
+
+      socket.on("newMessage", (msg: Message) => {
+        setMessages((prev) => [...prev, msg]);
+        setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 100);
+      });
+
+      socket.on("typing", (typing: boolean) => {
+        setIsTyping(typing);
+      });
+
+      return () => {
+        socket.disconnect();
+      };
+    }
+  }, [orderId]);
+
+  const sendMessage = async (textToSend?: string) => {
     const messageContent = (textToSend || inputText).trim();
     if (!messageContent) return;
 
@@ -70,7 +114,14 @@ export default function ChatScreen() {
       scrollViewRef.current?.scrollToEnd({ animated: true });
     }, 100);
 
-    // Simulate smart driver response
+    // Send to backend
+    if (socketRef.current?.connected) {
+      socketRef.current.emit("sendMessage", newMsg);
+    } else if (orderId) {
+      await chatAPI.sendMessage(orderId as string, messageContent).catch(() => {});
+    }
+
+    // Fallback simulation if neither worked or backend is just a mock
     setIsTyping(true);
     setTimeout(() => {
       setIsTyping(false);

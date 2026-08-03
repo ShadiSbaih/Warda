@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import {
   Dimensions,
   FlatList,
@@ -14,6 +14,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { ALL_PRODUCTS, Product } from "../../data/productsData";
+import { productsAPI } from "../../services/api";
 import { useFavorites } from "../../context/FavoritesContext";
 import { useCart } from "../../context/CartContext";
 
@@ -38,9 +39,18 @@ export default function SearchScreen() {
   const [selectedSort, setSelectedSort] = useState<"popular" | "low" | "high" | "rating">("popular");
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
   const [toast, setToast] = useState<string | null>(null);
+  const [allProducts, setAllProducts] = useState<Product[]>(ALL_PRODUCTS);
+
+  useEffect(() => {
+    productsAPI.getProducts().then((res) => {
+      if (res.success && res.data) {
+        setAllProducts(res.data);
+      }
+    }).catch(() => {});
+  }, []);
 
   const results = useMemo(() => {
-    let filtered = ALL_PRODUCTS.filter((item) => {
+    let filtered = allProducts.filter((item) => {
       const matchQuery =
         !query.trim() ||
         item.name.toLowerCase().includes(query.toLowerCase()) ||
@@ -62,7 +72,7 @@ export default function SearchScreen() {
     }
 
     return filtered;
-  }, [query, selectedSort, maxPrice]);
+  }, [query, selectedSort, maxPrice, allProducts]);
 
   const handleQuickAdd = (item: Product) => {
     addToCart(item, 1);

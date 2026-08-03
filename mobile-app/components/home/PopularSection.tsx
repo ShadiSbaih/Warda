@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   FlatList,
   StyleSheet,
@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { ALL_PRODUCTS, Product } from "../../data/productsData";
+import { productsAPI } from "../../services/api";
 import GiftCard from "./GiftCard";
 
 interface Props {
@@ -16,10 +17,19 @@ interface Props {
 
 export default function PopularSection({ selectedCategoryName }: Props) {
   const router = useRouter();
+  const [products, setProducts] = useState<Product[]>(ALL_PRODUCTS);
+
+  useEffect(() => {
+    productsAPI.getProducts().then((res) => {
+      if (res.success && res.data) {
+        setProducts(res.data);
+      }
+    }).catch(() => {});
+  }, []);
 
   const displayedGifts = selectedCategoryName && selectedCategoryName !== "All"
-    ? ALL_PRODUCTS.filter((p) => p.category === selectedCategoryName)
-    : ALL_PRODUCTS;
+    ? products.filter((p) => p.category === selectedCategoryName)
+    : products;
 
   return (
     <View style={styles.container}>

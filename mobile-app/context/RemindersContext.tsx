@@ -19,11 +19,36 @@ export interface RemindersContextType {
 
 const REMINDERS_STORAGE_KEY = "@warda_reminders_v1";
 
+function calculateDaysLeft(dateStr: string): number {
+  const parts = dateStr.split(" ");
+  if (parts.length !== 2) return 0;
+  const monthStr = parts[0];
+  const day = parseInt(parts[1], 10);
+  
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const monthIndex = months.indexOf(monthStr);
+
+  if (monthIndex === -1 || isNaN(day)) return 0;
+
+  const now = new Date();
+  // Strip time for accurate day difference
+  now.setHours(0, 0, 0, 0);
+  
+  let targetDate = new Date(now.getFullYear(), monthIndex, day);
+  
+  if (targetDate.getTime() < now.getTime()) {
+    targetDate.setFullYear(now.getFullYear() + 1);
+  }
+
+  const diffTime = targetDate.getTime() - now.getTime();
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+}
+
 const initialReminders: Reminder[] = [
-  { id: 1, title: "Mother's Birthday", person: "Mom", date: "August 15", occasion: "birthday", daysLeft: 13 },
-  { id: 2, title: "Wedding Anniversary", person: "Wife", date: "September 20", occasion: "anniversary", daysLeft: 49 },
-  { id: 3, title: "Brother's Graduation", person: "Brother", date: "June 5", occasion: "graduation", daysLeft: 306 },
-  { id: 4, title: "Majed's Birthday", person: "Majed", date: "August 30", occasion: "birthday", daysLeft: 28 },
+  { id: 1, title: "Mother's Birthday", person: "Mom", date: "August 15", occasion: "birthday", daysLeft: calculateDaysLeft("August 15") },
+  { id: 2, title: "Wedding Anniversary", person: "Wife", date: "September 20", occasion: "anniversary", daysLeft: calculateDaysLeft("September 20") },
+  { id: 3, title: "Brother's Graduation", person: "Brother", date: "June 5", occasion: "graduation", daysLeft: calculateDaysLeft("June 5") },
+  { id: 4, title: "Majed's Birthday", person: "Majed", date: "August 30", occasion: "birthday", daysLeft: calculateDaysLeft("August 30") },
 ];
 
 const RemindersContext = createContext<RemindersContextType | undefined>(undefined);
@@ -59,7 +84,7 @@ export const RemindersProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const addReminder = (data: Omit<Reminder, "id"> | Omit<Reminder, "id" | "daysLeft">) => {
     const daysLeft = "daysLeft" in data && typeof data.daysLeft === "number" 
       ? data.daysLeft 
-      : Math.floor(Math.random() * 30) + 1;
+      : calculateDaysLeft(data.date);
 
     const newReminder: Reminder = {
       ...data,
