@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   StyleSheet,
   Text,
@@ -19,7 +20,7 @@ export default function PaymentHeader() {
         onPress={() => router.back()}
         activeOpacity={0.8}
       >
-        <Feather name="arrow-left" size={20} color="#1E1E2D" />
+        <Feather name="arrow-left" size={20} color={RainbowColors.inkBlack} />
       </TouchableOpacity>
 
       {/* Title */}
@@ -43,19 +44,19 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
+    shadowColor: RainbowColors.tangerine,
+    shadowOpacity: 0.15,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 3 },
-    elevation: 3,
+    elevation: 5,
   },
   title: {
     fontSize: 22,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   placeholder: {
     width: 44,

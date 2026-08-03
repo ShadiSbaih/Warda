@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     StyleSheet,
     Text,
@@ -6,6 +7,7 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 import { Feather } from "@expo/vector-icons";
 
@@ -52,25 +54,25 @@ const styles = StyleSheet.create({
   card: {
     marginHorizontal: 20,
     marginTop: 18,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderRadius: 24,
     padding: 20,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
-    shadowRadius: 14,
+    shadowColor: RainbowColors.tangerine,
+    shadowOpacity: 0.15,
+    shadowRadius: 20,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
+    elevation: 6,
   },
 
   title: {
     fontSize: 18,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
 
   subtitle: {
     fontSize: 13,
-    color: "#8E8292",
+    color: RainbowColors.stone,
     marginTop: 4,
   },
 
@@ -87,13 +89,13 @@ const styles = StyleSheet.create({
 
   input: {
     borderWidth: 1.5,
-    borderColor: "#F3E5ED",
+    borderColor: RainbowColors.cloudSurface,
     borderRadius: 18,
     height: 100,
     padding: 16,
     textAlignVertical: "top",
     fontSize: 14.5,
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     backgroundColor: "#FCF8FA",
   },
 });

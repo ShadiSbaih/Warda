@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     Dimensions,
     Image,
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
 
     height: 170,
 
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
 
     borderRadius: 28,
 
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
 
     paddingLeft: 22,
 
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.25,
     shadowRadius: 15,
     shadowOffset: {
@@ -79,13 +80,13 @@ const styles = StyleSheet.create({
   },
 
   off: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 30,
     fontWeight: "800",
   },
 
   title: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
 
     fontSize: 18,
 
@@ -104,14 +105,14 @@ const styles = StyleSheet.create({
 
     borderRadius: 20,
 
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
 
     justifyContent: "center",
     alignItems: "center",
   },
 
   buttonText: {
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
 
     fontSize: 14,
 

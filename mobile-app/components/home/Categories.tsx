@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   FlatList,
   StyleSheet,
   View,
 } from "react-native";
-import { categories } from "../../constants/homeData";
+import { productsAPI } from "../../services/api";
 import CategoryCard from "./CategoryCard";
 
 interface Props {
@@ -16,12 +16,22 @@ export default function Categories({
   selectedCategoryName,
   onSelectCategory,
 }: Props) {
+  const [categories, setCategories] = useState<any[]>([]);
+
+  useEffect(() => {
+    productsAPI.getCategories().then(res => {
+      if (res.success && res.categories) {
+        setCategories(res.categories);
+      }
+    }).catch(() => {});
+  }, []);
+
   return (
     <View style={styles.container}>
       <FlatList
         horizontal
         data={categories}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => (item._id || item.id || item.name).toString()}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.list}
         renderItem={({ item }) => {

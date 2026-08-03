@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   Alert,
   Image,
@@ -7,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
@@ -27,6 +29,14 @@ export default function DriverCard({ orderId }: Props) {
 
   return (
     <View style={styles.container}>
+      {/* 3D inset gloss — top-edge white shimmer, inflated-card effect */}
+      <LinearGradient
+        colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.0)"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 0.55 }}
+        style={StyleSheet.absoluteFillObject}
+        pointerEvents="none"
+      />
       <View style={styles.avatarBox}>
         <Text style={styles.avatarText}>T</Text>
         <View style={styles.onlineBadge} />
@@ -51,7 +61,7 @@ export default function DriverCard({ orderId }: Props) {
           })
         }
       >
-        <Ionicons name="chatbubble-ellipses" size={20} color="#D4588A" />
+        <Ionicons name="chatbubble-ellipses" size={20} color={RainbowColors.tangerine} />
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -67,28 +77,29 @@ export default function DriverCard({ orderId }: Props) {
 
 const styles = StyleSheet.create({
   container: {
+    overflow: "hidden",
     marginTop: 20,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FAF9FC",
+    backgroundColor: RainbowColors.cloudSurface,
     padding: 14,
-    borderRadius: 18,
+    borderRadius: RainbowRadii.cards,
   },
   avatarBox: {
     width: 48,
     height: 48,
-    borderRadius: 24,
-    backgroundColor: "#FFF0F5",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1.5,
-    borderColor: "#F8D7E8",
+    borderColor: RainbowColors.cloudSurface,
     position: "relative",
   },
   avatarText: {
     fontSize: 20,
     fontWeight: "800",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
   onlineBadge: {
     width: 10,
@@ -99,7 +110,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     borderWidth: 1.5,
-    borderColor: "#FFFFFF",
+    borderColor: RainbowColors.pureWhite,
   },
   info: {
     flex: 1,
@@ -108,11 +119,11 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 15,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   role: {
     fontSize: 11.5,
-    color: "#888",
+    color: RainbowColors.stone,
     marginTop: 1,
   },
   ratingBox: {
@@ -123,14 +134,14 @@ const styles = StyleSheet.create({
   },
   ratingText: {
     fontSize: 11,
-    color: "#555",
+    color: RainbowColors.stone,
     fontWeight: "600",
   },
   icon: {
     width: 42,
     height: 42,
-    borderRadius: 21,
-    backgroundColor: "#FFF0F5",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 8,

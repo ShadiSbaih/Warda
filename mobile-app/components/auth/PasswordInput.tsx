@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     StyleSheet,
     Text,
@@ -6,7 +7,6 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
-
 import { Ionicons } from "@expo/vector-icons";
 
 interface Props {
@@ -63,16 +63,16 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     fontSize: 14,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
 
   inputContainer: {
     height: 52,
     borderWidth: 1.5,
-    borderColor: "#F3E5ED",
-    borderRadius: 16,
+    borderColor: RainbowColors.cloudSurface,
+    borderRadius: 24,
     paddingHorizontal: 16,
-    backgroundColor: "#FCF8FA",
+    backgroundColor: RainbowColors.pureWhite,
     flexDirection: "row",
     alignItems: "center",
   },
@@ -80,6 +80,6 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 15,
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
 });

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../constants/Colors";
 import {
   Alert,
   Modal,
@@ -59,7 +60,7 @@ export default function RemindersScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#FDF6F9" />
+      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.pureWhite} />
 
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         {/* Header */}
@@ -68,7 +69,7 @@ export default function RemindersScreen() {
             style={styles.backBtn}
             onPress={() => router.back()}
           >
-            <Feather name="arrow-left" size={20} color="#1E1E2D" />
+            <Feather name="arrow-left" size={20} color={RainbowColors.inkBlack} />
           </TouchableOpacity>
 
           <Text style={styles.headerTitle}>Occasion Reminders</Text>
@@ -77,7 +78,7 @@ export default function RemindersScreen() {
             style={styles.addBtn}
             onPress={() => setModalVisible(true)}
           >
-            <Feather name="plus" size={20} color="#FFFFFF" />
+            <Feather name="plus" size={20} color={RainbowColors.pureWhite} />
           </TouchableOpacity>
         </View>
 
@@ -88,7 +89,7 @@ export default function RemindersScreen() {
           {/* Info Banner */}
           <View style={styles.banner}>
             <View style={styles.bannerIcon}>
-              <Feather name="bell" size={18} color="#D4588A" />
+              <Feather name="bell" size={18} color={RainbowColors.tangerine} />
             </View>
             <Text style={styles.bannerText}>
               Never miss a milestone! We'll notify you 24 hours before so your custom bouquet arrives on time 🌹
@@ -99,7 +100,7 @@ export default function RemindersScreen() {
           {reminders.length === 0 ? (
             <View style={styles.emptyState}>
               <View style={styles.emptyIconBox}>
-                <Ionicons name="calendar-outline" size={48} color="#D4588A" />
+                <Ionicons name="calendar-outline" size={48} color={RainbowColors.tangerine} />
               </View>
               <Text style={styles.emptyTitle}>No Occasions Saved</Text>
               <Text style={styles.emptySubtitle}>
@@ -109,7 +110,7 @@ export default function RemindersScreen() {
                 style={styles.createBtn}
                 onPress={() => setModalVisible(true)}
               >
-                <Feather name="plus" size={16} color="#FFFFFF" />
+                <Feather name="plus" size={16} color={RainbowColors.pureWhite} />
                 <Text style={styles.createBtnText}>Add First Reminder</Text>
               </TouchableOpacity>
             </View>
@@ -162,7 +163,7 @@ export default function RemindersScreen() {
                         activeOpacity={0.85}
                         onPress={() => router.push("/(tabs)/menu")}
                       >
-                        <Feather name="gift" size={16} color="#FFFFFF" />
+                        <Feather name="gift" size={16} color={RainbowColors.pureWhite} />
                       </TouchableOpacity>
 
                       <TouchableOpacity
@@ -170,7 +171,7 @@ export default function RemindersScreen() {
                         onPress={() => removeReminder(reminder.id)}
                         activeOpacity={0.8}
                       >
-                        <Feather name="trash-2" size={15} color="#A0A0A0" />
+                        <Feather name="trash-2" size={15} color={RainbowColors.stone} />
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -195,7 +196,7 @@ export default function RemindersScreen() {
                   style={styles.modalCloseBtn}
                   onPress={() => setModalVisible(false)}
                 >
-                  <Feather name="x" size={18} color="#1E1E2D" />
+                  <Feather name="x" size={18} color={RainbowColors.inkBlack} />
                 </TouchableOpacity>
               </View>
 
@@ -277,7 +278,7 @@ export default function RemindersScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FDF6F9",
+    backgroundColor: RainbowColors.pureWhite,
   },
   content: {
     paddingBottom: 40,
@@ -292,28 +293,28 @@ const styles = StyleSheet.create({
   backBtn: {
     width: 42,
     height: 42,
-    borderRadius: 21,
-    backgroundColor: "#FFFFFF",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 6,
     elevation: 2,
   },
   headerTitle: {
     fontSize: 20,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   addBtn: {
     width: 42,
     height: 42,
-    borderRadius: 21,
-    backgroundColor: "#D4588A",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.tangerine,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.3,
     shadowRadius: 6,
     elevation: 3,
@@ -324,17 +325,17 @@ const styles = StyleSheet.create({
     gap: 12,
     marginHorizontal: 20,
     marginTop: 8,
-    backgroundColor: "#FFF0F5",
-    borderRadius: 18,
+    backgroundColor: RainbowColors.cloudSurface,
+    borderRadius: RainbowRadii.cards,
     padding: 14,
     borderWidth: 1,
-    borderColor: "#F8D7E8",
+    borderColor: RainbowColors.cloudSurface,
   },
   bannerIcon: {
     width: 36,
     height: 36,
-    borderRadius: 18,
-    backgroundColor: "#FFFFFF",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -351,13 +352,13 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   card: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 20,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     padding: 14,
     flexDirection: "row",
     alignItems: "center",
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.07,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 4 },
     elevation: 3,
@@ -376,31 +377,31 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 15,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   cardMeta: {
     fontSize: 12,
-    color: "#888",
+    color: RainbowColors.stone,
     marginTop: 2,
   },
   daysBadge: {
     alignSelf: "flex-start",
-    backgroundColor: "#F3F3F7",
-    borderRadius: 10,
+    backgroundColor: RainbowColors.cloudSurface,
+    borderRadius: RainbowRadii.pills,
     paddingHorizontal: 8,
     paddingVertical: 3,
     marginTop: 6,
   },
   daysBadgeUrgent: {
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
   },
   daysText: {
     fontSize: 11,
     fontWeight: "600",
-    color: "#888",
+    color: RainbowColors.stone,
   },
   daysTextUrgent: {
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     fontWeight: "700",
   },
   cardActions: {
@@ -411,16 +412,16 @@ const styles = StyleSheet.create({
   sendGiftBtn: {
     width: 36,
     height: 36,
-    borderRadius: 18,
-    backgroundColor: "#D4588A",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.tangerine,
     justifyContent: "center",
     alignItems: "center",
   },
   deleteBtn: {
     width: 32,
     height: 32,
-    borderRadius: 16,
-    backgroundColor: "#F9F9FB",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -432,8 +433,8 @@ const styles = StyleSheet.create({
   emptyIconBox: {
     width: 80,
     height: 80,
-    borderRadius: 40,
-    backgroundColor: "#FFF0F5",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 16,
@@ -441,11 +442,11 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 18,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   emptySubtitle: {
     fontSize: 13.5,
-    color: "#888",
+    color: RainbowColors.stone,
     textAlign: "center",
     marginTop: 6,
     lineHeight: 20,
@@ -454,18 +455,18 @@ const styles = StyleSheet.create({
   createBtn: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     paddingHorizontal: 20,
     paddingVertical: 12,
-    borderRadius: 20,
+    borderRadius: RainbowRadii.pills,
     gap: 8,
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 4,
   },
   createBtnText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 14,
     fontWeight: "700",
   },
@@ -475,7 +476,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   modalCard: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
     padding: 24,
@@ -491,13 +492,13 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 19,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   modalCloseBtn: {
     width: 36,
     height: 36,
-    borderRadius: 18,
-    backgroundColor: "#F3F3F7",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -507,18 +508,18 @@ const styles = StyleSheet.create({
   inputLabel: {
     fontSize: 13,
     fontWeight: "600",
-    color: "#444",
+    color: RainbowColors.stone,
     marginBottom: 6,
   },
   modalInput: {
-    backgroundColor: "#F9F9FB",
-    borderRadius: 14,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 14,
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     borderWidth: 1,
-    borderColor: "#EAEAEA",
+    borderColor: RainbowColors.cloudSurface,
   },
   occasionPicker: {
     flexDirection: "row",
@@ -528,35 +529,35 @@ const styles = StyleSheet.create({
   occChip: {
     paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: 12,
-    backgroundColor: "#F3F3F7",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.cloudSurface,
   },
   occChipActive: {
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
   },
   occChipText: {
     fontSize: 12.5,
     fontWeight: "600",
-    color: "#666",
+    color: RainbowColors.stone,
   },
   occChipTextActive: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontWeight: "700",
   },
   saveBtn: {
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     height: 52,
-    borderRadius: 26,
+    borderRadius: RainbowRadii.pills,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 10,
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.3,
     shadowRadius: 10,
     elevation: 4,
   },
   saveBtnText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 16,
     fontWeight: "700",
   },

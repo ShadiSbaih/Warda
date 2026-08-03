@@ -148,6 +148,64 @@ export const productsAPI = {
   async getCategories() {
     return request("/categories", { method: "GET" });
   },
+
+  async createProduct(productData: any) {
+    return request("/products", {
+      method: "POST",
+      body: JSON.stringify(productData),
+    });
+  },
+
+  async deleteProduct(id: string | number) {
+    return request(`/products/${id}`, { method: "DELETE" });
+  },
+};
+
+// 2.5 Shops API
+export const shopsAPI = {
+  async getShops() {
+    return request("/shops", { method: "GET" });
+  },
+};
+
+// 2.8 Admin API
+export const adminAPI = {
+  async getDashboard() {
+    return request("/admin/dashboard", { method: "GET" });
+  },
+  async getUsers() {
+    return request("/users", { method: "GET" });
+  },
+  async updateUserRole(id: string, role: string) {
+    return request(`/users/${id}/role`, { 
+      method: "PUT",
+      body: JSON.stringify({ role })
+    });
+  },
+  async deleteUser(id: string) {
+    return request(`/users/${id}`, { method: "DELETE" });
+  },
+  async updateOrderStatus(id: string, status: string) {
+    return request(`/orders/${id}/status`, {
+      method: "PATCH",
+      body: JSON.stringify({ status })
+    });
+  },
+  async getAllOrders() {
+    return request("/orders/all", { method: "GET" });
+  },
+  async getCategories() {
+    return request("/categories", { method: "GET" });
+  },
+  async createCategory(data: { name: string, image: string }) {
+    return request("/categories", {
+      method: "POST",
+      body: JSON.stringify(data)
+    });
+  },
+  async deleteCategory(id: string) {
+    return request(`/categories/${id}`, { method: "DELETE" });
+  }
 };
 
 // 3. Orders API

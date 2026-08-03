@@ -60,6 +60,7 @@ app.use(
 
 // Authentication
 const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 // Shop
 const shopRoutes = require("./routes/shopRoutes");
@@ -138,6 +139,7 @@ const reminderRoutes = require("./routes/reminderRoutes");
 // ======================
 
 app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 
 app.use("/api/shops", shopRoutes);
 

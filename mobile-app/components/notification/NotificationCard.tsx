@@ -1,9 +1,11 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     StyleSheet,
     Text,
     View,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 import { Feather } from "@expo/vector-icons";
 
@@ -27,7 +29,7 @@ export default function NotificationCard({
           <Feather
             name={icon}
             size={20}
-            color="#D4588A"
+            color={RainbowColors.tangerine}
           />
         </View>
 
@@ -53,19 +55,19 @@ const styles = StyleSheet.create({
   card: {
     marginHorizontal: 20,
     marginBottom: 14,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 22,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     padding: 16,
     flexDirection: "row",
     justifyContent: "space-between",
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
+    shadowColor: "#5a5a7a",
+    shadowOpacity: 0.15,
+    shadowRadius: 18,
     shadowOffset: {
       width: 0,
       height: 4,
     },
-    elevation: 3,
+    elevation: 5,
   },
 
   left: {
@@ -76,8 +78,8 @@ const styles = StyleSheet.create({
   iconCircle: {
     width: 44,
     height: 44,
-    borderRadius: 22,
-    backgroundColor: "#FFF0F5",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 14,
@@ -91,19 +93,19 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
 
   message: {
     marginTop: 4,
     fontSize: 13.5,
-    color: "#8E8292",
+    color: RainbowColors.stone,
     lineHeight: 19,
   },
 
   time: {
     fontSize: 12,
-    color: "#B4A8B8",
+    color: RainbowColors.stone,
     marginLeft: 6,
   },
 });

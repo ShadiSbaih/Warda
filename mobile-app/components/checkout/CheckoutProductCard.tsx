@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     Image,
     StyleSheet,
@@ -6,6 +7,7 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 import { Feather } from "@expo/vector-icons";
 
@@ -25,6 +27,14 @@ export default function CheckoutProductCard({
 
   return (
     <View style={styles.container}>
+      {/* 3D inset gloss — top-edge white shimmer, inflated-card effect */}
+      <LinearGradient
+        colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.0)"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 0.55 }}
+        style={StyleSheet.absoluteFillObject}
+        pointerEvents="none"
+      />
       {/* Product Image */}
 
       <Image
@@ -66,7 +76,7 @@ export default function CheckoutProductCard({
               <Feather
                 name="minus"
                 size={18}
-                color="#555"
+                color={RainbowColors.stone}
               />
             </TouchableOpacity>
 
@@ -82,7 +92,7 @@ export default function CheckoutProductCard({
               <Feather
                 name="plus"
                 size={18}
-                color="#555"
+                color={RainbowColors.stone}
               />
             </TouchableOpacity>
           </View>
@@ -94,11 +104,12 @@ export default function CheckoutProductCard({
 
 const styles = StyleSheet.create({
   container: {
+    overflow: "hidden",
     flexDirection: "row",
 
     padding: 16,
 
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
   },
 
   image: {
@@ -127,7 +138,7 @@ const styles = StyleSheet.create({
 
     fontWeight: "700",
 
-    color: "#222",
+    color: RainbowColors.inkBlack,
   },
 
   price: {
@@ -135,7 +146,7 @@ const styles = StyleSheet.create({
 
     fontWeight: "700",
 
-    color: "#222",
+    color: RainbowColors.inkBlack,
   },
 
   description: {
@@ -177,6 +188,6 @@ const styles = StyleSheet.create({
 
     fontWeight: "600",
 
-    color: "#222",
+    color: RainbowColors.inkBlack,
   },
 });

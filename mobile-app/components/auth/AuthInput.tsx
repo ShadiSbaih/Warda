@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     KeyboardTypeOptions,
     StyleSheet,
@@ -49,17 +50,17 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     fontSize: 14,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
 
   input: {
     height: 52,
     borderWidth: 1.5,
-    borderColor: "#F3E5ED",
-    borderRadius: 16,
+    borderColor: RainbowColors.cloudSurface,
+    borderRadius: 24, // Rainbow input pill/card hybrid radius
     paddingHorizontal: 16,
-    backgroundColor: "#FCF8FA",
+    backgroundColor: RainbowColors.pureWhite,
     fontSize: 15,
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
 });

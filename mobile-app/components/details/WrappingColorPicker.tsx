@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   ScrollView,
   StyleSheet,
@@ -44,7 +45,7 @@ export default function WrappingColorPicker({
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.iconWrap}>
-          <Feather name="gift" size={18} color="#D4588A" />
+          <Feather name="gift" size={18} color={RainbowColors.tangerine} />
         </View>
         <Text style={styles.headerTitle}>Wrapping Color</Text>
 
@@ -81,7 +82,7 @@ export default function WrappingColorPicker({
                   color={
                     color.hex === "#F5F5F5" || color.hex === "#FFD700"
                       ? "#333"
-                      : "#FFF"
+                      : RainbowColors.pureWhite
                   }
                 />
               )}
@@ -98,14 +99,14 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
     marginVertical: 10,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderRadius: 18,
     padding: 16,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
+    shadowColor: RainbowColors.tangerine,
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
+    elevation: 6,
   },
 
   header: {
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
     height: 16,
     borderRadius: 8,
     borderWidth: 2,
-    borderColor: "#D4588A",
+    borderColor: RainbowColors.tangerine,
   },
 
   colorRow: {
@@ -164,13 +165,13 @@ const styles = StyleSheet.create({
 
   colorCircleActive: {
     borderWidth: 2.5,
-    borderColor: "#D4588A",
+    borderColor: RainbowColors.tangerine,
     transform: [{ scale: 1.1 }],
   },
 
   colorLabel: {
     fontSize: 11,
-    color: "#888",
+    color: RainbowColors.stone,
     fontWeight: "500",
   },
 });

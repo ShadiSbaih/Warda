@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   StyleSheet,
   Text,
@@ -42,7 +43,7 @@ export default function BottomCheckout({
           <Ionicons
             name="remove"
             size={22}
-            color="#D4588A"
+            color={RainbowColors.tangerine}
           />
         </TouchableOpacity>
 
@@ -57,7 +58,7 @@ export default function BottomCheckout({
           <Ionicons
             name="add"
             size={22}
-            color="#D4588A"
+            color={RainbowColors.tangerine}
           />
         </TouchableOpacity>
       </View>
@@ -82,14 +83,14 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     paddingHorizontal: 20,
     paddingVertical: 16,
     flexDirection: "row",
     alignItems: "center",
     borderTopLeftRadius: 26,
     borderTopRightRadius: 26,
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.12,
     shadowRadius: 16,
     shadowOffset: {
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
   quantityContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
     borderRadius: 20,
     paddingHorizontal: 8,
     height: 52,
@@ -112,11 +113,11 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
     shadowColor: "#000",
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.13,
     shadowRadius: 4,
     elevation: 2,
   },
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     fontSize: 17,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
 
   cartButton: {
@@ -133,17 +134,17 @@ const styles = StyleSheet.create({
     marginLeft: 14,
     height: 52,
     borderRadius: 20,
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.35,
-    shadowRadius: 10,
+    shadowRadius: 16,
     elevation: 6,
   },
 
   cartText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 16,
     fontWeight: "700",
   },

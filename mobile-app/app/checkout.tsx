@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../constants/Colors";
 import {
   Image,
   ScrollView,
@@ -18,7 +19,6 @@ import * as ImagePicker from "expo-image-picker";
 import ReviewHeader from "../components/checkout/ReviewHeader";
 import PriceSummary from "../components/checkout/PriceSummary";
 import { useCart } from "../context/CartContext";
-import { ALL_PRODUCTS } from "../data/productsData";
 
 const TIME_SLOTS = [
   { id: "now", title: "Express Now", subtitle: "Within 30–45 mins" },
@@ -81,7 +81,7 @@ export default function CheckoutScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#FDF6F9" />
+      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.pureWhite} />
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         {/* Header */}
         <ReviewHeader title="Checkout & Review" />
@@ -101,7 +101,7 @@ export default function CheckoutScreen() {
 
             {displayItems.length === 0 ? (
               <View style={styles.emptyCartBox}>
-                <Ionicons name="gift-outline" size={40} color="#D4588A" />
+                <Ionicons name="gift-outline" size={40} color={RainbowColors.tangerine} />
                 <Text style={styles.emptyTitle}>Your gift bag is empty</Text>
                 <Text style={styles.emptySubtitle}>Explore our catalog to select luxury flowers or sweets</Text>
                 <TouchableOpacity
@@ -146,14 +146,14 @@ export default function CheckoutScreen() {
                           : removeFromCart(cartItem.id)
                       }
                     >
-                      <Feather name="minus" size={14} color="#1E1E2D" />
+                      <Feather name="minus" size={14} color={RainbowColors.inkBlack} />
                     </TouchableOpacity>
                     <Text style={styles.qtyText}>{cartItem.quantity}</Text>
                     <TouchableOpacity
                       style={styles.qtyBtn}
                       onPress={() => updateQuantity(cartItem.id, cartItem.quantity + 1)}
                     >
-                      <Feather name="plus" size={14} color="#1E1E2D" />
+                      <Feather name="plus" size={14} color={RainbowColors.inkBlack} />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -176,7 +176,7 @@ export default function CheckoutScreen() {
               onPress={() => router.push("/delivery-address")}
             >
               <View style={styles.addressIconCircle}>
-                <Ionicons name="location-sharp" size={20} color="#D4588A" />
+                <Ionicons name="location-sharp" size={20} color={RainbowColors.tangerine} />
               </View>
               <View style={{ flex: 1, marginLeft: 12 }}>
                 <Text style={styles.addressTitle}>{deliveryAddress.title}</Text>
@@ -184,7 +184,7 @@ export default function CheckoutScreen() {
                   {deliveryAddress.subtitle}
                 </Text>
               </View>
-              <Feather name="chevron-right" size={18} color="#AAA" />
+              <Feather name="chevron-right" size={18} color={RainbowColors.stone} />
             </TouchableOpacity>
           </View>
 
@@ -192,7 +192,7 @@ export default function CheckoutScreen() {
           <View style={styles.sectionCard}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>Select Delivery Time</Text>
-              <Feather name="clock" size={16} color="#D4588A" />
+              <Feather name="clock" size={16} color={RainbowColors.tangerine} />
             </View>
 
             <View style={styles.slotsGrid}>
@@ -232,7 +232,7 @@ export default function CheckoutScreen() {
           <View style={styles.sectionCard}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>Recipient & Gift Note</Text>
-              <MaterialCommunityIcons name="card-text-outline" size={18} color="#D4588A" />
+              <MaterialCommunityIcons name="card-text-outline" size={18} color={RainbowColors.tangerine} />
             </View>
 
             <View style={styles.formGroup}>
@@ -284,7 +284,7 @@ export default function CheckoutScreen() {
                 <Feather
                   name={hasPhoto ? "check-circle" : "image"}
                   size={18}
-                  color={hasPhoto ? "#10B981" : "#D4588A"}
+                  color={hasPhoto ? "#10B981" : RainbowColors.tangerine}
                 />
               </View>
               <View style={{ flex: 1, marginLeft: 12 }}>
@@ -359,7 +359,7 @@ export default function CheckoutScreen() {
               })}
             >
               <Text style={styles.proceedBtnText}>Proceed to Payment</Text>
-              <Feather name="arrow-right" size={20} color="#FFFFFF" />
+              <Feather name="arrow-right" size={20} color={RainbowColors.pureWhite} />
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -371,7 +371,7 @@ export default function CheckoutScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FDF6F9",
+    backgroundColor: RainbowColors.pureWhite,
   },
   scrollContent: {
     paddingBottom: 40,
@@ -379,11 +379,11 @@ const styles = StyleSheet.create({
   sectionCard: {
     marginHorizontal: 20,
     marginTop: 16,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 22,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     padding: 18,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.07,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 4 },
     elevation: 3,
@@ -397,12 +397,12 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   editBtn: {
     fontSize: 13,
     fontWeight: "700",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
   emptyCartBox: {
     alignItems: "center",
@@ -411,26 +411,26 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     marginTop: 8,
   },
   emptySubtitle: {
     fontSize: 13,
-    color: "#888",
+    color: RainbowColors.stone,
     textAlign: "center",
     marginTop: 4,
     marginBottom: 16,
   },
   exploreBtn: {
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: "#F8D7E8",
+    borderColor: RainbowColors.cloudSurface,
   },
   exploreBtnText: {
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     fontWeight: "700",
     fontSize: 13.5,
   },
@@ -439,13 +439,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#F5F5F7",
+    borderBottomColor: RainbowColors.cloudSurface,
   },
   itemImageWrapper: {
     width: 60,
     height: 60,
     borderRadius: 14,
-    backgroundColor: "#FCF6F8",
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -460,24 +460,24 @@ const styles = StyleSheet.create({
   itemName: {
     fontSize: 14.5,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   itemOption: {
     fontSize: 11.5,
-    color: "#888",
+    color: RainbowColors.stone,
     marginTop: 2,
   },
   itemPrice: {
     fontSize: 14,
     fontWeight: "800",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     marginTop: 4,
   },
   qtyBox: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#F3F3F7",
-    borderRadius: 16,
+    backgroundColor: RainbowColors.cloudSurface,
+    borderRadius: RainbowRadii.pills,
     paddingHorizontal: 6,
     paddingVertical: 3,
     gap: 8,
@@ -485,39 +485,39 @@ const styles = StyleSheet.create({
   qtyBtn: {
     width: 24,
     height: 24,
-    borderRadius: 12,
-    backgroundColor: "#FFFFFF",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
   },
   qtyText: {
     fontSize: 13,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   addressRow: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FAF9FC",
+    backgroundColor: RainbowColors.cloudSurface,
     padding: 14,
-    borderRadius: 16,
+    borderRadius: RainbowRadii.cards,
   },
   addressIconCircle: {
     width: 40,
     height: 40,
-    borderRadius: 20,
-    backgroundColor: "#FFF0F5",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
   },
   addressTitle: {
     fontSize: 14,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   addressSubtitle: {
     fontSize: 12,
-    color: "#777",
+    color: RainbowColors.stone,
     marginTop: 2,
   },
   slotsGrid: {
@@ -527,21 +527,21 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: 12,
-    borderRadius: 14,
-    backgroundColor: "#FAF9FC",
+    borderRadius: RainbowRadii.cards,
+    backgroundColor: RainbowColors.cloudSurface,
     borderWidth: 1.5,
     borderColor: "transparent",
   },
   slotCardActive: {
-    backgroundColor: "#FFF0F5",
-    borderColor: "#D4588A",
+    backgroundColor: RainbowColors.cloudSurface,
+    borderColor: RainbowColors.tangerine,
   },
   slotRadio: {
     width: 20,
     height: 20,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: "#D4588A",
+    borderColor: RainbowColors.tangerine,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -549,19 +549,19 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
   },
   slotTitle: {
     fontSize: 13.5,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   slotTitleActive: {
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
   slotSub: {
     fontSize: 11.5,
-    color: "#888",
+    color: RainbowColors.stone,
     marginTop: 1,
   },
   formGroup: {
@@ -570,18 +570,18 @@ const styles = StyleSheet.create({
   inputLabel: {
     fontSize: 12.5,
     fontWeight: "600",
-    color: "#444",
+    color: RainbowColors.stone,
     marginBottom: 6,
   },
   textInput: {
-    backgroundColor: "#FAF9FC",
-    borderRadius: 14,
+    backgroundColor: RainbowColors.cloudSurface,
+    borderRadius: RainbowRadii.cards,
     paddingHorizontal: 14,
     paddingVertical: 10,
     fontSize: 14,
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     borderWidth: 1,
-    borderColor: "#ECECEC",
+    borderColor: RainbowColors.cloudSurface,
   },
   textArea: {
     height: 70,
@@ -590,12 +590,12 @@ const styles = StyleSheet.create({
   photoUploadRow: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FAF9FC",
+    backgroundColor: RainbowColors.cloudSurface,
     padding: 12,
-    borderRadius: 14,
+    borderRadius: RainbowRadii.cards,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: "#EAEAEA",
+    borderColor: RainbowColors.cloudSurface,
   },
   photoUploadRowActive: {
     backgroundColor: "#ECFDF5",
@@ -604,28 +604,28 @@ const styles = StyleSheet.create({
   photoIcon: {
     width: 36,
     height: 36,
-    borderRadius: 18,
-    backgroundColor: "#FFFFFF",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
   },
   photoTitle: {
     fontSize: 13,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   photoSub: {
     fontSize: 11,
-    color: "#777",
+    color: RainbowColors.stone,
     marginTop: 1,
   },
   anonymousRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#F5F3FF",
+    backgroundColor: RainbowColors.cloudSurface,
     padding: 12,
-    borderRadius: 14,
+    borderRadius: RainbowRadii.cards,
   },
   anonymousLeft: {
     flexDirection: "row",
@@ -635,37 +635,37 @@ const styles = StyleSheet.create({
   anonymousIcon: {
     width: 36,
     height: 36,
-    borderRadius: 18,
-    backgroundColor: "#FFFFFF",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
   },
   anonymousTitle: {
     fontSize: 13,
     fontWeight: "700",
-    color: "#4338CA",
+    color: RainbowColors.inkBlack,
   },
   anonymousSub: {
     fontSize: 11,
-    color: "#6366F1",
+    color: RainbowColors.stone,
     marginTop: 1,
   },
   switchTrack: {
     width: 44,
     height: 24,
-    borderRadius: 12,
-    backgroundColor: "#DDD",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.stone,
     padding: 2,
     justifyContent: "center",
   },
   switchTrackActive: {
-    backgroundColor: "#6366F1",
+    backgroundColor: RainbowColors.tangerine,
   },
   switchThumb: {
     width: 20,
     height: 20,
-    borderRadius: 10,
-    backgroundColor: "#FFFFFF",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.pureWhite,
   },
   switchThumbActive: {
     alignSelf: "flex-end",
@@ -675,21 +675,21 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   proceedBtn: {
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     height: 56,
-    borderRadius: 28,
+    borderRadius: RainbowRadii.pills,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     gap: 10,
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.35,
     shadowRadius: 12,
     shadowOffset: { width: 0, height: 6 },
     elevation: 6,
   },
   proceedBtnText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 16,
     fontWeight: "700",
   },

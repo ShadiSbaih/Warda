@@ -1,10 +1,10 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   Image,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
 } from "react-native";
 
 interface Props {
@@ -27,21 +27,13 @@ export default function CategoryCard({
         selected && styles.activeContainer,
       ]}
     >
-      <View
-        style={[
-          styles.imageContainer,
-          selected && styles.activeImage,
-        ]}
-      >
-        <Image
-          source={item.image}
-          resizeMode="contain"
-          style={styles.image}
-        />
-      </View>
-
-      <Text
-        numberOfLines={2}
+      <Image 
+        source={{ uri: item.image }} 
+        resizeMode="contain" 
+        style={styles.image} 
+      />
+      <Text 
+        numberOfLines={2} 
         style={[
           styles.title,
           selected && styles.activeTitle,
@@ -55,65 +47,41 @@ export default function CategoryCard({
 
 const styles = StyleSheet.create({
   container: {
-    minWidth: 90,
-    height: 104,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 22,
+    minWidth: 85,
+    height: 100,
+    borderRadius: RainbowRadii.cards,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 10,
+    backgroundColor: RainbowColors.pureWhite,
     marginRight: 14,
-    shadowColor: "#000",
-    shadowOpacity: 0.06,
-    shadowRadius: 10,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    elevation: 3,
-    borderWidth: 1.5,
-    borderColor: "transparent",
+    borderWidth: 1,
+    borderColor: RainbowColors.cloudSurface,
   },
-
   activeContainer: {
-    backgroundColor: "#D4588A",
-    borderColor: "#D4588A",
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.3,
-    shadowRadius: 12,
-    elevation: 6,
+    backgroundColor: RainbowColors.tangerine,
+    borderColor: RainbowColors.tangerine,
+    shadowColor: RainbowColors.tangerine,
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
   },
-
-  imageContainer: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
-    backgroundColor: "#FFF0F5",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  activeImage: {
-    backgroundColor: "rgba(255, 255, 255, 0.25)",
-  },
-
   image: {
-    width: 32,
-    height: 32,
+    width: 44,
+    height: 44,
+    marginBottom: 8,
   },
-
   title: {
-    marginTop: 6,
     fontSize: 12.5,
-    color: "#333",
+    color: RainbowColors.inkBlack,
     fontWeight: "600",
     textAlign: "center",
     lineHeight: 16,
   },
-
   activeTitle: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontWeight: "700",
   },
 });

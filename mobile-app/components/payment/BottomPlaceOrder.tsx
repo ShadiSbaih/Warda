@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   ActivityIndicator,
   Alert,
@@ -111,11 +112,11 @@ export default function BottomPlaceOrder({
         disabled={loading}
       >
         {loading ? (
-          <ActivityIndicator color="#FFFFFF" />
+          <ActivityIndicator color={RainbowColors.pureWhite} />
         ) : (
           <>
             <Text style={styles.buttonText}>Confirm & Place Order</Text>
-            <Feather name="arrow-right" size={22} color="#FFFFFF" />
+            <Feather name="arrow-right" size={22} color={RainbowColors.pureWhite} />
           </>
         )}
       </TouchableOpacity>
@@ -143,19 +144,19 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 28,
     fontWeight: "900",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
   button: {
     height: 58,
     borderRadius: 29,
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     gap: 10,
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.35,
-    shadowRadius: 12,
+    shadowRadius: 18,
     shadowOffset: { width: 0, height: 6 },
     elevation: 8,
   },
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
     opacity: 0.75,
   },
   buttonText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 17,
     fontWeight: "700",
   },

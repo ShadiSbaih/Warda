@@ -1,5 +1,6 @@
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     Image,
     StyleSheet,
@@ -7,6 +8,7 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface Props {
   item: {
@@ -48,8 +50,8 @@ export default function RelatedProductCard({
           size={18}
           color={
             item.favorite
-              ? "#D4588A"
-              : "#888"
+              ? RainbowColors.tangerine
+              : RainbowColors.stone
           }
         />
       </TouchableOpacity>
@@ -81,7 +83,7 @@ export default function RelatedProductCard({
             <Ionicons
               name="time-outline"
               size={13}
-              color="#888"
+              color={RainbowColors.stone}
             />
 
             <Text style={styles.time}>
@@ -100,7 +102,7 @@ export default function RelatedProductCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
 
     borderRadius: 22,
 
@@ -110,8 +112,8 @@ const styles = StyleSheet.create({
     overflow: "hidden",
 
     shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
+    shadowOpacity: 0.15,
+    shadowRadius: 18,
     shadowOffset: {
       width: 0,
       height: 5,
@@ -136,12 +138,12 @@ const styles = StyleSheet.create({
 
     borderRadius: 18,
 
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
 
     justifyContent: "center",
     alignItems: "center",
 
-    elevation: 4,
+    elevation: 6,
   },
 
   content: {
@@ -151,7 +153,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#222",
+    color: RainbowColors.inkBlack,
   },
 
   infoRow: {
@@ -168,7 +170,7 @@ const styles = StyleSheet.create({
 
   rating: {
     marginLeft: 4,
-    color: "#555",
+    color: RainbowColors.stone,
     fontWeight: "600",
   },
 
@@ -179,7 +181,7 @@ const styles = StyleSheet.create({
 
   time: {
     marginLeft: 4,
-    color: "#777",
+    color: RainbowColors.stone,
     fontSize: 13,
   },
 
@@ -189,6 +191,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "700",
 
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
 });

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   Platform,
   StyleSheet,
@@ -95,7 +96,7 @@ export default function DeliveryScheduler({ onDateChange }: Props) {
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.iconWrap}>
-          <Feather name="clock" size={18} color="#D4588A" />
+          <Feather name="clock" size={18} color={RainbowColors.tangerine} />
         </View>
         <Text style={styles.headerTitle}>Delivery Schedule</Text>
       </View>
@@ -115,7 +116,7 @@ export default function DeliveryScheduler({ onDateChange }: Props) {
             <Feather
               name={opt.icon as any}
               size={16}
-              color={selectedOption === opt.id ? "#FFFFFF" : "#888"}
+              color={selectedOption === opt.id ? RainbowColors.pureWhite : RainbowColors.stone}
             />
             <Text
               style={[
@@ -142,7 +143,7 @@ export default function DeliveryScheduler({ onDateChange }: Props) {
           }}
           activeOpacity={0.8}
         >
-          <Feather name="calendar" size={15} color="#D4588A" />
+          <Feather name="calendar" size={15} color={RainbowColors.tangerine} />
           <Text style={styles.dateText}>{formattedDate}</Text>
           <Feather name="edit-2" size={13} color="#C5A8B8" />
         </TouchableOpacity>
@@ -165,14 +166,14 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
     marginVertical: 10,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderRadius: 18,
     padding: 16,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
+    shadowColor: RainbowColors.tangerine,
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
+    elevation: 6,
   },
 
   header: {
@@ -216,30 +217,30 @@ const styles = StyleSheet.create({
   },
 
   optionBtnActive: {
-    backgroundColor: "#D4588A",
-    borderColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
+    borderColor: RainbowColors.tangerine,
   },
 
   optionLabel: {
     fontSize: 13,
     fontWeight: "600",
-    color: "#888",
+    color: RainbowColors.stone,
   },
 
   optionLabelActive: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
   },
 
   datePreview: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    backgroundColor: "#FDF6F9",
+    backgroundColor: RainbowColors.cloudSurface,
     borderRadius: 12,
     padding: 12,
     marginTop: 12,
     borderWidth: 1,
-    borderColor: "#F8D7E8",
+    borderColor: RainbowColors.cloudSurface,
   },
 
   dateText: {

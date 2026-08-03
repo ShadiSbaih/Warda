@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   StyleSheet,
   Text,
@@ -27,17 +28,17 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 20,
     height: 56,
-    borderRadius: 28,
-    backgroundColor: "#D4588A",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.tangerine,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.3,
     shadowRadius: 8,
-    elevation: 4,
+    elevation: 6,
   },
   text: {
-    color: "#FFF",
+    color: RainbowColors.pureWhite,
     fontSize: 16,
     fontWeight: "700",
   },

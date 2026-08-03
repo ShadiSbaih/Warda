@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   Alert,
   StyleSheet,
@@ -30,7 +31,7 @@ export default function LiveTrackingHeader() {
         onPress={() => router.back()}
         activeOpacity={0.85}
       >
-        <Feather name="x" size={20} color="#1E1E2D" />
+        <Feather name="x" size={20} color={RainbowColors.inkBlack} />
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -38,7 +39,7 @@ export default function LiveTrackingHeader() {
         onPress={handleHelp}
         activeOpacity={0.85}
       >
-        <Feather name="headphones" size={15} color="#D4588A" />
+        <Feather name="headphones" size={15} color={RainbowColors.tangerine} />
         <Text style={styles.helpText}>Help</Text>
       </TouchableOpacity>
     </View>
@@ -56,11 +57,11 @@ const styles = StyleSheet.create({
   iconButton: {
     width: 44,
     height: 44,
-    borderRadius: 22,
-    backgroundColor: "#FFFFFF",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: "#5a5a7a",
     shadowOpacity: 0.1,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 3 },
@@ -72,10 +73,10 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingHorizontal: 16,
     height: 44,
-    borderRadius: 22,
-    backgroundColor: "#FFFFFF",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
-    shadowColor: "#000",
+    shadowColor: "#5a5a7a",
     shadowOpacity: 0.1,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 3 },
@@ -84,6 +85,6 @@ const styles = StyleSheet.create({
   helpText: {
     fontSize: 14,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
 });

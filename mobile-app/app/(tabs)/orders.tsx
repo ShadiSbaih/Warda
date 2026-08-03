@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   Alert,
   Image,
@@ -105,7 +106,7 @@ export default function OrdersScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#FDF6F9" />
+      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.pureWhite} />
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         {/* Header */}
         <View style={styles.header}>
@@ -118,7 +119,7 @@ export default function OrdersScreen() {
             style={styles.notifBtn}
             onPress={() => router.push("/notifications")}
           >
-            <Feather name="bell" size={20} color="#1E1E2D" />
+            <Feather name="bell" size={20} color={RainbowColors.inkBlack} />
           </TouchableOpacity>
         </View>
 
@@ -163,7 +164,7 @@ export default function OrdersScreen() {
                 <Ionicons
                   name={activeTab === "active" ? "gift-outline" : "file-tray-outline"}
                   size={42}
-                  color="#D4588A"
+                  color={RainbowColors.tangerine}
                 />
               </View>
               <Text style={styles.emptyTitle}>
@@ -182,7 +183,7 @@ export default function OrdersScreen() {
                 onPress={() => router.push("/(tabs)/menu")}
               >
                 <Text style={styles.browseBtnText}>Explore Gift Catalog</Text>
-                <Feather name="arrow-right" size={16} color="#FFFFFF" />
+                <Feather name="arrow-right" size={16} color={RainbowColors.pureWhite} />
               </TouchableOpacity>
             </View>
           ) : (
@@ -278,7 +279,7 @@ export default function OrdersScreen() {
 
                   {/* Destination Info */}
                   <View style={styles.destRow}>
-                    <Ionicons name="location-outline" size={15} color="#888" />
+                    <Ionicons name="location-outline" size={15} color={RainbowColors.stone} />
                     <Text numberOfLines={1} style={styles.destText}>
                       {order.address}
                     </Text>
@@ -304,7 +305,7 @@ export default function OrdersScreen() {
                               })
                             }
                           >
-                            <Feather name="navigation" size={14} color="#FFFFFF" />
+                            <Feather name="navigation" size={14} color={RainbowColors.pureWhite} />
                             <Text style={styles.trackBtnText}>Track GPS</Text>
                           </TouchableOpacity>
 
@@ -321,7 +322,7 @@ export default function OrdersScreen() {
                             <Ionicons
                               name="chatbubble-ellipses-outline"
                               size={16}
-                              color="#1E1E2D"
+                              color={RainbowColors.inkBlack}
                             />
                           </TouchableOpacity>
                         </>
@@ -332,7 +333,7 @@ export default function OrdersScreen() {
                             activeOpacity={0.88}
                             onPress={() => handleReorder(order)}
                           >
-                            <Feather name="repeat" size={14} color="#D4588A" />
+                            <Feather name="repeat" size={14} color={RainbowColors.tangerine} />
                             <Text style={styles.reorderText}>Re-order</Text>
                           </TouchableOpacity>
 
@@ -346,7 +347,7 @@ export default function OrdersScreen() {
                               })
                             }
                           >
-                            <Feather name="star" size={14} color="#FFFFFF" />
+                            <Feather name="star" size={14} color={RainbowColors.pureWhite} />
                             <Text style={styles.reviewBtnText}>Review</Text>
                           </TouchableOpacity>
                         </>
@@ -356,7 +357,7 @@ export default function OrdersScreen() {
                           activeOpacity={0.88}
                           onPress={() => handleReorder(order)}
                         >
-                          <Feather name="repeat" size={14} color="#D4588A" />
+                          <Feather name="repeat" size={14} color={RainbowColors.tangerine} />
                           <Text style={styles.reorderText}>Re-order</Text>
                         </TouchableOpacity>
                       )}
@@ -375,7 +376,7 @@ export default function OrdersScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FDF6F9",
+    backgroundColor: RainbowColors.pureWhite,
   },
   header: {
     flexDirection: "row",
@@ -387,29 +388,29 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 24,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   headerSub: {
     fontSize: 13,
-    color: "#888",
+    color: RainbowColors.stone,
     marginTop: 2,
   },
   notifBtn: {
     width: 42,
     height: 42,
-    borderRadius: 21,
-    backgroundColor: "#FFFFFF",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 6,
     elevation: 2,
   },
   tabBar: {
     flexDirection: "row",
-    backgroundColor: "#F3F3F7",
-    borderRadius: 16,
+    backgroundColor: RainbowColors.cloudSurface,
+    borderRadius: RainbowRadii.cards,
     marginHorizontal: 20,
     marginTop: 8,
     marginBottom: 14,
@@ -422,19 +423,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   tabBtnActive: {
-    backgroundColor: "#FFFFFF",
-    shadowColor: "#000",
-    shadowOpacity: 0.06,
+    backgroundColor: RainbowColors.pureWhite,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 2,
   },
   tabText: {
     fontSize: 13.5,
     fontWeight: "600",
-    color: "#888",
+    color: RainbowColors.stone,
   },
   tabTextActive: {
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     fontWeight: "800",
   },
   scrollContent: {
@@ -446,16 +447,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 60,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 24,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     paddingHorizontal: 24,
     marginTop: 10,
   },
   emptyIconCircle: {
     width: 80,
     height: 80,
-    borderRadius: 40,
-    backgroundColor: "#FFF0F5",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 16,
@@ -463,12 +464,12 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 18,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     marginBottom: 6,
   },
   emptyDesc: {
     fontSize: 13.5,
-    color: "#888",
+    color: RainbowColors.stone,
     textAlign: "center",
     lineHeight: 20,
     marginBottom: 20,
@@ -476,27 +477,27 @@ const styles = StyleSheet.create({
   browseBtn: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     paddingHorizontal: 20,
     paddingVertical: 12,
-    borderRadius: 20,
+    borderRadius: RainbowRadii.pills,
     gap: 8,
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 4,
   },
   browseBtnText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 14,
     fontWeight: "700",
   },
   orderCard: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 22,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     padding: 16,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 4 },
     elevation: 3,
@@ -506,17 +507,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "flex-start",
     borderBottomWidth: 1,
-    borderBottomColor: "#F5F5F7",
+    borderBottomColor: RainbowColors.cloudSurface,
     paddingBottom: 12,
   },
   orderId: {
     fontSize: 15,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   orderDate: {
     fontSize: 12,
-    color: "#888",
+    color: RainbowColors.stone,
     marginTop: 2,
   },
   statusPill: {
@@ -571,36 +572,36 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 10,
-    backgroundColor: "#FCF6F8",
+    backgroundColor: RainbowColors.cloudSurface,
   },
   itemName: {
     fontSize: 13.5,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   itemMeta: {
     fontSize: 11.5,
-    color: "#888",
+    color: RainbowColors.stone,
     marginTop: 2,
   },
   itemPrice: {
     fontSize: 13.5,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   destRow: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#F9F9FB",
+    backgroundColor: RainbowColors.cloudSurface,
     paddingHorizontal: 10,
     paddingVertical: 6,
-    borderRadius: 10,
+    borderRadius: RainbowRadii.cards,
     gap: 6,
     marginBottom: 12,
   },
   destText: {
     fontSize: 12,
-    color: "#666",
+    color: RainbowColors.stone,
     flex: 1,
   },
   cardFooter: {
@@ -608,17 +609,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderTopWidth: 1,
-    borderTopColor: "#F5F5F7",
+    borderTopColor: RainbowColors.cloudSurface,
     paddingTop: 12,
   },
   totalLabel: {
     fontSize: 11,
-    color: "#888",
+    color: RainbowColors.stone,
   },
   totalPrice: {
     fontSize: 18,
     fontWeight: "900",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
   actionsRow: {
     flexDirection: "row",
@@ -628,42 +629,42 @@ const styles = StyleSheet.create({
   trackBtn: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: 16,
+    borderRadius: RainbowRadii.pills,
     gap: 6,
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.25,
     shadowRadius: 6,
     elevation: 3,
   },
   trackBtnText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 12.5,
     fontWeight: "700",
   },
   chatBtn: {
     width: 36,
     height: 36,
-    borderRadius: 18,
-    backgroundColor: "#F3F3F7",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
   },
   reorderBtn: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
     paddingHorizontal: 12,
     paddingVertical: 8,
-    borderRadius: 16,
+    borderRadius: RainbowRadii.pills,
     borderWidth: 1,
-    borderColor: "#F8D7E8",
+    borderColor: RainbowColors.cloudSurface,
     gap: 6,
   },
   reorderText: {
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     fontSize: 12.5,
     fontWeight: "700",
   },
@@ -673,11 +674,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFA726",
     paddingHorizontal: 12,
     paddingVertical: 8,
-    borderRadius: 16,
+    borderRadius: RainbowRadii.pills,
     gap: 6,
   },
   reviewBtnText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 12.5,
     fontWeight: "700",
   },

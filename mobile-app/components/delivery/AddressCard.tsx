@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     StyleSheet,
     Text,
@@ -7,8 +8,14 @@ import {
 } from "react-native";
 
 import { Feather } from "@expo/vector-icons";
+import { ActivityIndicator } from "react-native";
 
-export default function AddressCard() {
+interface AddressCardProps {
+  address?: string;
+  isLoading?: boolean;
+}
+
+export default function AddressCard({ address = "Loading...", isLoading = false }: AddressCardProps) {
   return (
     <View style={styles.container}>
       <View style={styles.left}>
@@ -20,14 +27,18 @@ export default function AddressCard() {
           />
         </View>
 
-        <View>
+        <View style={{ flex: 1, paddingRight: 16 }}>
           <Text style={styles.label}>
             Address
           </Text>
 
-          <Text style={styles.address}>
-            King Fahd Road, Riyadh
-          </Text>
+          {isLoading ? (
+            <ActivityIndicator style={{ alignSelf: "flex-start", marginTop: 4 }} size="small" color={RainbowColors.tangerine} />
+          ) : (
+            <Text style={styles.address} numberOfLines={2}>
+              {address}
+            </Text>
+          )}
         </View>
       </View>
 
@@ -48,34 +59,35 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 20,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     marginHorizontal: 20,
     marginTop: 14,
     borderRadius: 22,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
+    shadowColor: RainbowColors.tangerine,
+    shadowOpacity: 0.15,
+    shadowRadius: 18,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 3,
+    elevation: 5,
   },
 
   left: {
     flexDirection: "row",
     alignItems: "center",
+    flex: 1,
   },
 
   icon: {
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 14,
   },
 
   label: {
-    color: "#8E8292",
+    color: RainbowColors.stone,
     fontSize: 13,
     fontWeight: "500",
   },
@@ -84,6 +96,6 @@ const styles = StyleSheet.create({
     marginTop: 3,
     fontSize: 16,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
 });

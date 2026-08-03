@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../constants/Colors";
 import {
   ScrollView,
   StatusBar,
@@ -24,7 +25,7 @@ export default function TrackingScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#FDF6F9" />
+      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.pureWhite} />
 
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         {/* Top Header */}
@@ -33,22 +34,12 @@ export default function TrackingScreen() {
             style={styles.closeBtn}
             onPress={() => router.replace("/(tabs)/home")}
           >
-            <Feather name="x" size={22} color="#1E1E2D" />
+            <Feather name="x" size={22} color={RainbowColors.inkBlack} />
           </TouchableOpacity>
 
           <Text style={styles.headerTitle}>Order Status</Text>
 
-          <TouchableOpacity
-            style={styles.chatBtn}
-            onPress={() =>
-              router.push({
-                pathname: "/chat",
-                params: { orderId: activeOrder?.id },
-              })
-            }
-          >
-            <Ionicons name="chatbubble-ellipses-outline" size={20} color="#D4588A" />
-          </TouchableOpacity>
+
         </View>
 
         <ScrollView
@@ -79,12 +70,12 @@ export default function TrackingScreen() {
             {/* Progress Stepper */}
             <View style={styles.stepperContainer}>
               <View style={styles.stepCircleActive}>
-                <Feather name="check" size={14} color="#FFFFFF" />
+                <Feather name="check" size={14} color={RainbowColors.pureWhite} />
               </View>
               <View style={styles.stepLineActive} />
 
               <View style={styles.stepCircleActive}>
-                <Feather name="package" size={14} color="#FFFFFF" />
+                <Feather name="package" size={14} color={RainbowColors.pureWhite} />
               </View>
               <View
                 style={[
@@ -105,8 +96,8 @@ export default function TrackingScreen() {
                   size={16}
                   color={
                     activeOrder?.status === "on_the_way" || activeOrder?.status === "delivered"
-                      ? "#FFFFFF"
-                      : "#D4588A"
+                      ? RainbowColors.pureWhite
+                      : RainbowColors.tangerine
                   }
                 />
               </View>
@@ -126,7 +117,7 @@ export default function TrackingScreen() {
                 <Feather
                   name="home"
                   size={14}
-                  color={activeOrder?.status === "delivered" ? "#FFFFFF" : "#D4588A"}
+                  color={activeOrder?.status === "delivered" ? RainbowColors.pureWhite : RainbowColors.tangerine}
                 />
               </View>
             </View>
@@ -166,7 +157,7 @@ export default function TrackingScreen() {
                   })
                 }
               >
-                <Feather name="navigation" size={16} color="#FFFFFF" />
+                <Feather name="navigation" size={16} color={RainbowColors.pureWhite} />
                 <Text style={styles.gpsMapBtnText}>Open Live GPS Map</Text>
               </TouchableOpacity>
 
@@ -180,7 +171,7 @@ export default function TrackingScreen() {
                   })
                 }
               >
-                <Ionicons name="chatbubbles" size={18} color="#D4588A" />
+                <Ionicons name="chatbubbles" size={18} color={RainbowColors.tangerine} />
               </TouchableOpacity>
             </View>
           </View>
@@ -191,7 +182,7 @@ export default function TrackingScreen() {
               <Text style={styles.detailsTitle}>Delivery Summary</Text>
 
               <View style={styles.infoRow}>
-                <Ionicons name="location" size={18} color="#D4588A" />
+                <Ionicons name="location" size={18} color={RainbowColors.tangerine} />
                 <View style={{ flex: 1, marginLeft: 10 }}>
                   <Text style={styles.infoTitle}>Destination</Text>
                   <Text style={styles.infoSubtitle}>{activeOrder.address}</Text>
@@ -201,7 +192,7 @@ export default function TrackingScreen() {
               <View style={styles.divider} />
 
               <View style={styles.infoRow}>
-                <MaterialCommunityIcons name="card-text" size={18} color="#D4588A" />
+                <MaterialCommunityIcons name="card-text" size={18} color={RainbowColors.tangerine} />
                 <View style={{ flex: 1, marginLeft: 10 }}>
                   <Text style={styles.infoTitle}>Recipient & Message</Text>
                   <Text style={styles.infoSubtitle}>
@@ -227,7 +218,7 @@ export default function TrackingScreen() {
             activeOpacity={0.9}
             onPress={() => router.replace("/(tabs)/home")}
           >
-            <Feather name="arrow-left" size={18} color="#666" />
+            <Feather name="arrow-left" size={18} color={RainbowColors.stone} />
             <Text style={styles.homeBtnText}>Return to Home</Text>
           </TouchableOpacity>
         </ScrollView>
@@ -239,7 +230,7 @@ export default function TrackingScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FDF6F9",
+    backgroundColor: RainbowColors.pureWhite,
   },
   header: {
     flexDirection: "row",
@@ -251,25 +242,26 @@ const styles = StyleSheet.create({
   closeBtn: {
     width: 42,
     height: 42,
-    borderRadius: 21,
-    backgroundColor: "#FFFFFF",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 6,
     elevation: 2,
   },
   headerTitle: {
     fontSize: 18,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
+    marginInline:'auto'
   },
   chatBtn: {
     width: 42,
     height: 42,
-    borderRadius: 21,
-    backgroundColor: "#FFF0F5",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -279,11 +271,11 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   statusHero: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 24,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     padding: 20,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 12,
     elevation: 3,
   },
@@ -312,18 +304,18 @@ const styles = StyleSheet.create({
   heroTitle: {
     fontSize: 22,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     lineHeight: 28,
   },
   etaText: {
     fontSize: 14,
-    color: "#777",
+    color: RainbowColors.stone,
     marginTop: 6,
     marginBottom: 20,
   },
   etaHighlight: {
     fontWeight: "800",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
   stepperContainer: {
     flexDirection: "row",
@@ -333,23 +325,23 @@ const styles = StyleSheet.create({
   stepCircleActive: {
     width: 32,
     height: 32,
-    borderRadius: 16,
-    backgroundColor: "#D4588A",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.tangerine,
     justifyContent: "center",
     alignItems: "center",
   },
   stepCircleInactive: {
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
     borderWidth: 1.5,
-    borderColor: "#F8D7E8",
+    borderColor: RainbowColors.cloudSurface,
   },
   stepLineActive: {
     flex: 1,
     height: 3,
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
   },
   stepLineInactive: {
-    backgroundColor: "#F0EEF2",
+    backgroundColor: RainbowColors.cloudSurface,
   },
   stepLabelsRow: {
     flexDirection: "row",
@@ -360,14 +352,14 @@ const styles = StyleSheet.create({
   stepLabel: {
     fontSize: 11,
     fontWeight: "600",
-    color: "#888",
+    color: RainbowColors.stone,
   },
   courierCard: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 22,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     padding: 18,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 10,
     elevation: 3,
   },
@@ -379,26 +371,26 @@ const styles = StyleSheet.create({
   courierAvatar: {
     width: 50,
     height: 50,
-    borderRadius: 25,
-    backgroundColor: "#FFF0F5",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: "#F8D7E8",
+    borderColor: RainbowColors.cloudSurface,
   },
   avatarLetter: {
     fontSize: 22,
     fontWeight: "800",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
   courierName: {
     fontSize: 16,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   courierRole: {
     fontSize: 12,
-    color: "#888",
+    color: RainbowColors.stone,
     marginTop: 2,
   },
   ratingRow: {
@@ -409,7 +401,7 @@ const styles = StyleSheet.create({
   },
   ratingText: {
     fontSize: 11.5,
-    color: "#555",
+    color: RainbowColors.stone,
     fontWeight: "600",
   },
   courierActions: {
@@ -419,46 +411,46 @@ const styles = StyleSheet.create({
   },
   gpsMapBtn: {
     flex: 1,
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     height: 48,
-    borderRadius: 24,
+    borderRadius: RainbowRadii.pills,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     gap: 8,
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 3,
   },
   gpsMapBtnText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 14,
     fontWeight: "700",
   },
   callCourierBtn: {
     width: 48,
     height: 48,
-    borderRadius: 24,
-    backgroundColor: "#FFF0F5",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#F8D7E8",
+    borderColor: RainbowColors.cloudSurface,
   },
   detailsCard: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 22,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     padding: 18,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.06,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 10,
     elevation: 2,
   },
   detailsTitle: {
     fontSize: 16,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     marginBottom: 12,
   },
   infoRow: {
@@ -468,17 +460,17 @@ const styles = StyleSheet.create({
   infoTitle: {
     fontSize: 13,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   infoSubtitle: {
     fontSize: 12,
-    color: "#777",
+    color: RainbowColors.stone,
     marginTop: 2,
     lineHeight: 18,
   },
   divider: {
     height: 1,
-    backgroundColor: "#F3F3F5",
+    backgroundColor: RainbowColors.cloudSurface,
     marginVertical: 12,
   },
   orderTotalRow: {
@@ -489,13 +481,13 @@ const styles = StyleSheet.create({
   },
   orderTotalLabel: {
     fontSize: 13.5,
-    color: "#666",
+    color: RainbowColors.stone,
     fontWeight: "600",
   },
   orderTotalPrice: {
     fontSize: 18,
     fontWeight: "900",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
   homeBtn: {
     flexDirection: "row",
@@ -507,6 +499,6 @@ const styles = StyleSheet.create({
   homeBtnText: {
     fontSize: 14,
     fontWeight: "700",
-    color: "#666",
+    color: RainbowColors.stone,
   },
 });

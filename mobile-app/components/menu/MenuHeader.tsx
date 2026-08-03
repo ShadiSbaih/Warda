@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   StyleSheet,
   Text,
@@ -28,15 +29,15 @@ export default function MenuHeader({ onSearchPress }: Props) {
           activeOpacity={0.8}
           onPress={onSearchPress || (() => router.push("/(tabs)/search"))}
         >
-          <Feather name="search" size={20} color="#1E1E2D" />
+          <Feather name="search" size={20} color={RainbowColors.inkBlack} />
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.actionBtn, { backgroundColor: "#FFF0F5" }]}
+          style={[styles.actionBtn, { backgroundColor: RainbowColors.cloudSurface }]}
           activeOpacity={0.8}
           onPress={() => router.push("/(tabs)/cart")}
         >
-          <Feather name="shopping-bag" size={20} color="#D4588A" />
+          <Feather name="shopping-bag" size={20} color={RainbowColors.tangerine} />
         </TouchableOpacity>
       </View>
     </View>
@@ -54,11 +55,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   subtitle: {
     fontSize: 13,
-    color: "#888",
+    color: RainbowColors.stone,
     marginTop: 2,
   },
   actions: {
@@ -69,12 +70,12 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
+    shadowColor: RainbowColors.tangerine,
+    shadowOpacity: 0.15,
     shadowRadius: 8,
-    elevation: 3,
+    elevation: 5,
   },
 });

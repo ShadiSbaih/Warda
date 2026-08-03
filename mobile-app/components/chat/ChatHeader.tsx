@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     StyleSheet,
     Text,
@@ -21,7 +22,7 @@ export default function ChatHeader() {
         <Feather
           name="arrow-left"
           size={22}
-          color="#222"
+          color={RainbowColors.inkBlack}
         />
       </TouchableOpacity>
 
@@ -33,7 +34,7 @@ export default function ChatHeader() {
         <Feather
           name="phone"
           size={22}
-          color="#222"
+          color={RainbowColors.inkBlack}
         />
       </TouchableOpacity>
     </View>
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
 
     borderRadius: 24,
 
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
 
     justifyContent: "center",
 
@@ -66,9 +67,9 @@ const styles = StyleSheet.create({
 
     shadowColor: "#000",
 
-    shadowOpacity: 0.08,
+    shadowOpacity: 0.15,
 
-    shadowRadius: 10,
+    shadowRadius: 16,
 
     shadowOffset: {
       width: 0,
@@ -83,6 +84,6 @@ const styles = StyleSheet.create({
 
     fontWeight: "700",
 
-    color: "#222",
+    color: RainbowColors.inkBlack,
   },
 });

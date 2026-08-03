@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     StyleSheet,
     Text,
@@ -23,7 +24,7 @@ export default function CheckoutHeader() {
         <Feather
           name="arrow-left"
           size={22}
-          color="#222"
+          color={RainbowColors.inkBlack}
         />
       </TouchableOpacity>
 
@@ -39,7 +40,7 @@ export default function CheckoutHeader() {
         <Feather
           name="edit-2"
           size={20}
-          color="#222"
+          color={RainbowColors.inkBlack}
         />
       </TouchableOpacity>
     </View>
@@ -64,14 +65,14 @@ const styles = StyleSheet.create({
 
     borderRadius: 24,
 
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
 
     justifyContent: "center",
     alignItems: "center",
 
     shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
     shadowOffset: {
       width: 0,
       height: 4,
@@ -83,6 +84,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "700",
-    color: "#222",
+    color: RainbowColors.inkBlack,
   },
 });

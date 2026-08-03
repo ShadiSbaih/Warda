@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   StyleSheet,
   Text,
@@ -22,28 +23,28 @@ export default function TrackingProgress() {
       <View style={styles.progress}>
         {/* Step 1: Placed */}
         <View style={styles.activeCircle}>
-          <Feather name="gift" size={14} color="#FFFFFF" />
+          <Feather name="gift" size={14} color={RainbowColors.pureWhite} />
         </View>
 
         <View style={styles.lineActive} />
 
         {/* Step 2: Preparing bouquet */}
         <View style={styles.activeCircle}>
-          <Ionicons name="sparkles" size={13} color="#FFFFFF" />
+          <Ionicons name="sparkles" size={13} color={RainbowColors.pureWhite} />
         </View>
 
         <View style={styles.lineActive} />
 
         {/* Step 3: On the way */}
         <View style={styles.activeCirclePulse}>
-          <MaterialCommunityIcons name="moped" size={16} color="#FFFFFF" />
+          <MaterialCommunityIcons name="moped" size={16} color={RainbowColors.pureWhite} />
         </View>
 
         <View style={styles.lineInactive} />
 
         {/* Step 4: Delivered */}
         <View style={styles.inactiveCircle}>
-          <Feather name="home" size={14} color="#B0A8B4" />
+          <Feather name="home" size={14} color={RainbowColors.stone} />
         </View>
       </View>
 
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 24,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   etaBadge: {
     flexDirection: "row",
@@ -88,25 +89,25 @@ const styles = StyleSheet.create({
   activeCircle: {
     width: 36,
     height: 36,
-    borderRadius: 18,
-    backgroundColor: "#D4588A",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.tangerine,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.3,
     shadowRadius: 6,
-    elevation: 3,
+    elevation: 5,
   },
   activeCirclePulse: {
     width: 40,
     height: 40,
-    borderRadius: 20,
-    backgroundColor: "#D4588A",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.tangerine,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 2.5,
-    borderColor: "#FFF0F5",
-    shadowColor: "#D4588A",
+    borderColor: RainbowColors.cloudSurface,
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.45,
     shadowRadius: 8,
     elevation: 5,
@@ -114,26 +115,26 @@ const styles = StyleSheet.create({
   inactiveCircle: {
     width: 36,
     height: 36,
-    borderRadius: 18,
-    backgroundColor: "#F3F2F5",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
   },
   lineActive: {
     flex: 1,
     height: 3,
-    backgroundColor: "#D4588A",
-    borderRadius: 2,
+    backgroundColor: RainbowColors.tangerine,
+    borderRadius: RainbowRadii.pills,
   },
   lineInactive: {
     flex: 1,
     height: 3,
-    backgroundColor: "#EBEAEF",
-    borderRadius: 2,
+    backgroundColor: RainbowColors.cloudSurface,
+    borderRadius: RainbowRadii.pills,
   },
   caption: {
     marginTop: 14,
-    color: "#7E7E8F",
+    color: RainbowColors.stone,
     fontSize: 13.5,
     lineHeight: 20,
   },

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   StyleSheet,
   Switch,
@@ -24,7 +25,7 @@ export default function AnonymousToggle({ onToggle }: Props) {
       {/* Left */}
       <View style={styles.left}>
         <View style={styles.iconWrap}>
-          <Feather name="eye-off" size={18} color="#D4588A" />
+          <Feather name="eye-off" size={18} color={RainbowColors.tangerine} />
         </View>
 
         <View style={styles.textBlock}>
@@ -42,7 +43,7 @@ export default function AnonymousToggle({ onToggle }: Props) {
         value={isAnonymous}
         onValueChange={handleToggle}
         trackColor={{ false: "#E0E0E0", true: "#F48FB1" }}
-        thumbColor={isAnonymous ? "#D4588A" : "#F5F5F5"}
+        thumbColor={isAnonymous ? RainbowColors.tangerine : "#F5F5F5"}
       />
     </View>
   );
@@ -52,17 +53,17 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
     marginVertical: 10,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderRadius: 18,
     padding: 16,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
+    shadowColor: RainbowColors.tangerine,
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
+    elevation: 6,
   },
 
   left: {

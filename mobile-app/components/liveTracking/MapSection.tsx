@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   Image,
   StyleSheet,
@@ -26,7 +27,7 @@ export default function MapSection() {
             { latitude: 24.7336, longitude: 46.6953 },
             { latitude: 24.7136, longitude: 46.6753 },
           ]}
-          strokeColor="#D4588A"
+          strokeColor={RainbowColors.tangerine}
           strokeWidth={4}
         />
         
@@ -34,7 +35,7 @@ export default function MapSection() {
           <View style={styles.courierMarker}>
             <View style={styles.courierPulse} />
             <View style={styles.courierIconBox}>
-              <MaterialCommunityIcons name="moped" size={22} color="#FFFFFF" />
+              <MaterialCommunityIcons name="moped" size={22} color={RainbowColors.pureWhite} />
             </View>
             <View style={styles.courierPill}>
               <View style={styles.activeDot} />
@@ -49,7 +50,7 @@ export default function MapSection() {
               <Text style={styles.destinationPillText}>Delivery Address</Text>
             </View>
             <View style={styles.destinationIconBox}>
-              <Ionicons name="location-sharp" size={26} color="#D4588A" />
+              <Ionicons name="location-sharp" size={26} color={RainbowColors.tangerine} />
             </View>
           </View>
         </Marker>
@@ -84,9 +85,9 @@ const styles = StyleSheet.create({
     width: 140,
     height: 5,
     borderRadius: 3,
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     transform: [{ rotate: "35deg" }],
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.5,
     shadowRadius: 6,
   },
@@ -97,9 +98,9 @@ const styles = StyleSheet.create({
     width: 110,
     height: 5,
     borderRadius: 3,
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     transform: [{ rotate: "-40deg" }],
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.5,
     shadowRadius: 6,
   },
@@ -110,9 +111,9 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     borderWidth: 2,
-    borderColor: "#FFFFFF",
+    borderColor: RainbowColors.pureWhite,
   },
   courierMarker: {
     alignItems: "center",
@@ -128,13 +129,13 @@ const styles = StyleSheet.create({
   courierIconBox: {
     width: 46,
     height: 46,
-    borderRadius: 23,
-    backgroundColor: "#D4588A",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.tangerine,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 3,
-    borderColor: "#FFFFFF",
-    shadowColor: "#D4588A",
+    borderColor: RainbowColors.pureWhite,
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.4,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 4 },
@@ -145,14 +146,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 5,
     marginTop: 6,
-    backgroundColor: "#1E1E2D",
+    backgroundColor: RainbowColors.inkBlack,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    borderRadius: 12,
+    borderRadius: RainbowRadii.pills,
     shadowColor: "#000",
     shadowOpacity: 0.15,
     shadowRadius: 6,
-    elevation: 4,
+    elevation: 6,
   },
   activeDot: {
     width: 6,
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#10B981",
   },
   courierPillText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 11,
     fontWeight: "700",
   },
@@ -169,25 +170,25 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   destinationPill: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 10,
+    borderRadius: RainbowRadii.pills,
     marginBottom: 2,
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 5,
-    elevation: 3,
+    elevation: 5,
     borderWidth: 1,
-    borderColor: "#F0EEF2",
+    borderColor: RainbowColors.cloudSurface,
   },
   destinationPillText: {
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     fontSize: 11,
     fontWeight: "700",
   },
   destinationIconBox: {
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.3,
     shadowRadius: 6,
   },

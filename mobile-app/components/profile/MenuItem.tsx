@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
@@ -20,9 +21,9 @@ export default function MenuItem({
   title,
   subtitle,
   badge,
-  badgeColor = "#D4588A",
-  iconBgColor = "#FFF0F5",
-  iconColor = "#D4588A",
+  badgeColor = RainbowColors.hotPink,
+  iconBgColor = RainbowColors.cloudSurface,
+  iconColor = RainbowColors.tangerine,
   isDestructive = false,
   onPress,
   showDivider = true,
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
   iconBox: {
     width: 40,
     height: 40,
-    borderRadius: 12,
+    borderRadius: RainbowRadii.pills,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -92,11 +93,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 15,
     fontWeight: "600",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   subtitle: {
     fontSize: 12,
-    color: "#888",
+    color: RainbowColors.stone,
     marginTop: 2,
   },
   badge: {
@@ -106,7 +107,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   badgeText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 11,
     fontWeight: "700",
   },

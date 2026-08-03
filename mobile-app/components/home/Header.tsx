@@ -1,10 +1,12 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
@@ -20,10 +22,18 @@ export default function Header() {
         onPress={() => router.push("/delivery-address")}
       >
         <View style={styles.iconButton}>
+          {/* 3D gloss overlay */}
+          <LinearGradient
+            colors={["rgba(255,255,255,0.7)", "rgba(255,255,255,0)"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            style={StyleSheet.absoluteFillObject}
+            pointerEvents="none"
+          />
           <Ionicons
             name="location-outline"
             size={22}
-            color="#D4588A"
+            color={RainbowColors.tangerine}
           />
         </View>
 
@@ -46,10 +56,18 @@ export default function Header() {
         activeOpacity={0.8}
         onPress={() => router.push("/notifications")}
       >
+        {/* 3D gloss overlay */}
+        <LinearGradient
+          colors={["rgba(255,255,255,0.7)", "rgba(255,255,255,0)"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 1 }}
+          style={StyleSheet.absoluteFillObject}
+          pointerEvents="none"
+        />
         <Ionicons
           name="notifications-outline"
           size={22}
-          color="#1E1E2D"
+          color={RainbowColors.inkBlack}
         />
         <View style={styles.dot} />
       </TouchableOpacity>
@@ -74,14 +92,16 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#D4588A",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.08,
-    shadowRadius: 6,
-    elevation: 3,
+    overflow: "hidden",
+    // 3D lifted pill shadow
+    shadowColor: "#7a7a8c",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.14,
+    shadowRadius: 10,
+    elevation: 4,
   },
   locationContainer: {
     marginLeft: 10,
@@ -99,7 +119,7 @@ const styles = StyleSheet.create({
   address: {
     fontSize: 16,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     marginRight: 4,
   },
   dot: {
@@ -109,8 +129,8 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.hotPink,
     borderWidth: 1.5,
-    borderColor: "#FFFFFF",
+    borderColor: RainbowColors.pureWhite,
   },
 });

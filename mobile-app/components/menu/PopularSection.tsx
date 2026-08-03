@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   FlatList,
   StyleSheet,
@@ -6,7 +7,7 @@ import {
   View,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { ALL_PRODUCTS } from "../../data/productsData";
+import { productsAPI } from "../../services/api";
 import MenuCard from "./MenuCard";
 
 interface Props {
@@ -16,9 +17,19 @@ interface Props {
 export default function PopularSection({ selectedCategory = "All" }: Props) {
   const router = useRouter();
 
+  const [products, setProducts] = React.useState<any[]>([]);
+
+  React.useEffect(() => {
+    productsAPI.getProducts().then((res) => {
+      if (res.success && res.products) {
+        setProducts(res.products);
+      }
+    }).catch(() => {});
+  }, []);
+
   const filtered = selectedCategory === "All"
-    ? ALL_PRODUCTS
-    : ALL_PRODUCTS.filter((p) => p.category === selectedCategory);
+    ? products
+    : products.filter((p) => p.category === selectedCategory);
 
   return (
     <View style={styles.container}>
@@ -33,7 +44,7 @@ export default function PopularSection({ selectedCategory = "All" }: Props) {
 
       <FlatList
         data={filtered}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => (item._id || item.id).toString()}
         numColumns={2}
         scrollEnabled={false}
         columnWrapperStyle={styles.row}
@@ -42,7 +53,7 @@ export default function PopularSection({ selectedCategory = "All" }: Props) {
         renderItem={({ item }) => (
           <MenuCard
             item={item}
-            onPress={() => router.push(`/details/${item.id}` as any)}
+            onPress={() => router.push(`/details/${item._id || item.id}` as any)}
           />
         )}
       />
@@ -64,11 +75,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   countText: {
     fontSize: 13,
-    color: "#888",
+    color: RainbowColors.stone,
     fontWeight: "600",
   },
   list: {

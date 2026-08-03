@@ -1,10 +1,12 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   Image,
   StyleSheet,
   Text,
   View,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function DeliverySummaryCard() {
@@ -13,7 +15,7 @@ export default function DeliverySummaryCard() {
       <View style={styles.topRow}>
         <View style={styles.left}>
           <View style={styles.logoBadge}>
-            <Ionicons name="sparkles" size={18} color="#D4588A" />
+            <Ionicons name="sparkles" size={18} color={RainbowColors.tangerine} />
           </View>
 
           <Text style={styles.store}>Warda Luxury Gifts</Text>
@@ -40,14 +42,14 @@ const styles = StyleSheet.create({
   card: {
     marginHorizontal: 20,
     marginTop: 20,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderRadius: 24,
     padding: 20,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
-    shadowRadius: 14,
+    shadowColor: RainbowColors.tangerine,
+    shadowOpacity: 0.15,
+    shadowRadius: 20,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
+    elevation: 6,
     position: "relative",
   },
   topRow: {
@@ -63,32 +65,32 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 10,
     borderWidth: 1,
-    borderColor: "#F8D7E8",
+    borderColor: RainbowColors.cloudSurface,
   },
   store: {
     fontSize: 16,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   badge: {
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 14,
   },
   badgeText: {
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     fontSize: 12,
     fontWeight: "700",
   },
   label: {
     marginTop: 18,
-    color: "#8E8292",
+    color: RainbowColors.stone,
     fontSize: 14,
     fontWeight: "500",
   },
@@ -96,7 +98,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontSize: 28,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   gift: {
     position: "absolute",

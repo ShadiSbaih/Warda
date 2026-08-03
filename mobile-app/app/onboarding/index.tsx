@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   Dimensions,
   Image,
@@ -64,7 +65,7 @@ export default function OnboardingScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#FDF6F9" />
+      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.cloudSurface} />
       <SafeAreaView style={styles.container}>
         {/* Header Skip */}
         <View style={styles.header}>
@@ -121,7 +122,7 @@ export default function OnboardingScreen() {
             <Text style={styles.nextBtnText}>
               {currentSlide === SLIDES.length - 1 ? "Get Started" : "Continue"}
             </Text>
-            <Feather name="arrow-right" size={20} color="#FFFFFF" />
+            <Feather name="arrow-right" size={20} color={RainbowColors.pureWhite} />
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -132,7 +133,7 @@ export default function OnboardingScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FDF6F9",
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "space-between",
   },
   header: {
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
   logoText: {
     fontSize: 22,
     fontWeight: "900",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     letterSpacing: 2,
   },
   logoSub: {
@@ -172,16 +173,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
   },
   tagBadge: {
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
     paddingHorizontal: 14,
     paddingVertical: 6,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: "#F8D7E8",
+    borderColor: RainbowColors.cloudSurface,
     marginBottom: 20,
   },
   tagText: {
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     fontSize: 12,
     fontWeight: "700",
     textTransform: "uppercase",
@@ -190,11 +191,11 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: width * 0.75,
     height: width * 0.75,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderRadius: (width * 0.75) / 2,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.15,
     shadowRadius: 20,
     shadowOffset: { width: 0, height: 8 },
@@ -208,13 +209,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     textAlign: "center",
     marginBottom: 12,
   },
   subtitle: {
     fontSize: 15,
-    color: "#7E7E8F",
+    color: RainbowColors.stone,
     textAlign: "center",
     lineHeight: 23,
   },
@@ -237,24 +238,24 @@ const styles = StyleSheet.create({
   },
   activeDot: {
     width: 28,
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
   },
   nextBtn: {
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     height: 58,
     borderRadius: 29,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     gap: 10,
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.35,
     shadowRadius: 12,
     shadowOffset: { width: 0, height: 6 },
     elevation: 6,
   },
   nextBtnText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 17,
     fontWeight: "700",
   },

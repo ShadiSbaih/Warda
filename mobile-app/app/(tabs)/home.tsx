@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   Image,
   ScrollView,
@@ -11,6 +12,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
 
 import Header from "../../components/home/Header";
 import SearchBar from "../../components/home/SearchBar";
@@ -23,7 +25,7 @@ export default function HomeScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#FDF6F9" />
+      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.pureWhite} />
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -34,29 +36,35 @@ export default function HomeScreen() {
 
           {/* Luxury Banner */}
           <TouchableOpacity
-            style={styles.banner}
             activeOpacity={0.92}
             onPress={() => router.push("/(tabs)/menu")}
           >
-            <View style={styles.bannerContent}>
-              <View style={styles.bannerBadge}>
-                <Text style={styles.bannerBadgeText}>Special Offer</Text>
+            <LinearGradient
+              colors={RainbowColors.cottonSkyColors}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.banner}
+            >
+              <View style={styles.bannerContent}>
+                <View style={styles.bannerBadge}>
+                  <Text style={styles.bannerBadgeText}>Special Offer</Text>
+                </View>
+                <Text style={styles.bannerTitle}>Send Fresh Roses Today</Text>
+                <Text style={styles.bannerSubtitle}>
+                  Get 20% off with promo code <Text style={{ fontWeight: "800", color: RainbowColors.inkBlack }}>WARDA20</Text>
+                </Text>
+                <View style={styles.bannerBtn}>
+                  <Text style={styles.bannerBtnText}>Shop Collection</Text>
+                  <Feather name="arrow-right" size={14} color={RainbowColors.tangerine} />
+                </View>
               </View>
-              <Text style={styles.bannerTitle}>Send Fresh Roses Today</Text>
-              <Text style={styles.bannerSubtitle}>
-                Get 20% off with promo code <Text style={{ fontWeight: "800", color: "#FFFFFF" }}>WARDA20</Text>
-              </Text>
-              <View style={styles.bannerBtn}>
-                <Text style={styles.bannerBtnText}>Shop Collection</Text>
-                <Feather name="arrow-right" size={14} color="#D4588A" />
-              </View>
-            </View>
 
-            <Image
-              source={require("../../assets/gifts/red-roses.png")}
-              style={styles.bannerImage}
-              resizeMode="contain"
-            />
+              <Image
+                source={require("../../assets/gifts/red-roses.png")}
+                style={styles.bannerImage}
+                resizeMode="contain"
+              />
+            </LinearGradient>
           </TouchableOpacity>
 
           {/* Search Bar */}
@@ -68,24 +76,6 @@ export default function HomeScreen() {
             onSelectCategory={setSelectedCategory}
           />
 
-          {/* Occasion Quick Jump */}
-          <View style={styles.occasionBar}>
-            <TouchableOpacity
-              style={styles.occasionPill}
-              onPress={() => router.push("/reminders")}
-            >
-              <Ionicons name="gift-outline" size={16} color="#D4588A" />
-              <Text style={styles.occasionText}>Occasion Reminders</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.occasionPill}
-              onPress={() => router.push("/(tabs)/favorites")}
-            >
-              <Ionicons name="heart-outline" size={16} color="#D4588A" />
-              <Text style={styles.occasionText}>Saved Wishlist</Text>
-            </TouchableOpacity>
-          </View>
 
           {/* Popular / Filtered Gifts */}
           <PopularSection selectedCategoryName={selectedCategory} />
@@ -98,7 +88,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FDF6F9",
+    backgroundColor: RainbowColors.pureWhite,
   },
   scrollContent: {
     paddingBottom: 120,
@@ -106,14 +96,13 @@ const styles = StyleSheet.create({
   banner: {
     marginHorizontal: 20,
     marginTop: 18,
-    backgroundColor: "#D4588A",
     borderRadius: 24,
     padding: 20,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.35,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.1,
     shadowRadius: 14,
     shadowOffset: { width: 0, height: 6 },
     elevation: 6,
@@ -132,7 +121,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   bannerBadgeText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 11,
     fontWeight: "700",
     textTransform: "uppercase",
@@ -141,17 +130,17 @@ const styles = StyleSheet.create({
   bannerTitle: {
     fontSize: 19,
     fontWeight: "800",
-    color: "#FFFFFF",
+    color: RainbowColors.inkBlack,
     lineHeight: 24,
   },
   bannerSubtitle: {
     fontSize: 12.5,
-    color: "rgba(255, 255, 255, 0.9)",
+    color: RainbowColors.stone,
     marginTop: 4,
     marginBottom: 12,
   },
   bannerBtn: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     alignSelf: "flex-start",
     flexDirection: "row",
     alignItems: "center",
@@ -161,7 +150,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   bannerBtnText: {
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     fontSize: 12.5,
     fontWeight: "700",
   },
@@ -178,7 +167,7 @@ const styles = StyleSheet.create({
   },
   occasionPill: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderRadius: 16,
     paddingVertical: 12,
     paddingHorizontal: 14,
@@ -186,14 +175,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 8,
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.inkBlack,
     shadowOpacity: 0.05,
     shadowRadius: 6,
     elevation: 2,
+    borderWidth: 1,
+    borderColor: RainbowColors.cloudSurface,
   },
   occasionText: {
     fontSize: 13,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
 });

@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     StyleSheet,
     Text,
@@ -21,7 +22,7 @@ export default function NotificationHeader() {
         <Feather
           name="arrow-left"
           size={22}
-          color="#222"
+          color={RainbowColors.inkBlack}
         />
       </TouchableOpacity>
 
@@ -50,16 +51,16 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
 
-    borderRadius: 24,
+    borderRadius: RainbowRadii.pills,
 
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
 
     justifyContent: "center",
     alignItems: "center",
 
-    shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
+    shadowColor: "#5a5a7a",
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
     shadowOffset: {
       width: 0,
       height: 4,
@@ -71,6 +72,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "700",
-    color: "#222",
+    color: RainbowColors.inkBlack,
   },
 });

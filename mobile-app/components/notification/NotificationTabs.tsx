@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     StyleSheet,
     Text,
@@ -59,12 +60,12 @@ const styles = StyleSheet.create({
   tab: {
     height: 40,
     paddingHorizontal: 18,
-    borderRadius: 20,
-    backgroundColor: "#FFFFFF",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     marginRight: 10,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.06,
+    shadowColor: "#5a5a7a",
+    shadowOpacity: 0.13,
     shadowRadius: 8,
     shadowOffset: {
       width: 0,
@@ -72,26 +73,26 @@ const styles = StyleSheet.create({
     },
     elevation: 2,
     borderWidth: 1,
-    borderColor: "#F3E5ED",
+    borderColor: RainbowColors.cloudSurface,
   },
 
   activeTab: {
-    backgroundColor: "#D4588A",
-    borderColor: "#D4588A",
-    shadowColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
+    borderColor: RainbowColors.tangerine,
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.3,
     shadowRadius: 8,
-    elevation: 4,
+    elevation: 6,
   },
 
   text: {
     fontSize: 13.5,
-    color: "#8E8292",
+    color: RainbowColors.stone,
     fontWeight: "600",
   },
 
   activeText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontWeight: "700",
   },
 });

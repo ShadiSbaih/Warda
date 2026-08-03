@@ -1,5 +1,7 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 interface StatsCardProps {
@@ -25,14 +27,22 @@ export default function StatsCard({
 }: StatsCardProps) {
   return (
     <View style={styles.container}>
+      {/* 3D inset gloss — top-edge white shimmer, inflated-card effect */}
+      <LinearGradient
+        colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.0)"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 0.55 }}
+        style={StyleSheet.absoluteFillObject}
+        pointerEvents="none"
+      />
       {/* Orders */}
       <TouchableOpacity
         style={styles.statItem}
         activeOpacity={0.75}
         onPress={onOrdersPress}
       >
-        <View style={[styles.iconCircle, { backgroundColor: "#FFF0F5" }]}>
-          <Feather name="package" size={20} color="#D4588A" />
+        <View style={[styles.iconCircle, { backgroundColor: RainbowColors.cloudSurface }]}>
+          <Feather name="package" size={20} color={RainbowColors.tangerine} />
         </View>
         <Text style={styles.statValue}>{ordersCount}</Text>
         <Text style={styles.statLabel}>Orders</Text>
@@ -46,8 +56,8 @@ export default function StatsCard({
         activeOpacity={0.75}
         onPress={onFavoritesPress}
       >
-        <View style={[styles.iconCircle, { backgroundColor: "#FEF2F2" }]}>
-          <Ionicons name="heart" size={20} color="#EF4444" />
+        <View style={[styles.iconCircle, { backgroundColor: RainbowColors.cloudSurface }]}>
+          <Ionicons name="heart" size={20} color={RainbowColors.hotPink} />
         </View>
         <Text style={styles.statValue}>{favoritesCount}</Text>
         <Text style={styles.statLabel}>Wishlist</Text>
@@ -61,8 +71,8 @@ export default function StatsCard({
         activeOpacity={0.75}
         onPress={onRemindersPress}
       >
-        <View style={[styles.iconCircle, { backgroundColor: "#EFF6FF" }]}>
-          <Feather name="bell" size={20} color="#3B82F6" />
+        <View style={[styles.iconCircle, { backgroundColor: RainbowColors.cloudSurface }]}>
+          <Feather name="bell" size={20} color={RainbowColors.tangerine} />
         </View>
         <Text style={styles.statValue}>{remindersCount}</Text>
         <Text style={styles.statLabel}>Reminders</Text>
@@ -76,8 +86,8 @@ export default function StatsCard({
         activeOpacity={0.75}
         onPress={onVouchersPress}
       >
-        <View style={[styles.iconCircle, { backgroundColor: "#ECFDF5" }]}>
-          <MaterialCommunityIcons name="ticket-percent" size={20} color="#10B981" />
+        <View style={[styles.iconCircle, { backgroundColor: RainbowColors.cloudSurface }]}>
+          <MaterialCommunityIcons name="ticket-percent" size={20} color={RainbowColors.hotPink} />
         </View>
         <Text style={styles.statValue}>{vouchersCount}</Text>
         <Text style={styles.statLabel}>Vouchers</Text>
@@ -88,8 +98,9 @@ export default function StatsCard({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 22,
+    overflow: "hidden",
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     paddingVertical: 18,
     paddingHorizontal: 10,
     marginHorizontal: 20,
@@ -97,11 +108,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
+    shadowColor: "#5a5a7a",
+    shadowOpacity: 0.12,
+    shadowRadius: 18,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 3,
+    elevation: 5,
   },
   statItem: {
     flex: 1,
@@ -110,7 +121,7 @@ const styles = StyleSheet.create({
   iconCircle: {
     width: 44,
     height: 44,
-    borderRadius: 22,
+    borderRadius: RainbowRadii.pills,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 8,
@@ -118,17 +129,17 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: 17,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   statLabel: {
     fontSize: 12,
-    color: "#888",
+    color: RainbowColors.stone,
     fontWeight: "600",
     marginTop: 2,
   },
   divider: {
     width: 1,
     height: 36,
-    backgroundColor: "#F0F0F2",
+    backgroundColor: RainbowColors.cloudSurface,
   },
 });

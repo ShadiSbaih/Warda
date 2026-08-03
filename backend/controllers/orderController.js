@@ -1,3 +1,4 @@
+// ... existing code ...
 const Order = require("../models/Order");
 
 // Create Order
@@ -27,6 +28,27 @@ exports.getOrders = async (req, res) => {
       user: req.user._id,
     })
       .populate("shop")
+      .populate("items.product")
+      .sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      orders,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// Get All Orders (Admin)
+exports.getAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.find()
+      .populate("shop")
+      .populate("user", "name email")
       .populate("items.product")
       .sort({ createdAt: -1 });
 

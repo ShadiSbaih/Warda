@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   Dimensions,
   Image,
@@ -7,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useFavorites } from "../../context/FavoritesContext";
 import { useCart } from "../../context/CartContext";
@@ -23,7 +25,7 @@ export default function MenuCard({ item, onPress }: Props) {
   const { isFavorite, toggleFavorite } = useFavorites();
   const { addToCart } = useCart();
 
-  const fav = isFavorite(item.id);
+  const fav = isFavorite(item._id || item.id);
 
   return (
     <TouchableOpacity
@@ -40,14 +42,14 @@ export default function MenuCard({ item, onPress }: Props) {
         <Ionicons
           name={fav ? "heart" : "heart-outline"}
           size={18}
-          color={fav ? "#D4588A" : "#888"}
+          color={fav ? RainbowColors.tangerine : RainbowColors.stone}
         />
       </TouchableOpacity>
 
       {/* Image */}
       <View style={styles.imageBox}>
         <Image
-          source={item.image}
+          source={{ uri: item.image }}
           resizeMode="contain"
           style={styles.image}
         />
@@ -77,7 +79,7 @@ export default function MenuCard({ item, onPress }: Props) {
           <Feather
             name="plus"
             size={18}
-            color="#FFFFFF"
+            color={RainbowColors.pureWhite}
           />
         </TouchableOpacity>
       </View>
@@ -88,15 +90,15 @@ export default function MenuCard({ item, onPress }: Props) {
 const styles = StyleSheet.create({
   card: {
     width: CARD_WIDTH,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderRadius: 22,
     padding: 12,
     marginBottom: 16,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
+    shadowColor: RainbowColors.tangerine,
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 3,
+    elevation: 5,
   },
   favorite: {
     position: "absolute",
@@ -110,7 +112,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     zIndex: 10,
     shadowColor: "#000",
-    shadowOpacity: 0.08,
+    shadowOpacity: 0.15,
     shadowRadius: 4,
     elevation: 2,
   },
@@ -118,7 +120,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 120,
     borderRadius: 16,
-    backgroundColor: "#FCF6F8",
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 4,
@@ -138,7 +140,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontSize: 15,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     lineHeight: 20,
     minHeight: 40,
   },
@@ -151,16 +153,16 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 17,
     fontWeight: "800",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
   addButton: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 2,

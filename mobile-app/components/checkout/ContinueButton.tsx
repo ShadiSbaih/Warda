@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   StyleSheet,
   Text,
@@ -24,7 +25,7 @@ export default function ContinueButton() {
       <Feather
         name="arrow-right"
         size={22}
-        color="#FFFFFF"
+        color={RainbowColors.pureWhite}
       />
     </TouchableOpacity>
   );
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
 
     borderRadius: 30,
 
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
 
     flexDirection: "row",
 
@@ -48,11 +49,11 @@ const styles = StyleSheet.create({
 
     alignItems: "center",
 
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
 
     shadowOpacity: 0.35,
 
-    shadowRadius: 12,
+    shadowRadius: 18,
 
     shadowOffset: {
       width: 0,
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
 
     fontSize: 18,
 

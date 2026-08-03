@@ -1,13 +1,16 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import { StyleSheet, Text, View } from "react-native";
 import { Tabs } from "expo-router";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useCart } from "../../context/CartContext";
 import { useOrders } from "../../context/OrdersContext";
+import { useAuth } from "../../context/AuthContext";
 
 export default function TabsLayout() {
   const { itemsCount } = useCart();
   const { activeOrder } = useOrders();
+  const { user } = useAuth();
 
   return (
     <Tabs
@@ -25,7 +28,7 @@ export default function TabsLayout() {
               <Ionicons
                 name={focused ? "home" : "home-outline"}
                 size={24}
-                color={focused ? "#D4588A" : "#8E8E93"}
+                color={focused ? RainbowColors.tangerine : RainbowColors.stone}
               />
             </View>
           ),
@@ -40,7 +43,7 @@ export default function TabsLayout() {
               <MaterialCommunityIcons
                 name={focused ? "flower-tulip" : "flower-tulip-outline"}
                 size={26}
-                color={focused ? "#D4588A" : "#8E8E93"}
+                color={focused ? RainbowColors.tangerine : RainbowColors.stone}
               />
             </View>
           ),
@@ -55,7 +58,7 @@ export default function TabsLayout() {
               <Feather
                 name="shopping-bag"
                 size={23}
-                color={focused ? "#D4588A" : "#8E8E93"}
+                color={focused ? RainbowColors.tangerine : RainbowColors.stone}
               />
               {itemsCount > 0 && (
                 <View style={styles.badge}>
@@ -77,7 +80,7 @@ export default function TabsLayout() {
               <Feather
                 name="package"
                 size={23}
-                color={focused ? "#D4588A" : "#8E8E93"}
+                color={focused ? RainbowColors.tangerine : RainbowColors.stone}
               />
               {activeOrder && (
                 <View style={styles.activeDot} />
@@ -95,7 +98,24 @@ export default function TabsLayout() {
               <Ionicons
                 name={focused ? "person" : "person-outline"}
                 size={24}
-                color={focused ? "#D4588A" : "#8E8E93"}
+                color={focused ? RainbowColors.tangerine : RainbowColors.stone}
+              />
+            </View>
+          ),
+        }}
+      />
+
+      {/* Admin Tab - Only visible to admins */}
+      <Tabs.Screen
+        name="admin"
+        options={{
+          href: user?.role === "admin" ? "/admin" : null,
+          tabBarIcon: ({ focused }) => (
+            <View style={[styles.iconBox, focused && styles.activeIconBox]}>
+              <Feather
+                name="shield"
+                size={23}
+                color={focused ? RainbowColors.tangerine : RainbowColors.stone}
               />
             </View>
           ),
@@ -128,8 +148,8 @@ const styles = StyleSheet.create({
     bottom: 22,
     height: 72,
     borderRadius: 26,
-    backgroundColor: "#FFFFFF",
-    shadowColor: "#D4588A",
+    backgroundColor: RainbowColors.pureWhite,
+    shadowColor: RainbowColors.inkBlack,
     shadowOpacity: 0.15,
     shadowRadius: 18,
     shadowOffset: { width: 0, height: 6 },
@@ -148,13 +168,13 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   activeIconBox: {
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
   },
   badge: {
     position: "absolute",
     top: 4,
     right: 4,
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     minWidth: 18,
     height: 18,
     borderRadius: 9,
@@ -162,10 +182,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 4,
     borderWidth: 1.5,
-    borderColor: "#FFFFFF",
+    borderColor: RainbowColors.pureWhite,
   },
   badgeText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 10,
     fontWeight: "800",
   },
@@ -176,8 +196,8 @@ const styles = StyleSheet.create({
     width: 9,
     height: 9,
     borderRadius: 4.5,
-    backgroundColor: "#10B981",
+    backgroundColor: "#10B981", // Keep green for active order
     borderWidth: 1.5,
-    borderColor: "#FFFFFF",
+    borderColor: RainbowColors.pureWhite,
   },
 });

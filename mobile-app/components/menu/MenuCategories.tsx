@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   FlatList,
   StyleSheet,
@@ -24,8 +25,8 @@ export default function MenuCategories({
 
   useEffect(() => {
     productsAPI.getCategories().then((res) => {
-      if (res.success && res.data && Array.isArray(res.data)) {
-        const mapped = res.data.map((c: any, index: number) => ({
+      if (res.success && res.categories && Array.isArray(res.categories)) {
+        const mapped = res.categories.map((c: any, index: number) => ({
           id: c._id || index + 1,
           title: c.name || c,
           active: false,
@@ -75,21 +76,21 @@ const styles = StyleSheet.create({
     height: 40,
     paddingHorizontal: 16,
     borderRadius: 20,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 10,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.06,
+    shadowColor: RainbowColors.tangerine,
+    shadowOpacity: 0.13,
     shadowRadius: 6,
     shadowOffset: { width: 0, height: 2 },
     elevation: 2,
     borderWidth: 1,
-    borderColor: "#EAEAEA",
+    borderColor: RainbowColors.cloudSurface,
   },
   activeChip: {
-    backgroundColor: "#D4588A",
-    borderColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
+    borderColor: RainbowColors.tangerine,
   },
   text: {
     fontSize: 13.5,
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
     color: "#666",
   },
   activeText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontWeight: "700",
   },
 });

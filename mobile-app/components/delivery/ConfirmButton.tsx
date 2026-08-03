@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     StyleSheet,
     Text,
@@ -32,17 +33,17 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     height: 54,
     borderRadius: 27,
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.35,
-    shadowRadius: 10,
+    shadowRadius: 16,
     elevation: 6,
   },
 
   text: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 16,
     fontWeight: "700",
   },

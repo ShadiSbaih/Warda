@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   Dimensions,
   Image,
@@ -7,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Feather } from "@expo/vector-icons";
 import { useFavorites } from "../../context/FavoritesContext";
@@ -26,7 +28,7 @@ export default function GiftCard({ item, onPress, onFavoriteToggle, onAddToCart 
   const { isFavorite, toggleFavorite } = useFavorites();
   const { addToCart } = useCart();
 
-  const fav = isFavorite(item.id);
+  const fav = isFavorite(item._id || item.id);
 
   const handleFav = () => {
     if (onFavoriteToggle) {
@@ -50,13 +52,39 @@ export default function GiftCard({ item, onPress, onFavoriteToggle, onAddToCart 
       style={styles.card}
       onPress={onPress}
     >
+      {/* 3D Inset Gloss Highlight — top edge shimmer */}
+      <LinearGradient
+        colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.0)"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 1 }}
+        style={styles.gloss}
+        pointerEvents="none"
+      />
+
       {/* Image Container */}
       <View style={styles.imageWrapper}>
+        {/* Pastel radial atmosphere inside image well */}
+        <LinearGradient
+          colors={["#fff", RainbowColors.cloudSurface as string]}
+          start={{ x: 0.5, y: 0 }}
+          end={{ x: 0.5, y: 1 }}
+          style={StyleSheet.absoluteFillObject}
+        />
         <Image
-          source={item.image}
+          source={{ uri: item.image }}
           resizeMode="contain"
           style={styles.image}
         />
+
+        {/* Inner top-edge highlight for 3D depth */}
+        <LinearGradient
+          colors={["rgba(255,255,255,0.6)", "rgba(255,255,255,0)"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 0.5 }}
+          style={[StyleSheet.absoluteFillObject, { borderRadius: 22 }]}
+          pointerEvents="none"
+        />
+
         <TouchableOpacity
           activeOpacity={0.8}
           style={styles.favoriteButton}
@@ -65,7 +93,7 @@ export default function GiftCard({ item, onPress, onFavoriteToggle, onAddToCart 
           <Ionicons
             name={fav ? "heart" : "heart-outline"}
             size={18}
-            color={fav ? "#D4588A" : "#888"}
+            color={fav ? RainbowColors.tangerine : RainbowColors.stone}
           />
         </TouchableOpacity>
       </View>
@@ -92,7 +120,14 @@ export default function GiftCard({ item, onPress, onFavoriteToggle, onAddToCart 
           activeOpacity={0.8}
           onPress={handleAdd}
         >
-          <Feather name="plus" size={16} color="#FFFFFF" />
+          {/* 3D Button gloss */}
+          <LinearGradient
+            colors={["rgba(255,255,255,0.3)", "rgba(255,255,255,0)"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            style={StyleSheet.absoluteFillObject}
+          />
+          <Feather name="plus" size={16} color={RainbowColors.pureWhite} />
         </TouchableOpacity>
       </View>
     </TouchableOpacity>
@@ -102,29 +137,41 @@ export default function GiftCard({ item, onPress, onFavoriteToggle, onAddToCart 
 const styles = StyleSheet.create({
   card: {
     width: CARD_WIDTH,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 20,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     padding: 10,
     marginBottom: 16,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 3,
+    // Outer lift shadow
+    shadowColor: "#7a7a8c",
+    shadowOpacity: 0.14,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 6,
+    overflow: "visible",
+  },
+  // Full-card top-edge white gloss — the "3D inflated pill" effect from Rainbow
+  gloss: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    height: "55%",
+    borderRadius: RainbowRadii.cards,
+    zIndex: 1,
   },
   imageWrapper: {
     width: "100%",
     height: 125,
-    borderRadius: 16,
-    backgroundColor: "#FCF6F8",
+    borderRadius: 22,
+    overflow: "hidden",
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
-    overflow: "hidden",
   },
   image: {
     width: 105,
     height: 105,
+    zIndex: 1,
   },
   favoriteButton: {
     position: "absolute",
@@ -133,20 +180,23 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    backgroundColor: "rgba(255, 255, 255, 0.92)",
     justifyContent: "center",
     alignItems: "center",
+    zIndex: 2,
+    // Glazed glass look
     shadowColor: "#000",
-    shadowOpacity: 0.08,
+    shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2,
   },
   title: {
     fontSize: 14.5,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     marginTop: 10,
     marginBottom: 4,
+    zIndex: 2,
   },
   detailsRow: {
     flexDirection: "row",
@@ -166,7 +216,7 @@ const styles = StyleSheet.create({
   },
   timeText: {
     fontSize: 11.5,
-    color: "#9A9A9A",
+    color: RainbowColors.stone,
   },
   priceRow: {
     flexDirection: "row",
@@ -177,18 +227,21 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 17,
     fontWeight: "800",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
   plusButton: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: "#D4588A",
+    width: 30,
+    height: 30,
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.tangerine,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 2,
+    overflow: "hidden",
+    // 3D raised shadow for the button
+    shadowColor: RainbowColors.tangerine,
+    shadowOpacity: 0.45,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 4,
   },
 });

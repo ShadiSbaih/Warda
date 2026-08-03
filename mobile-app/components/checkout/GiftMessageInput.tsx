@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   StyleSheet,
   Text,
@@ -47,7 +48,7 @@ export default function GiftMessageInput({
       >
         <View style={styles.headerLeft}>
           <View style={styles.iconWrap}>
-            <Feather name="edit-3" size={18} color="#D4588A" />
+            <Feather name="edit-3" size={18} color={RainbowColors.tangerine} />
           </View>
           <Text style={styles.headerTitle}>Gift Message</Text>
         </View>
@@ -78,7 +79,7 @@ export default function GiftMessageInput({
                 <Feather
                   name={s.icon as any}
                   size={14}
-                  color={selectedStyle === s.id ? "#FFFFFF" : "#888"}
+                  color={selectedStyle === s.id ? RainbowColors.pureWhite : RainbowColors.stone}
                 />
                 <Text
                   style={[
@@ -117,13 +118,13 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
     marginVertical: 10,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderRadius: 18,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
+    shadowColor: RainbowColors.tangerine,
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
+    elevation: 6,
     overflow: "hidden",
   },
 
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 13,
     fontWeight: "600",
-    color: "#888",
+    color: RainbowColors.stone,
     marginTop: 14,
     marginBottom: 8,
     textAlign: "right",
@@ -191,25 +192,25 @@ const styles = StyleSheet.create({
   },
 
   styleChipActive: {
-    backgroundColor: "#D4588A",
-    borderColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
+    borderColor: RainbowColors.tangerine,
   },
 
   styleLabel: {
     fontSize: 13,
     fontWeight: "600",
-    color: "#888",
+    color: RainbowColors.stone,
   },
 
   styleLabelActive: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
   },
 
   input: {
-    backgroundColor: "#FDF6F9",
+    backgroundColor: RainbowColors.cloudSurface,
     borderRadius: 14,
     borderWidth: 1.5,
-    borderColor: "#F8D7E8",
+    borderColor: RainbowColors.cloudSurface,
     padding: 14,
     fontSize: 15,
     color: "#1A1A2E",

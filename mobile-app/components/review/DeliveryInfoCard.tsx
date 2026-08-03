@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   StyleSheet,
   Text,
@@ -33,7 +34,7 @@ export default function DeliveryInfoCard() {
         </View>
 
         <TouchableOpacity style={styles.icon} activeOpacity={0.8}>
-          <Feather name="message-circle" size={18} color="#D4588A" />
+          <Feather name="message-circle" size={18} color={RainbowColors.tangerine} />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.icon} activeOpacity={0.8}>
@@ -48,14 +49,14 @@ const styles = StyleSheet.create({
   card: {
     marginHorizontal: 20,
     marginTop: 18,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderRadius: 24,
     padding: 20,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
-    shadowRadius: 14,
+    shadowColor: RainbowColors.tangerine,
+    shadowOpacity: 0.15,
+    shadowRadius: 20,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
+    elevation: 6,
   },
   row: {
     flexDirection: "row",
@@ -65,16 +66,16 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   value: {
     fontSize: 15,
     fontWeight: "500",
-    color: "#7E7E8F",
+    color: RainbowColors.stone,
   },
   divider: {
     height: 1,
-    backgroundColor: "#F0EEF2",
+    backgroundColor: RainbowColors.cloudSurface,
     marginVertical: 6,
   },
   driverRow: {
@@ -86,33 +87,33 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 14,
     borderWidth: 1.5,
-    borderColor: "#F8D7E8",
+    borderColor: RainbowColors.cloudSurface,
   },
   avatarText: {
     fontSize: 18,
     fontWeight: "800",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
   driverTitle: {
     fontSize: 14,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   driverName: {
     fontSize: 13,
-    color: "#7E7E8F",
+    color: RainbowColors.stone,
     marginTop: 2,
   },
   icon: {
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: "#F9F9FB",
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 8,

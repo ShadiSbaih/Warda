@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     StyleSheet,
     Text,
@@ -20,7 +21,7 @@ export default function ReviewHeader() {
         <Feather
           name="x"
           size={24}
-          color="#222"
+          color={RainbowColors.inkBlack}
         />
       </TouchableOpacity>
 
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
 
     borderRadius: 24,
 
-    backgroundColor: "#FFF",
+    backgroundColor: RainbowColors.pureWhite,
 
     justifyContent: "center",
     alignItems: "center",
@@ -47,8 +48,8 @@ const styles = StyleSheet.create({
     marginLeft: 20,
 
     shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
     shadowOffset: {
       width: 0,
       height: 4,
@@ -65,6 +66,6 @@ const styles = StyleSheet.create({
 
     fontWeight: "700",
 
-    color: "#222",
+    color: RainbowColors.inkBlack,
   },
 });

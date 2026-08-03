@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   Image,
   StyleSheet,
@@ -47,7 +48,7 @@ export default function CustomPhotoUpload({ onPhotoSelected }: Props) {
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.iconWrap}>
-          <Feather name="image" size={18} color="#D4588A" />
+          <Feather name="image" size={18} color={RainbowColors.tangerine} />
         </View>
         <View style={styles.headerText}>
           <Text style={styles.title}>Custom Photo for the Gift</Text>
@@ -65,7 +66,7 @@ export default function CustomPhotoUpload({ onPhotoSelected }: Props) {
             onPress={handleRemove}
             activeOpacity={0.8}
           >
-            <Feather name="x" size={14} color="#FFFFFF" />
+            <Feather name="x" size={14} color={RainbowColors.pureWhite} />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -73,7 +74,7 @@ export default function CustomPhotoUpload({ onPhotoSelected }: Props) {
             onPress={handlePickImage}
             activeOpacity={0.8}
           >
-            <Feather name="edit-2" size={14} color="#D4588A" />
+            <Feather name="edit-2" size={14} color={RainbowColors.tangerine} />
             <Text style={styles.changeBtnText}>Change Photo</Text>
           </TouchableOpacity>
         </View>
@@ -84,7 +85,7 @@ export default function CustomPhotoUpload({ onPhotoSelected }: Props) {
           activeOpacity={0.8}
         >
           <View style={styles.uploadIcon}>
-            <Feather name="upload-cloud" size={28} color="#D4588A" />
+            <Feather name="upload-cloud" size={28} color={RainbowColors.tangerine} />
           </View>
           <Text style={styles.uploadText}>Tap to pick a photo</Text>
           <Text style={styles.uploadHint}>JPG, PNG — up to 5MB</Text>
@@ -98,14 +99,14 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
     marginVertical: 10,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderRadius: 18,
     padding: 16,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
+    shadowColor: RainbowColors.tangerine,
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
+    elevation: 6,
   },
 
   header: {
@@ -143,11 +144,11 @@ const styles = StyleSheet.create({
   uploadArea: {
     borderWidth: 2,
     borderStyle: "dashed",
-    borderColor: "#F8D7E8",
+    borderColor: RainbowColors.cloudSurface,
     borderRadius: 14,
     paddingVertical: 28,
     alignItems: "center",
-    backgroundColor: "#FDF6F9",
+    backgroundColor: RainbowColors.cloudSurface,
   },
 
   uploadIcon: {
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
   uploadText: {
     fontSize: 15,
     fontWeight: "600",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
 
   uploadHint: {
@@ -189,7 +190,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 10,
     right: 10,
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     borderRadius: 12,
     width: 24,
     height: 24,
@@ -207,6 +208,6 @@ const styles = StyleSheet.create({
   changeBtnText: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
 });

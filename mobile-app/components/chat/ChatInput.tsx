@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     StyleSheet,
     TextInput,
@@ -21,7 +22,7 @@ export default function ChatInput() {
         <Feather
           name="send"
           size={22}
-          color="#D4588A"
+          color={RainbowColors.tangerine}
         />
       </TouchableOpacity>
     </View>
@@ -41,28 +42,28 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     height: 50,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderRadius: 25,
     paddingHorizontal: 18,
     fontSize: 15,
     marginRight: 10,
     borderWidth: 1.5,
-    borderColor: "#F3E5ED",
-    color: "#1E1E2D",
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.06,
+    borderColor: RainbowColors.cloudSurface,
+    color: RainbowColors.inkBlack,
+    shadowColor: RainbowColors.tangerine,
+    shadowOpacity: 0.13,
     shadowRadius: 8,
-    elevation: 3,
+    elevation: 5,
   },
 
   sendButton: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.35,
     shadowRadius: 8,
     shadowOffset: {

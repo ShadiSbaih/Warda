@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useEffect } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   Dimensions,
   FlatList,
@@ -13,7 +14,6 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { ALL_PRODUCTS, Product } from "../../data/productsData";
 import { productsAPI } from "../../services/api";
 import { useFavorites } from "../../context/FavoritesContext";
 import { useCart } from "../../context/CartContext";
@@ -39,12 +39,12 @@ export default function SearchScreen() {
   const [selectedSort, setSelectedSort] = useState<"popular" | "low" | "high" | "rating">("popular");
   const [maxPrice, setMaxPrice] = useState<number | null>(null);
   const [toast, setToast] = useState<string | null>(null);
-  const [allProducts, setAllProducts] = useState<Product[]>(ALL_PRODUCTS);
+  const [allProducts, setAllProducts] = useState<any[]>([]);
 
   useEffect(() => {
     productsAPI.getProducts().then((res) => {
-      if (res.success && res.data) {
-        setAllProducts(res.data);
+      if (res.success && res.products) {
+        setAllProducts(res.products);
       }
     }).catch(() => {});
   }, []);
@@ -55,18 +55,18 @@ export default function SearchScreen() {
         !query.trim() ||
         item.name.toLowerCase().includes(query.toLowerCase()) ||
         item.category.toLowerCase().includes(query.toLowerCase()) ||
-        item.tags.some((t) => t.toLowerCase().includes(query.toLowerCase())) ||
-        item.description.toLowerCase().includes(query.toLowerCase());
+        (item.tags || []).some((t: string) => t.toLowerCase().includes(query.toLowerCase())) ||
+        (item.description || "").toLowerCase().includes(query.toLowerCase());
 
-      const matchPrice = maxPrice ? item.numericPrice <= maxPrice : true;
+      const matchPrice = maxPrice ? item.price <= maxPrice : true;
 
       return matchQuery && matchPrice;
     });
 
     if (selectedSort === "low") {
-      filtered = [...filtered].sort((a, b) => a.numericPrice - b.numericPrice);
+      filtered = [...filtered].sort((a, b) => a.price - b.price);
     } else if (selectedSort === "high") {
-      filtered = [...filtered].sort((a, b) => b.numericPrice - a.numericPrice);
+      filtered = [...filtered].sort((a, b) => b.price - a.price);
     } else if (selectedSort === "rating") {
       filtered = [...filtered].sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating));
     }
@@ -74,7 +74,7 @@ export default function SearchScreen() {
     return filtered;
   }, [query, selectedSort, maxPrice, allProducts]);
 
-  const handleQuickAdd = (item: Product) => {
+  const handleQuickAdd = (item: any) => {
     addToCart(item, 1);
     setToast(`Added ${item.name} to bag! 🛍️`);
     setTimeout(() => setToast(null), 2000);
@@ -82,7 +82,7 @@ export default function SearchScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#FDF6F9" />
+      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.pureWhite} />
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         {/* Header Search Bar */}
         <View style={styles.searchHeader}>
@@ -90,11 +90,11 @@ export default function SearchScreen() {
             style={styles.backBtn}
             onPress={() => router.back()}
           >
-            <Feather name="arrow-left" size={20} color="#1E1E2D" />
+            <Feather name="arrow-left" size={20} color={RainbowColors.inkBlack} />
           </TouchableOpacity>
 
           <View style={styles.searchBar}>
-            <Feather name="search" size={20} color="#999" />
+            <Feather name="search" size={20} color={RainbowColors.stone} />
             <TextInput
               placeholder="Search flowers, chocolates, gifts..."
               placeholderTextColor="#A0A0A0"
@@ -105,7 +105,7 @@ export default function SearchScreen() {
             />
             {query.length > 0 && (
               <TouchableOpacity onPress={() => setQuery("")}>
-                <Feather name="x-circle" size={18} color="#999" />
+                <Feather name="x-circle" size={18} color={RainbowColors.stone} />
               </TouchableOpacity>
             )}
           </View>
@@ -228,7 +228,7 @@ export default function SearchScreen() {
         ) : (
           <FlatList
             data={results}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => (item._id || item.id).toString()}
             numColumns={2}
             showsVerticalScrollIndicator={false}
             columnWrapperStyle={styles.row}
@@ -239,12 +239,12 @@ export default function SearchScreen() {
                 <TouchableOpacity
                   activeOpacity={0.9}
                   style={styles.card}
-                  onPress={() => router.push(`/details/${item.id}` as any)}
+                  onPress={() => router.push(`/details/${item._id || item.id}` as any)}
                 >
                   {/* Image */}
                   <View style={styles.imageBox}>
                     <Image
-                      source={item.image}
+                      source={{ uri: item.image }}
                       style={styles.productImage}
                       resizeMode="contain"
                     />
@@ -255,7 +255,7 @@ export default function SearchScreen() {
                       <Ionicons
                         name={fav ? "heart" : "heart-outline"}
                         size={18}
-                        color={fav ? "#D4588A" : "#666"}
+                        color={fav ? RainbowColors.tangerine : RainbowColors.stone}
                       />
                     </TouchableOpacity>
                   </View>
@@ -282,7 +282,7 @@ export default function SearchScreen() {
                       activeOpacity={0.85}
                       onPress={() => handleQuickAdd(item)}
                     >
-                      <Feather name="plus" size={16} color="#FFFFFF" />
+                      <Feather name="plus" size={16} color={RainbowColors.pureWhite} />
                     </TouchableOpacity>
                   </View>
                 </TouchableOpacity>
@@ -298,7 +298,7 @@ export default function SearchScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FDF6F9",
+    backgroundColor: RainbowColors.pureWhite,
   },
   searchHeader: {
     flexDirection: "row",
@@ -310,40 +310,40 @@ const styles = StyleSheet.create({
   backBtn: {
     width: 44,
     height: 44,
-    borderRadius: 22,
-    backgroundColor: "#FFFFFF",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOpacity: 0.06,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 6,
     elevation: 2,
   },
   searchBar: {
     flex: 1,
     height: 48,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 18,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.pills,
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 16,
     gap: 10,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 8,
     elevation: 3,
   },
   searchInput: {
     flex: 1,
     fontSize: 14.5,
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     fontWeight: "500",
   },
   toast: {
     flexDirection: "row",
     alignItems: "center",
     alignSelf: "center",
-    backgroundColor: "#1E1E2D",
+    backgroundColor: RainbowColors.inkBlack,
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 20,
@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   toastText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 13,
     fontWeight: "600",
   },
@@ -370,22 +370,22 @@ const styles = StyleSheet.create({
   tagChip: {
     paddingHorizontal: 14,
     paddingVertical: 7,
-    borderRadius: 16,
-    backgroundColor: "#FFFFFF",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.pureWhite,
     borderWidth: 1,
-    borderColor: "#EAEAEA",
+    borderColor: RainbowColors.cloudSurface,
   },
   activeTagChip: {
-    backgroundColor: "#D4588A",
-    borderColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
+    borderColor: RainbowColors.tangerine,
   },
   tagChipText: {
     fontSize: 12.5,
     fontWeight: "600",
-    color: "#666",
+    color: RainbowColors.stone,
   },
   activeTagChipText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
   },
   sortBar: {
     flexDirection: "row",
@@ -398,7 +398,7 @@ const styles = StyleSheet.create({
   resultsCount: {
     fontSize: 13.5,
     fontWeight: "700",
-    color: "#666",
+    color: RainbowColors.stone,
   },
   sortGroup: {
     flexDirection: "row",
@@ -407,21 +407,21 @@ const styles = StyleSheet.create({
   sortBtn: {
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 12,
-    backgroundColor: "#FFFFFF",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.pureWhite,
   },
   activeSortBtn: {
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
     borderWidth: 1,
-    borderColor: "#F8D7E8",
+    borderColor: RainbowColors.cloudSurface,
   },
   sortBtnText: {
     fontSize: 12,
     fontWeight: "600",
-    color: "#777",
+    color: RainbowColors.stone,
   },
   activeSortBtnText: {
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     fontWeight: "700",
   },
   listContent: {
@@ -435,11 +435,11 @@ const styles = StyleSheet.create({
   },
   card: {
     width: CARD_WIDTH,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 20,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     padding: 10,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 4 },
     elevation: 3,
@@ -447,8 +447,8 @@ const styles = StyleSheet.create({
   imageBox: {
     width: "100%",
     height: 130,
-    borderRadius: 16,
-    backgroundColor: "#FCF6F8",
+    borderRadius: 16, // inner radius
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
@@ -463,19 +463,19 @@ const styles = StyleSheet.create({
     right: 8,
     width: 32,
     height: 32,
-    borderRadius: 16,
-    backgroundColor: "#FFFFFF",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 2,
   },
   cardTitle: {
     fontSize: 14.5,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     marginTop: 10,
     marginBottom: 4,
   },
@@ -497,7 +497,7 @@ const styles = StyleSheet.create({
   },
   timeText: {
     fontSize: 11.5,
-    color: "#999",
+    color: RainbowColors.stone,
   },
   priceRow: {
     flexDirection: "row",
@@ -507,16 +507,16 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 17,
     fontWeight: "800",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
   addBtn: {
     width: 30,
     height: 30,
-    borderRadius: 15,
-    backgroundColor: "#D4588A",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.tangerine,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 2,
@@ -531,13 +531,13 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 22,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     marginTop: 16,
     marginBottom: 8,
   },
   emptySubtitle: {
     fontSize: 14.5,
-    color: "#8E8E93",
+    color: RainbowColors.stone,
     textAlign: "center",
     lineHeight: 22,
   },

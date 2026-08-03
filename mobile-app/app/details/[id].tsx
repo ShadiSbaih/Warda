@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
+  ActivityIndicator,
   Dimensions,
   Image,
   ScrollView,
@@ -13,7 +15,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { ALL_PRODUCTS, Product } from "../../data/productsData";
+import { productsAPI } from "../../services/api";
 import { useFavorites } from "../../context/FavoritesContext";
 import { useCart } from "../../context/CartContext";
 
@@ -22,7 +24,7 @@ const { width } = Dimensions.get("window");
 const WRAPPING_OPTIONS = [
   { color: "#E53935", name: "Velvet Red" },
   { color: "#F48FB1", name: "Rose Pink" },
-  { color: "#FFFFFF", name: "Silk White" },
+  { color: RainbowColors.pureWhite, name: "Silk White" },
   { color: "#FFD700", name: "Champagne Gold" },
   { color: "#4A235A", name: "Royal Purple" },
 ];
@@ -33,16 +35,40 @@ export default function DynamicDetailsScreen() {
   const { isFavorite, toggleFavorite } = useFavorites();
   const { addToCart } = useCart();
 
-  const productId = parseInt(id as string, 10) || 1;
-  const product: Product =
-    ALL_PRODUCTS.find((p) => p.id === productId) || ALL_PRODUCTS[0];
+  const [product, setProduct] = useState<any>(null);
+  const [related, setRelated] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const [selectedColor, setSelectedColor] = useState(
-    product.wrappingColors[0] || WRAPPING_OPTIONS[0].color
-  );
-  const [selectedWrappingName, setSelectedWrappingName] = useState(
-    WRAPPING_OPTIONS[0].name
-  );
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const res = await productsAPI.getProductById(id as string);
+        if (res.success && res.product) {
+          setProduct(res.product);
+          // Fetch related
+          const allRes = await productsAPI.getProducts();
+          if (allRes.success && allRes.products) {
+            setRelated(allRes.products.filter((p: any) => p._id !== id).slice(0, 4));
+          }
+        }
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, [id]);
+
+  const [selectedColor, setSelectedColor] = useState(WRAPPING_OPTIONS[0].color);
+  const [selectedWrappingName, setSelectedWrappingName] = useState(WRAPPING_OPTIONS[0].name);
+
+  // Safely update selected color once product loads if needed
+  useEffect(() => {
+    if (product?.wrappingColors?.length > 0) {
+      setSelectedColor(product.wrappingColors[0]);
+    }
+  }, [product]);
   const [quantity, setQuantity] = useState(1);
   const [recipientName, setRecipientName] = useState("");
   const [giftMessage, setGiftMessage] = useState("");
@@ -79,11 +105,17 @@ export default function DynamicDetailsScreen() {
     router.push("/checkout");
   };
 
-  const related = ALL_PRODUCTS.filter((p) => p.id !== product.id).slice(0, 4);
+  if (loading || !product) {
+    return (
+      <View style={[styles.container, { justifyContent: "center", alignItems: "center" }]}>
+        <ActivityIndicator size="large" color={RainbowColors.tangerine} />
+      </View>
+    );
+  }
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#FDF6F9" />
+      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.cloudSurface} />
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         {/* Floating Top Nav */}
         <View style={styles.topNav}>
@@ -91,7 +123,7 @@ export default function DynamicDetailsScreen() {
             style={styles.navBtn}
             onPress={() => router.back()}
           >
-            <Feather name="arrow-left" size={20} color="#1E1E2D" />
+            <Feather name="arrow-left" size={20} color={RainbowColors.inkBlack} />
           </TouchableOpacity>
 
           <View style={styles.navRight}>
@@ -102,7 +134,7 @@ export default function DynamicDetailsScreen() {
               <Ionicons
                 name={fav ? "heart" : "heart-outline"}
                 size={22}
-                color={fav ? "#D4588A" : "#1E1E2D"}
+                color={fav ? RainbowColors.tangerine : RainbowColors.inkBlack}
               />
             </TouchableOpacity>
 
@@ -110,7 +142,7 @@ export default function DynamicDetailsScreen() {
               style={[styles.navBtn, { marginLeft: 8 }]}
               onPress={() => router.push("/(tabs)/cart")}
             >
-              <Feather name="shopping-bag" size={20} color="#1E1E2D" />
+              <Feather name="shopping-bag" size={20} color={RainbowColors.inkBlack} />
             </TouchableOpacity>
           </View>
         </View>
@@ -130,7 +162,7 @@ export default function DynamicDetailsScreen() {
           {/* Hero Product Image */}
           <View style={styles.heroBox}>
             <Image
-              source={product.image}
+              source={{ uri: product.image }}
               style={styles.heroImage}
               resizeMode="contain"
             />
@@ -153,14 +185,14 @@ export default function DynamicDetailsScreen() {
                   style={styles.qtyBtn}
                   onPress={() => setQuantity(Math.max(1, quantity - 1))}
                 >
-                  <Feather name="minus" size={16} color="#1E1E2D" />
+                  <Feather name="minus" size={16} color={RainbowColors.inkBlack} />
                 </TouchableOpacity>
                 <Text style={styles.qtyText}>{quantity}</Text>
                 <TouchableOpacity
                   style={styles.qtyBtn}
                   onPress={() => setQuantity(quantity + 1)}
                 >
-                  <Feather name="plus" size={16} color="#1E1E2D" />
+                  <Feather name="plus" size={16} color={RainbowColors.inkBlack} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -174,7 +206,7 @@ export default function DynamicDetailsScreen() {
               </View>
 
               <View style={styles.metaBadge}>
-                <Feather name="clock" size={14} color="#D4588A" />
+                <Feather name="clock" size={14} color={RainbowColors.tangerine} />
                 <Text style={styles.metaBadgeBold}>{product.time}</Text>
               </View>
             </View>
@@ -184,7 +216,7 @@ export default function DynamicDetailsScreen() {
 
             {/* Tags */}
             <View style={styles.tagsRow}>
-              {product.tags.map((tag, idx) => (
+              {(product.tags || ["Gift", "Special"]).map((tag: string, idx: number) => (
                 <View key={idx} style={styles.tag}>
                   <Text style={styles.tagText}>#{tag}</Text>
                 </View>
@@ -219,14 +251,14 @@ export default function DynamicDetailsScreen() {
                       style={[
                         styles.colorCircle,
                         { backgroundColor: opt.color },
-                        opt.color === "#FFFFFF" && { borderWidth: 1, borderColor: "#DDD" },
+                        opt.color === RainbowColors.pureWhite && { borderWidth: 1, borderColor: "#DDD" },
                       ]}
                     >
                       {isSelected && (
                         <Feather
                           name="check"
                           size={16}
-                          color={opt.color === "#FFFFFF" ? "#1E1E2D" : "#FFFFFF"}
+                          color={opt.color === RainbowColors.pureWhite ? RainbowColors.inkBlack : RainbowColors.pureWhite}
                         />
                       )}
                     </View>
@@ -249,7 +281,7 @@ export default function DynamicDetailsScreen() {
           <View style={styles.sectionCard}>
             <View style={styles.sectionTitleRow}>
               <Text style={styles.sectionTitle}>Free Greeting Card & Note</Text>
-              <Feather name="edit-3" size={16} color="#D4588A" />
+              <Feather name="edit-3" size={16} color={RainbowColors.tangerine} />
             </View>
             <Text style={styles.sectionSubtitle}>
               Printed on luxury embossed linen card stock
@@ -260,7 +292,7 @@ export default function DynamicDetailsScreen() {
                 <Text style={styles.inputLabel}>Recipient Name (Optional)</Text>
                 <TextInput
                   placeholder="e.g. Sarah / Mom / Dearest"
-                  placeholderTextColor="#AAA"
+                  placeholderTextColor={RainbowColors.stone}
                   value={recipientName}
                   onChangeText={setRecipientName}
                   style={styles.textInput}
@@ -271,7 +303,7 @@ export default function DynamicDetailsScreen() {
                 <Text style={styles.inputLabel}>Gift Message</Text>
                 <TextInput
                   placeholder="Write your heartfelt message here... 🌹"
-                  placeholderTextColor="#AAA"
+                  placeholderTextColor={RainbowColors.stone}
                   value={giftMessage}
                   onChangeText={setGiftMessage}
                   multiline
@@ -305,7 +337,7 @@ export default function DynamicDetailsScreen() {
                 >
                   <View style={styles.relatedImageBox}>
                     <Image
-                      source={item.image}
+                      source={{ uri: item.image }}
                       style={styles.relatedImage}
                       resizeMode="contain"
                     />
@@ -333,7 +365,7 @@ export default function DynamicDetailsScreen() {
               activeOpacity={0.85}
               onPress={handleAddToCart}
             >
-              <Feather name="shopping-bag" size={18} color="#D4588A" />
+              <Feather name="shopping-bag" size={18} color={RainbowColors.tangerine} />
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -342,7 +374,7 @@ export default function DynamicDetailsScreen() {
               onPress={handleInstantBuy}
             >
               <Text style={styles.buyNowText}>Send as Gift</Text>
-              <Feather name="arrow-right" size={18} color="#FFFFFF" />
+              <Feather name="arrow-right" size={18} color={RainbowColors.pureWhite} />
             </TouchableOpacity>
           </View>
         </View>
@@ -354,7 +386,7 @@ export default function DynamicDetailsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FDF6F9",
+    backgroundColor: RainbowColors.cloudSurface,
   },
   topNav: {
     flexDirection: "row",
@@ -372,7 +404,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
     shadowColor: "#000",
@@ -387,7 +419,7 @@ const styles = StyleSheet.create({
     zIndex: 99,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#1E1E2D",
+    backgroundColor: RainbowColors.inkBlack,
     paddingHorizontal: 18,
     paddingVertical: 12,
     borderRadius: 24,
@@ -398,7 +430,7 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   toastText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 13.5,
     fontWeight: "700",
   },
@@ -410,7 +442,7 @@ const styles = StyleSheet.create({
     height: 280,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FCF6F8",
+    backgroundColor: RainbowColors.cloudSurface,
     position: "relative",
   },
   heroImage: {
@@ -427,17 +459,17 @@ const styles = StyleSheet.create({
     borderRadius: 14,
   },
   categoryBadgeText: {
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     fontSize: 12.5,
     fontWeight: "700",
   },
   infoCard: {
     marginHorizontal: 20,
     marginTop: -20,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderRadius: 24,
     padding: 20,
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.08,
     shadowRadius: 14,
     shadowOffset: { width: 0, height: 4 },
@@ -451,18 +483,18 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     marginBottom: 4,
   },
   unitPrice: {
     fontSize: 24,
     fontWeight: "800",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
   qtyContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#F3F3F7",
+    backgroundColor: RainbowColors.cloudSurface,
     borderRadius: 20,
     paddingHorizontal: 8,
     paddingVertical: 4,
@@ -472,7 +504,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 15,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
     shadowColor: "#000",
@@ -483,7 +515,7 @@ const styles = StyleSheet.create({
   qtyText: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     minWidth: 18,
     textAlign: "center",
   },
@@ -496,7 +528,7 @@ const styles = StyleSheet.create({
   metaBadge: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#F9F9FB",
+    backgroundColor: RainbowColors.cloudSurface,
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 12,
@@ -505,11 +537,11 @@ const styles = StyleSheet.create({
   metaBadgeBold: {
     fontSize: 13,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   metaBadgeLight: {
     fontSize: 12,
-    color: "#888",
+    color: RainbowColors.stone,
   },
   description: {
     fontSize: 14.5,
@@ -524,23 +556,23 @@ const styles = StyleSheet.create({
     marginTop: 14,
   },
   tag: {
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 10,
   },
   tagText: {
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     fontSize: 12,
     fontWeight: "600",
   },
   sectionCard: {
     marginHorizontal: 20,
     marginTop: 16,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderRadius: 22,
     padding: 18,
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.06,
     shadowRadius: 10,
     elevation: 3,
@@ -553,16 +585,16 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   selectedColorName: {
     fontSize: 13,
     fontWeight: "700",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
   sectionSubtitle: {
     fontSize: 12.5,
-    color: "#888",
+    color: RainbowColors.stone,
     marginTop: 3,
     marginBottom: 14,
   },
@@ -576,7 +608,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
   },
   colorOptionSelected: {
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
   },
   colorCircle: {
     width: 40,
@@ -591,12 +623,12 @@ const styles = StyleSheet.create({
   },
   colorLabel: {
     fontSize: 11,
-    color: "#888",
+    color: RainbowColors.stone,
     marginTop: 6,
     fontWeight: "500",
   },
   colorLabelSelected: {
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     fontWeight: "700",
   },
   cardForm: {
@@ -611,12 +643,12 @@ const styles = StyleSheet.create({
     color: "#444",
   },
   textInput: {
-    backgroundColor: "#F9F9FB",
+    backgroundColor: RainbowColors.cloudSurface,
     borderRadius: 14,
     paddingHorizontal: 14,
     paddingVertical: 10,
     fontSize: 14,
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     borderWidth: 1,
     borderColor: "#ECECEC",
   },
@@ -637,12 +669,12 @@ const styles = StyleSheet.create({
   relatedTitle: {
     fontSize: 18,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   seeAll: {
     fontSize: 14,
     fontWeight: "700",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
   relatedList: {
     paddingHorizontal: 20,
@@ -650,10 +682,10 @@ const styles = StyleSheet.create({
   },
   relatedCard: {
     width: 140,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderRadius: 18,
     padding: 10,
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.06,
     shadowRadius: 8,
     elevation: 2,
@@ -662,7 +694,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 100,
     borderRadius: 12,
-    backgroundColor: "#FCF6F8",
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -673,13 +705,13 @@ const styles = StyleSheet.create({
   relatedCardTitle: {
     fontSize: 13,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     marginTop: 8,
   },
   relatedPrice: {
     fontSize: 14,
     fontWeight: "800",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     marginTop: 2,
   },
   bottomBar: {
@@ -687,7 +719,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     paddingHorizontal: 20,
     paddingVertical: 14,
     borderTopLeftRadius: 26,
@@ -702,13 +734,13 @@ const styles = StyleSheet.create({
   },
   totalPriceLabel: {
     fontSize: 12,
-    color: "#888",
+    color: RainbowColors.stone,
     fontWeight: "500",
   },
   totalPrice: {
     fontSize: 22,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   actionButtons: {
     flexDirection: "row",
@@ -719,27 +751,27 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1.5,
-    borderColor: "#F8D7E8",
+    borderColor: RainbowColors.cloudSurface,
   },
   buyNowBtn: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     paddingHorizontal: 22,
     height: 50,
     borderRadius: 25,
     gap: 8,
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.35,
     shadowRadius: 10,
     elevation: 6,
   },
   buyNowText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 15,
     fontWeight: "700",
   },

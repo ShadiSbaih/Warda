@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     ActivityIndicator,
     StyleSheet,
@@ -25,7 +26,7 @@ export default function PrimaryButton({
       disabled={loading}
     >
       {loading ? (
-        <ActivityIndicator color="#FFFFFF" />
+        <ActivityIndicator color={RainbowColors.pureWhite} />
       ) : (
         <Text style={styles.text}>
           {title}
@@ -38,20 +39,20 @@ export default function PrimaryButton({
 const styles = StyleSheet.create({
   button: {
     height: 54,
-    backgroundColor: "#D4588A",
-    borderRadius: 20,
+    backgroundColor: RainbowColors.tangerine,
+    borderRadius: RainbowRadii.buttons,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 14,
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.35,
-    shadowRadius: 10,
+    shadowRadius: 16,
     shadowOffset: { width: 0, height: 4 },
     elevation: 6,
   },
 
   text: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 16,
     fontWeight: "700",
   },

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     FlatList,
     StyleSheet,
@@ -74,16 +75,16 @@ const styles = StyleSheet.create({
   },
 
   activeChip: {
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
   },
 
   text: {
-    color: "#888",
+    color: RainbowColors.stone,
     fontSize: 14,
     fontWeight: "600",
   },
 
   activeText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
   },
 });

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { RainbowColors, RainbowRadii } from "../constants/Colors";
 import { io, Socket } from "socket.io-client";
 import { chatAPI, API_BASE_URL } from "../services/api";
 import {
@@ -149,7 +150,7 @@ export default function ChatScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#FDF6F9" />
+      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.pureWhite} />
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         {/* Header */}
         <View style={styles.header}>
@@ -157,7 +158,7 @@ export default function ChatScreen() {
             style={styles.backBtn}
             onPress={() => router.back()}
           >
-            <Feather name="arrow-left" size={20} color="#1E1E2D" />
+            <Feather name="arrow-left" size={20} color={RainbowColors.inkBlack} />
           </TouchableOpacity>
 
           <View style={styles.headerProfile}>
@@ -175,7 +176,7 @@ export default function ChatScreen() {
             style={styles.callBtn}
             onPress={() => router.push("/live-tracking")}
           >
-            <Feather name="navigation" size={18} color="#D4588A" />
+            <Feather name="navigation" size={18} color={RainbowColors.tangerine} />
           </TouchableOpacity>
         </View>
 
@@ -273,7 +274,7 @@ export default function ChatScreen() {
             <TouchableOpacity
               style={[
                 styles.sendBtn,
-                !inputText.trim() && { backgroundColor: "#F3F3F7" },
+                !inputText.trim() && { backgroundColor: RainbowColors.cloudSurface },
               ]}
               disabled={!inputText.trim()}
               activeOpacity={0.85}
@@ -282,7 +283,7 @@ export default function ChatScreen() {
               <Ionicons
                 name="send"
                 size={18}
-                color={inputText.trim() ? "#FFFFFF" : "#AAA"}
+                color={inputText.trim() ? RainbowColors.pureWhite : RainbowColors.stone}
               />
             </TouchableOpacity>
           </View>
@@ -295,7 +296,7 @@ export default function ChatScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FDF6F9",
+    backgroundColor: RainbowColors.pureWhite,
   },
   header: {
     flexDirection: "row",
@@ -304,14 +305,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: "#F0EEF2",
-    backgroundColor: "#FFFFFF",
+    borderBottomColor: RainbowColors.cloudSurface,
+    backgroundColor: RainbowColors.pureWhite,
   },
   backBtn: {
     width: 40,
     height: 40,
-    borderRadius: 20,
-    backgroundColor: "#F8F8FA",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -324,18 +325,18 @@ const styles = StyleSheet.create({
   avatarBox: {
     width: 42,
     height: 42,
-    borderRadius: 21,
-    backgroundColor: "#FFF0F5",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
     borderWidth: 1.5,
-    borderColor: "#F8D7E8",
+    borderColor: RainbowColors.cloudSurface,
   },
   avatarText: {
     fontSize: 18,
     fontWeight: "800",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
   onlineDot: {
     width: 10,
@@ -346,12 +347,12 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     borderWidth: 2,
-    borderColor: "#FFFFFF",
+    borderColor: RainbowColors.pureWhite,
   },
   headerName: {
     fontSize: 15,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   headerStatus: {
     fontSize: 11.5,
@@ -361,8 +362,8 @@ const styles = StyleSheet.create({
   callBtn: {
     width: 40,
     height: 40,
-    borderRadius: 20,
-    backgroundColor: "#FFF0F5",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -376,15 +377,15 @@ const styles = StyleSheet.create({
   },
   datePill: {
     alignSelf: "center",
-    backgroundColor: "#EAEAEF",
+    backgroundColor: RainbowColors.cloudSurface,
     paddingHorizontal: 12,
     paddingVertical: 4,
-    borderRadius: 10,
+    borderRadius: RainbowRadii.pills,
     marginBottom: 16,
   },
   datePillText: {
     fontSize: 11,
-    color: "#7E7E8F",
+    color: RainbowColors.stone,
     fontWeight: "600",
   },
   messageWrapper: {
@@ -404,13 +405,13 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   bubbleMe: {
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     borderBottomRightRadius: 4,
   },
   bubbleOther: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderBottomLeftRadius: 4,
-    shadowColor: "#000",
+    shadowColor: RainbowColors.inkBlack,
     shadowOpacity: 0.05,
     shadowRadius: 6,
     elevation: 2,
@@ -420,10 +421,10 @@ const styles = StyleSheet.create({
     lineHeight: 21,
   },
   messageTextMe: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
   },
   messageTextOther: {
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   messageTime: {
     fontSize: 10.5,
@@ -434,42 +435,42 @@ const styles = StyleSheet.create({
     color: "rgba(255, 255, 255, 0.75)",
   },
   messageTimeOther: {
-    color: "#AAA",
+    color: RainbowColors.stone,
   },
   typingIndicator: {
     paddingHorizontal: 14,
     paddingVertical: 6,
-    backgroundColor: "#EFEFF4",
+    backgroundColor: RainbowColors.cloudSurface,
     borderRadius: 12,
     alignSelf: "flex-start",
     marginTop: 6,
   },
   typingText: {
     fontSize: 12,
-    color: "#777",
+    color: RainbowColors.stone,
     fontStyle: "italic",
   },
   quickRepliesContainer: {
     paddingVertical: 8,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderTopWidth: 1,
-    borderTopColor: "#F0EEF2",
+    borderTopColor: RainbowColors.cloudSurface,
   },
   quickRepliesList: {
     paddingHorizontal: 16,
     gap: 8,
   },
   quickChip: {
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
     paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: 16,
+    borderRadius: RainbowRadii.pills,
     borderWidth: 1,
-    borderColor: "#F8D7E8",
+    borderColor: RainbowColors.cloudSurface,
   },
   quickChipText: {
     fontSize: 12.5,
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     fontWeight: "600",
   },
   inputContainer: {
@@ -477,23 +478,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 10,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     gap: 10,
   },
   input: {
     flex: 1,
-    backgroundColor: "#F3F3F7",
-    borderRadius: 22,
+    backgroundColor: RainbowColors.cloudSurface,
+    borderRadius: RainbowRadii.pills,
     paddingHorizontal: 18,
     paddingVertical: 10,
     fontSize: 14.5,
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   sendBtn: {
     width: 44,
     height: 44,
-    borderRadius: 22,
-    backgroundColor: "#D4588A",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.tangerine,
     justifyContent: "center",
     alignItems: "center",
   },

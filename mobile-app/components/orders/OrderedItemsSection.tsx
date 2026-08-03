@@ -1,5 +1,6 @@
 import { useRouter } from "expo-router";
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     FlatList,
     StyleSheet,
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
 
     fontWeight: "700",
 
-    color: "#222",
+    color: RainbowColors.inkBlack,
   },
 
   seeAll: {
@@ -75,6 +76,6 @@ const styles = StyleSheet.create({
 
     fontWeight: "700",
 
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
 });

@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     StyleSheet,
     Text,
@@ -17,7 +18,7 @@ export default function ProfileHeader() {
         <Feather
           name="settings"
           size={22}
-          color="#222"
+          color={RainbowColors.inkBlack}
         />
       </TouchableOpacity>
     </View>
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: "700",
-    color: "#222",
+    color: RainbowColors.inkBlack,
   },
 
   settings: {
@@ -48,14 +49,14 @@ const styles = StyleSheet.create({
 
     borderRadius: 24,
 
-    backgroundColor: "#FFF",
+    backgroundColor: RainbowColors.pureWhite,
 
     justifyContent: "center",
     alignItems: "center",
 
     shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
     shadowOffset: {
       width: 0,
       height: 4,

@@ -1,5 +1,7 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
+    Alert,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -21,7 +23,7 @@ export default function DeliveryHeader() {
         <Feather
           name="arrow-left"
           size={22}
-          color="#222"
+          color={RainbowColors.inkBlack}
         />
       </TouchableOpacity>
 
@@ -29,11 +31,14 @@ export default function DeliveryHeader() {
         Delivery Address
       </Text>
 
-      <TouchableOpacity style={styles.iconButton}>
+      <TouchableOpacity 
+        style={styles.iconButton}
+        onPress={() => Alert.alert("Coming Soon", "Address search will be available in the next update.")}
+      >
         <Feather
           name="search"
           size={22}
-          color="#222"
+          color={RainbowColors.inkBlack}
         />
       </TouchableOpacity>
     </View>
@@ -56,14 +61,14 @@ const styles = StyleSheet.create({
 
     borderRadius: 24,
 
-    backgroundColor: "#FFF",
+    backgroundColor: RainbowColors.pureWhite,
 
     justifyContent: "center",
     alignItems: "center",
 
     shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
     shadowOffset: {
       width: 0,
       height: 4,
@@ -75,6 +80,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: "700",
-    color: "#222",
+    color: RainbowColors.inkBlack,
   },
 });

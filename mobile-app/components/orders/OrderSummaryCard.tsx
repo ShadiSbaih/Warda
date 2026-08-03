@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     Image,
     StyleSheet,
@@ -6,6 +7,7 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 import { Feather } from "@expo/vector-icons";
 
@@ -14,6 +16,14 @@ export default function OrderSummaryCard() {
 
   return (
     <View style={styles.container}>
+      {/* 3D inset gloss — top-edge white shimmer, inflated-card effect */}
+      <LinearGradient
+        colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.0)"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 0.55 }}
+        style={StyleSheet.absoluteFillObject}
+        pointerEvents="none"
+      />
       {/* Product */}
 
       <View style={styles.top}>
@@ -50,7 +60,7 @@ export default function OrderSummaryCard() {
             <Feather
               name="minus"
               size={18}
-              color="#555"
+              color={RainbowColors.stone}
             />
           </TouchableOpacity>
 
@@ -64,7 +74,7 @@ export default function OrderSummaryCard() {
             <Feather
               name="plus"
               size={18}
-              color="#555"
+              color={RainbowColors.stone}
             />
           </TouchableOpacity>
         </View>
@@ -99,16 +109,17 @@ export default function OrderSummaryCard() {
 
 const styles = StyleSheet.create({
   container: {
+    overflow: "hidden",
     marginHorizontal: 20,
     marginTop: 18,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 24,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     padding: 18,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
-    shadowRadius: 14,
+    shadowColor: "#5a5a7a",
+    shadowOpacity: 0.12,
+    shadowRadius: 20,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
+    elevation: 6,
   },
 
   top: {
@@ -120,7 +131,7 @@ const styles = StyleSheet.create({
     width: 85,
     height: 85,
     borderRadius: 16,
-    backgroundColor: "#FCF6F8",
+    backgroundColor: RainbowColors.cloudSurface,
   },
 
   info: {
@@ -131,12 +142,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 17,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
 
   description: {
     marginTop: 4,
-    color: "#8E8292",
+    color: RainbowColors.stone,
     lineHeight: 18,
     fontSize: 13,
   },
@@ -144,7 +155,7 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 18,
     fontWeight: "800",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
 
   quantityRow: {
@@ -155,8 +166,8 @@ const styles = StyleSheet.create({
   quantity: {
     width: 96,
     height: 36,
-    borderRadius: 18,
-    backgroundColor: "#FFF0F5",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.cloudSurface,
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
@@ -165,13 +176,13 @@ const styles = StyleSheet.create({
   qty: {
     fontSize: 15,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
 
   line: {
     marginVertical: 16,
     height: 1,
-    backgroundColor: "#F3E5ED",
+    backgroundColor: RainbowColors.cloudSurface,
   },
 
   bottom: {
@@ -182,7 +193,7 @@ const styles = StyleSheet.create({
   },
 
   items: {
-    color: "#8E8292",
+    color: RainbowColors.stone,
     fontSize: 14,
     fontWeight: "500",
   },
@@ -190,23 +201,23 @@ const styles = StyleSheet.create({
   total: {
     fontSize: 20,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
 
   button: {
     height: 50,
-    borderRadius: 25,
-    backgroundColor: "#D4588A",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.tangerine,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.35,
-    shadowRadius: 10,
+    shadowRadius: 16,
     elevation: 5,
   },
 
   buttonText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 16,
     fontWeight: "700",
   },

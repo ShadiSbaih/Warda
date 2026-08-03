@@ -1,10 +1,12 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     StyleSheet,
     Text,
     TouchableOpacity,
     View,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 import {
     Feather,
@@ -19,160 +21,178 @@ interface Props {
 export default function BottomTabs({
   active = "home",
 }: Props) {
-  const activeColor = "#D4588A";
+  const activeColor = RainbowColors.tangerine;
   const inactiveColor = "#8E8E93";
 
   return (
-    <View style={styles.container}>
-      {/* Home */}
-      <TouchableOpacity style={styles.item}>
-        {active === "home" && <View style={styles.activeLine} />}
+    // Outer shadow wrapper (elevation doesn't work inside LinearGradient on Android)
+    <View style={styles.shadowWrapper}>
+      {/* Frosted-glass 3D nav bar */}
+      <LinearGradient
+        colors={[
+          "rgba(255,255,255,0.96)",
+          "rgba(255,255,255,0.88)",
+        ]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 1 }}
+        style={styles.container}
+      >
+        {/* Top-edge white specular line — the 3D "beveled" top */}
+        <View style={styles.topBevel} />
 
-        <Ionicons
-          name={active === "home" ? "home" : "home-outline"}
-          size={24}
-          color={active === "home" ? activeColor : inactiveColor}
-        />
+        {/* Home */}
+        <TouchableOpacity style={styles.item}>
+          {active === "home" && (
+            <LinearGradient
+              colors={[RainbowColors.tangerine, "rgba(255,138,0,0)"]}
+              style={styles.activeGlow}
+              start={{ x: 0.5, y: 0 }}
+              end={{ x: 0.5, y: 1 }}
+            />
+          )}
+          <View style={[styles.iconWrap, active === "home" && styles.iconWrapActive]}>
+            <Ionicons
+              name={active === "home" ? "home" : "home-outline"}
+              size={22}
+              color={active === "home" ? activeColor : inactiveColor}
+            />
+          </View>
+          <Text style={[styles.label, { color: active === "home" ? activeColor : inactiveColor }]}>
+            Home
+          </Text>
+        </TouchableOpacity>
 
-        <Text
-          style={[
-            styles.label,
-            {
-              color:
-                active === "home"
-                  ? activeColor
-                  : inactiveColor,
-            },
-          ]}
-        >
-          Home
-        </Text>
-      </TouchableOpacity>
+        {/* Menu */}
+        <TouchableOpacity style={styles.item}>
+          {active === "menu" && (
+            <LinearGradient
+              colors={[RainbowColors.tangerine, "rgba(255,138,0,0)"]}
+              style={styles.activeGlow}
+              start={{ x: 0.5, y: 0 }}
+              end={{ x: 0.5, y: 1 }}
+            />
+          )}
+          <View style={[styles.iconWrap, active === "menu" && styles.iconWrapActive]}>
+            <MaterialCommunityIcons
+              name="flower-tulip"
+              size={22}
+              color={active === "menu" ? activeColor : inactiveColor}
+            />
+          </View>
+          <Text style={[styles.label, { color: active === "menu" ? activeColor : inactiveColor }]}>
+            Menu
+          </Text>
+        </TouchableOpacity>
 
-      {/* Menu */}
-      <TouchableOpacity style={styles.item}>
-        {active === "menu" && <View style={styles.activeLine} />}
+        {/* Orders */}
+        <TouchableOpacity style={styles.item}>
+          {active === "orders" && (
+            <LinearGradient
+              colors={[RainbowColors.tangerine, "rgba(255,138,0,0)"]}
+              style={styles.activeGlow}
+              start={{ x: 0.5, y: 0 }}
+              end={{ x: 0.5, y: 1 }}
+            />
+          )}
+          <View style={[styles.iconWrap, active === "orders" && styles.iconWrapActive]}>
+            <Feather
+              name="file-text"
+              size={22}
+              color={active === "orders" ? activeColor : inactiveColor}
+            />
+          </View>
+          <Text style={[styles.label, { color: active === "orders" ? activeColor : inactiveColor }]}>
+            Orders
+          </Text>
+        </TouchableOpacity>
 
-        <MaterialCommunityIcons
-          name="flower-tulip"
-          size={24}
-          color={active === "menu" ? activeColor : inactiveColor}
-        />
-
-        <Text
-          style={[
-            styles.label,
-            {
-              color:
-                active === "menu"
-                  ? activeColor
-                  : inactiveColor,
-            },
-          ]}
-        >
-          Menu
-        </Text>
-      </TouchableOpacity>
-
-      {/* Orders */}
-      <TouchableOpacity style={styles.item}>
-        {active === "orders" && <View style={styles.activeLine} />}
-
-        <Feather
-          name="file-text"
-          size={24}
-          color={active === "orders" ? activeColor : inactiveColor}
-        />
-
-        <Text
-          style={[
-            styles.label,
-            {
-              color:
-                active === "orders"
-                  ? activeColor
-                  : inactiveColor,
-            },
-          ]}
-        >
-          Orders
-        </Text>
-      </TouchableOpacity>
-
-      {/* Profile */}
-      <TouchableOpacity style={styles.item}>
-        {active === "profile" && <View style={styles.activeLine} />}
-
-        <Ionicons
-          name={
-            active === "profile"
-              ? "person"
-              : "person-outline"
-          }
-          size={24}
-          color={active === "profile" ? activeColor : inactiveColor}
-        />
-
-        <Text
-          style={[
-            styles.label,
-            {
-              color:
-                active === "profile"
-                  ? activeColor
-                  : inactiveColor,
-            },
-          ]}
-        >
-          Profile
-        </Text>
-      </TouchableOpacity>
+        {/* Profile */}
+        <TouchableOpacity style={styles.item}>
+          {active === "profile" && (
+            <LinearGradient
+              colors={[RainbowColors.tangerine, "rgba(255,138,0,0)"]}
+              style={styles.activeGlow}
+              start={{ x: 0.5, y: 0 }}
+              end={{ x: 0.5, y: 1 }}
+            />
+          )}
+          <View style={[styles.iconWrap, active === "profile" && styles.iconWrapActive]}>
+            <Ionicons
+              name={active === "profile" ? "person" : "person-outline"}
+              size={22}
+              color={active === "profile" ? activeColor : inactiveColor}
+            />
+          </View>
+          <Text style={[styles.label, { color: active === "profile" ? activeColor : inactiveColor }]}>
+            Profile
+          </Text>
+        </TouchableOpacity>
+      </LinearGradient>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-  height: 82,
-  backgroundColor: "white",
-
-  flexDirection: "row",
-  alignItems: "center",
-
-  borderTopWidth: 1,
-  borderTopColor: "#EFEFEF",
-
-  shadowColor: "#000",
-  shadowOpacity: 0.05,
-  shadowRadius: 10,
-  shadowOffset: {
-    width: 0,
-    height: -2,
+  shadowWrapper: {
+    // Outer drop shadow that lifts the nav bar as a 3D panel
+    shadowColor: "#5a5a7a",
+    shadowOpacity: 0.18,
+    shadowRadius: 20,
+    shadowOffset: { width: 0, height: -4 },
+    elevation: 16,
+    backgroundColor: "transparent",
   },
-  elevation: 2,
-},
-
-  item: {
-  flex: 1,
-  height: "100%",
-
-  justifyContent: "center",
-  alignItems: "center",
-},
-
-  activeLine: {
+  container: {
+    height: 82,
+    flexDirection: "row",
+    alignItems: "center",
+    borderTopWidth: 1,
+    borderTopColor: "rgba(255,255,255,0.9)",
+    overflow: "hidden",
+  },
+  // Single-pixel bright top edge — the 3D "lit top face"
+  topBevel: {
     position: "absolute",
     top: 0,
-    width: 42,
-    height: 3,
-    borderBottomLeftRadius: 2,
-    borderBottomRightRadius: 2,
-    backgroundColor: "#D4588A",
+    left: 0,
+    right: 0,
+    height: 1,
+    backgroundColor: "rgba(255,255,255,0.95)",
+    zIndex: 10,
   },
-
+  item: {
+    flex: 1,
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
+  },
+  // Active tab — top-down accent glow (replaces the old line indicator)
+  activeGlow: {
+    position: "absolute",
+    top: 0,
+    left: "10%",
+    right: "10%",
+    height: 48,
+    opacity: 0.12,
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
+  },
+  // Pill background behind the active icon
+  iconWrap: {
+    width: 40,
+    height: 32,
+    borderRadius: 16,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  iconWrapActive: {
+    backgroundColor: "rgba(255,138,0,0.10)",
+  },
   label: {
-    marginTop: 5,
-    fontSize: 12,
-    fontWeight: "500",
+    marginTop: 3,
+    fontSize: 11.5,
+    fontWeight: "600",
+    letterSpacing: -0.2,
   },
 });

@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     StyleSheet,
     Text,
@@ -14,7 +15,7 @@ export default function BottomDeliveryCard() {
         <Feather
           name="home"
           size={20}
-          color="#D4588A"
+          color={RainbowColors.tangerine}
         />
       </View>
 
@@ -37,14 +38,14 @@ const styles = StyleSheet.create({
     left: 20,
     right: 20,
     bottom: 30,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderRadius: 24,
     padding: 18,
     flexDirection: "row",
     alignItems: "center",
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.12,
-    shadowRadius: 14,
+    shadowRadius: 20,
     shadowOffset: { width: 0, height: 4 },
     elevation: 6,
   },
@@ -53,14 +54,14 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 14,
   },
 
   label: {
-    color: "#8E8292",
+    color: RainbowColors.stone,
     fontSize: 13,
     fontWeight: "500",
   },
@@ -69,6 +70,6 @@ const styles = StyleSheet.create({
     marginTop: 3,
     fontSize: 17,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
 });

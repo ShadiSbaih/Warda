@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../constants/Colors";
 import {
   Alert,
   Image,
@@ -12,9 +13,9 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather, Ionicons } from "@expo/vector-icons";
-import { useLocalSearchParams, useRouter } from "expo-router";
 import { useOrders } from "../context/OrdersContext";
 import { reviewsAPI } from "../services/api";
+import { useRouter, useLocalSearchParams } from "expo-router";
 
 const REVIEW_TAGS = [
   "Fresh & Vibrant Flowers 🌸",
@@ -79,7 +80,7 @@ export default function ReviewScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#FDF6F9" />
+      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.pureWhite} />
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         {/* Header */}
         <View style={styles.header}>
@@ -87,7 +88,7 @@ export default function ReviewScreen() {
             style={styles.backBtn}
             onPress={() => router.back()}
           >
-            <Feather name="arrow-left" size={20} color="#1E1E2D" />
+            <Feather name="arrow-left" size={20} color={RainbowColors.inkBlack} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Rate Your Experience</Text>
           <View style={{ width: 42 }} />
@@ -197,7 +198,7 @@ export default function ReviewScreen() {
             <Text style={styles.submitBtnText}>
               {isSubmitting ? "Submitting..." : "Submit Review & Claim Reward"}
             </Text>
-            <Feather name="award" size={18} color="#FFFFFF" />
+            <Feather name="award" size={18} color={RainbowColors.pureWhite} />
           </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
@@ -208,7 +209,7 @@ export default function ReviewScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FDF6F9",
+    backgroundColor: RainbowColors.pureWhite,
   },
   header: {
     flexDirection: "row",
@@ -220,19 +221,19 @@ const styles = StyleSheet.create({
   backBtn: {
     width: 42,
     height: 42,
-    borderRadius: 21,
-    backgroundColor: "#FFFFFF",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 6,
     elevation: 2,
   },
   headerTitle: {
     fontSize: 19,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   scrollContent: {
     paddingHorizontal: 20,
@@ -240,11 +241,11 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   orderCard: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 20,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     padding: 16,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.06,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 10,
     elevation: 2,
   },
@@ -253,14 +254,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: "#F3F3F5",
+    borderBottomColor: RainbowColors.cloudSurface,
     paddingBottom: 10,
     marginBottom: 10,
   },
   orderId: {
     fontSize: 14,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   deliveredBadge: {
     flexDirection: "row",
@@ -284,32 +285,32 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 12,
-    backgroundColor: "#FCF6F8",
+    backgroundColor: RainbowColors.cloudSurface,
   },
   itemName: {
     fontSize: 14.5,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   itemSubtitle: {
     fontSize: 12,
-    color: "#888",
+    color: RainbowColors.stone,
     marginTop: 2,
   },
   ratingCard: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 22,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     padding: 20,
     alignItems: "center",
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 10,
     elevation: 3,
   },
   ratingPrompt: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     textAlign: "center",
   },
   ratingScore: {
@@ -327,18 +328,18 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   tagsCard: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 22,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     padding: 18,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.06,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 10,
     elevation: 2,
   },
   sectionTitle: {
     fontSize: 15,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     marginBottom: 12,
   },
   tagsGrid: {
@@ -349,53 +350,53 @@ const styles = StyleSheet.create({
   tagChip: {
     paddingHorizontal: 12,
     paddingVertical: 8,
-    borderRadius: 14,
-    backgroundColor: "#F4F4F7",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.cloudSurface,
     borderWidth: 1,
     borderColor: "transparent",
   },
   tagChipActive: {
-    backgroundColor: "#FFF0F5",
-    borderColor: "#D4588A",
+    backgroundColor: RainbowColors.cloudSurface,
+    borderColor: RainbowColors.tangerine,
   },
   tagText: {
     fontSize: 12.5,
-    color: "#555",
+    color: RainbowColors.stone,
     fontWeight: "500",
   },
   tagTextActive: {
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     fontWeight: "700",
   },
   commentCard: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 22,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     padding: 18,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.06,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 10,
     elevation: 2,
   },
   textArea: {
-    backgroundColor: "#F9F9FB",
-    borderRadius: 16,
+    backgroundColor: RainbowColors.cloudSurface,
+    borderRadius: RainbowRadii.cards,
     padding: 14,
     fontSize: 14,
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     height: 90,
     textAlignVertical: "top",
     borderWidth: 1,
-    borderColor: "#EAEAEA",
+    borderColor: RainbowColors.cloudSurface,
   },
   submitBtn: {
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     height: 56,
-    borderRadius: 28,
+    borderRadius: RainbowRadii.pills,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     gap: 10,
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.35,
     shadowRadius: 12,
     shadowOffset: { width: 0, height: 6 },
@@ -403,7 +404,7 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   submitBtnText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 16,
     fontWeight: "700",
   },

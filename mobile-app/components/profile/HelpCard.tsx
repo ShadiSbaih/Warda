@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -15,7 +16,7 @@ export default function HelpCard({
     <View style={styles.card}>
       <View style={styles.content}>
         <View style={styles.iconCircle}>
-          <MaterialCommunityIcons name="headset" size={26} color="#D4588A" />
+          <MaterialCommunityIcons name="headset" size={26} color={RainbowColors.tangerine} />
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.title}>24/7 Luxury Concierge</Text>
@@ -31,7 +32,7 @@ export default function HelpCard({
           activeOpacity={0.85}
           onPress={onContactSupport}
         >
-          <Ionicons name="chatbubbles" size={16} color="#FFFFFF" />
+          <Ionicons name="chatbubbles" size={16} color={RainbowColors.pureWhite} />
           <Text style={styles.chatBtnText}>Live Support</Text>
         </TouchableOpacity>
 
@@ -40,7 +41,7 @@ export default function HelpCard({
           activeOpacity={0.85}
           onPress={onFAQPress}
         >
-          <Feather name="help-circle" size={16} color="#1E1E2D" />
+          <Feather name="help-circle" size={16} color={RainbowColors.inkBlack} />
           <Text style={styles.faqBtnText}>FAQ</Text>
         </TouchableOpacity>
       </View>
@@ -50,17 +51,17 @@ export default function HelpCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 22,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     padding: 18,
     marginHorizontal: 20,
     marginTop: 18,
     marginBottom: 20,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
+    shadowColor: "#5a5a7a",
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 3,
+    elevation: 5,
   },
   content: {
     flexDirection: "row",
@@ -69,8 +70,8 @@ const styles = StyleSheet.create({
   iconCircle: {
     width: 48,
     height: 48,
-    borderRadius: 24,
-    backgroundColor: "#FFF0F5",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -81,11 +82,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   subtitle: {
     fontSize: 12.5,
-    color: "#7E7E8F",
+    color: RainbowColors.stone,
     marginTop: 3,
     lineHeight: 18,
   },
@@ -97,30 +98,30 @@ const styles = StyleSheet.create({
   chatBtn: {
     flex: 1,
     height: 44,
-    backgroundColor: "#D4588A",
-    borderRadius: 14,
+    backgroundColor: RainbowColors.tangerine,
+    borderRadius: RainbowRadii.buttons,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     gap: 8,
   },
   chatBtnText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 14,
     fontWeight: "700",
   },
   faqBtn: {
     flex: 1,
     height: 44,
-    backgroundColor: "#F3F3F7",
-    borderRadius: 14,
+    backgroundColor: RainbowColors.cloudSurface,
+    borderRadius: RainbowRadii.buttons,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     gap: 8,
   },
   faqBtnText: {
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     fontSize: 14,
     fontWeight: "600",
   },

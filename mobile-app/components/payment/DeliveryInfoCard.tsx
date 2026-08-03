@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     StyleSheet,
     Text,
@@ -41,7 +42,7 @@ export default function DeliveryInfoCard() {
         <Feather
           name="chevron-right"
           size={22}
-          color="#888"
+          color={RainbowColors.stone}
         />
       </TouchableOpacity>
 
@@ -73,7 +74,7 @@ export default function DeliveryInfoCard() {
         <Feather
           name="chevron-right"
           size={22}
-          color="#888"
+          color={RainbowColors.stone}
         />
       </TouchableOpacity>
 
@@ -105,7 +106,7 @@ export default function DeliveryInfoCard() {
         <MaterialIcons
           name="keyboard-arrow-right"
           size={24}
-          color="#888"
+          color={RainbowColors.stone}
         />
       </TouchableOpacity>
     </View>
@@ -117,15 +118,15 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginHorizontal: 20,
 
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
 
     borderRadius: 24,
 
     paddingVertical: 6,
 
     shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
+    shadowOpacity: 0.15,
+    shadowRadius: 18,
     shadowOffset: {
       width: 0,
       height: 4,
@@ -171,7 +172,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 17,
     fontWeight: "700",
-    color: "#222",
+    color: RainbowColors.inkBlack,
   },
 
   subtitle: {

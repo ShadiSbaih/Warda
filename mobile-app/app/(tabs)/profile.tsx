@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   Alert,
   Modal,
@@ -21,9 +22,9 @@ import HelpCard from "../../components/profile/HelpCard";
 
 import { useAuth } from "../../context/AuthContext";
 import { useOrders } from "../../context/OrdersContext";
-import { useFavorites } from "../../context/FavoritesContext";
 import { useReminders } from "../../context/RemindersContext";
 import { useCart } from "../../context/CartContext";
+import { useFavorites } from "@/context/FavoritesContext";
 
 const VOUCHERS = [
   { code: "WARDA20", discount: "20% OFF", desc: "Valid on all rose bouquets & chocolate boxes" },
@@ -72,7 +73,7 @@ export default function ProfileScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#FDF6F9" />
+      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.pureWhite} />
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         {/* Header */}
         <View style={styles.header}>
@@ -81,7 +82,7 @@ export default function ProfileScreen() {
             style={styles.settingsBtn}
             onPress={() => router.push("/notifications")}
           >
-            <Feather name="bell" size={20} color="#1E1E2D" />
+            <Feather name="bell" size={20} color={RainbowColors.inkBlack} />
           </TouchableOpacity>
         </View>
 
@@ -123,7 +124,7 @@ export default function ProfileScreen() {
               title="Saved Wishlist"
               subtitle="View your favorite flower arrangements"
               badge={`${favoritesCount}`}
-              badgeColor="#D4588A"
+              badgeColor={RainbowColors.tangerine}
               iconColor="#EF4444"
               iconBgColor="#FEF2F2"
               onPress={() => router.push("/(tabs)/favorites")}
@@ -228,7 +229,7 @@ export default function ProfileScreen() {
                   style={styles.modalCloseBtn}
                   onPress={() => setVouchersModalVisible(false)}
                 >
-                  <Feather name="x" size={20} color="#1E1E2D" />
+                  <Feather name="x" size={20} color={RainbowColors.inkBlack} />
                 </TouchableOpacity>
               </View>
 
@@ -272,7 +273,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FDF6F9",
+    backgroundColor: RainbowColors.pureWhite,
   },
   header: {
     flexDirection: "row",
@@ -282,21 +283,23 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   headerTitle: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
+    letterSpacing: -0.5,
   },
   settingsBtn: {
-    width: 42,
-    height: 42,
-    borderRadius: 21,
-    backgroundColor: "#FFFFFF",
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: RainbowColors.inkBlack,
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.05,
     shadowRadius: 6,
-    elevation: 2,
+    elevation: 3,
   },
   scrollContent: {
     paddingBottom: 130,
@@ -307,9 +310,10 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   modalContent: {
-    backgroundColor: "#FFFFFF",
-    borderTopLeftRadius: 28,
-    borderTopRightRadius: 28,
+    width: "100%",
+    backgroundColor: RainbowColors.pureWhite,
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
     padding: 24,
     paddingBottom: 40,
     maxHeight: "80%",
@@ -323,18 +327,25 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 20,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   modalSubtitle: {
     fontSize: 13,
-    color: "#888",
+    color: RainbowColors.stone,
     marginTop: 3,
+  },
+  version: {
+    textAlign: "center",
+    fontSize: 13,
+    color: RainbowColors.stone,
+    marginTop: 20,
+    marginBottom: 40,
   },
   modalCloseBtn: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: "#F3F3F7",
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -342,15 +353,14 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   voucherCard: {
+    backgroundColor: RainbowColors.cloudSurface,
+    borderRadius: 20,
+    padding: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: RainbowColors.cloudSurface,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: "#FFF9FC",
-    borderWidth: 1.5,
-    borderColor: "#FCE4EC",
-    borderStyle: "dashed",
-    borderRadius: 18,
-    padding: 14,
   },
   voucherCardActive: {
     borderColor: "#10B981",
@@ -362,37 +372,37 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   voucherBadge: {
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     paddingHorizontal: 10,
     paddingVertical: 6,
-    borderRadius: 12,
+    borderRadius: RainbowRadii.pills,
   },
   voucherDiscount: {
-    color: "#FFFFFF",
+    fontSize: 17,
     fontWeight: "800",
-    fontSize: 13,
+    color: RainbowColors.pureWhite,
   },
   voucherCode: {
     fontSize: 15,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   voucherDesc: {
-    fontSize: 11.5,
-    color: "#777",
-    marginTop: 2,
+    fontSize: 12.5,
+    color: RainbowColors.stone,
+    lineHeight: 18,
   },
   voucherApplyBtn: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: 14,
+    borderRadius: RainbowRadii.pills,
     borderWidth: 1,
-    borderColor: "#D4588A",
+    borderColor: RainbowColors.tangerine,
     marginLeft: 8,
   },
   voucherApplyText: {
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     fontWeight: "700",
     fontSize: 13,
   },

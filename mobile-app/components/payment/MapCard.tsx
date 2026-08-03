@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   Image,
   StyleSheet,
@@ -25,7 +26,7 @@ export default function MapCard() {
       <View style={styles.pinContainer}>
         <View style={styles.pinGlow} />
         <View style={styles.pin}>
-          <Ionicons name="location-sharp" size={24} color="#FFFFFF" />
+          <Ionicons name="location-sharp" size={24} color={RainbowColors.pureWhite} />
         </View>
       </View>
 
@@ -35,7 +36,7 @@ export default function MapCard() {
         activeOpacity={0.88}
         onPress={() => router.push("/delivery-address")}
       >
-        <Feather name="edit-2" size={13} color="#D4588A" />
+        <Feather name="edit-2" size={13} color={RainbowColors.tangerine} />
         <Text style={styles.editText}>Change Pin</Text>
       </TouchableOpacity>
     </View>
@@ -50,14 +51,14 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     overflow: "hidden",
     backgroundColor: "#F7F4F6",
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.1,
-    shadowRadius: 14,
+    shadowRadius: 20,
     shadowOffset: {
       width: 0,
       height: 4,
     },
-    elevation: 4,
+    elevation: 6,
     position: "relative",
   },
   map: {
@@ -83,16 +84,16 @@ const styles = StyleSheet.create({
     width: 46,
     height: 46,
     borderRadius: 23,
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.45,
-    shadowRadius: 10,
+    shadowRadius: 16,
     shadowOffset: { width: 0, height: 4 },
     elevation: 8,
     borderWidth: 2.5,
-    borderColor: "#FFFFFF",
+    borderColor: RainbowColors.pureWhite,
   },
   editButton: {
     position: "absolute",
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     shadowColor: "#000",
     shadowOpacity: 0.12,
     shadowRadius: 8,
@@ -114,6 +115,6 @@ const styles = StyleSheet.create({
   editText: {
     fontSize: 13,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
 });

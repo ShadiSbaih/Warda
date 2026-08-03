@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   Alert,
   Image,
@@ -55,7 +56,7 @@ export default function CartScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#FDF6F9" />
+      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.pureWhite} />
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         {/* Header */}
         <View style={styles.header}>
@@ -63,7 +64,7 @@ export default function CartScreen() {
             style={styles.backBtn}
             onPress={() => router.back()}
           >
-            <Feather name="arrow-left" size={20} color="#1E1E2D" />
+            <Feather name="arrow-left" size={20} color={RainbowColors.inkBlack} />
           </TouchableOpacity>
 
           <View style={styles.headerCenter}>
@@ -92,7 +93,7 @@ export default function CartScreen() {
               <MaterialCommunityIcons
                 name="gift-open-outline"
                 size={64}
-                color="#D4588A"
+                color={RainbowColors.tangerine}
               />
             </View>
             <Text style={styles.emptyTitle}>Your Bag is Empty</Text>
@@ -105,7 +106,7 @@ export default function CartScreen() {
               onPress={() => router.push("/(tabs)/menu")}
             >
               <Text style={styles.exploreBtnText}>Discover Gifts</Text>
-              <Feather name="arrow-right" size={18} color="#FFFFFF" />
+              <Feather name="arrow-right" size={18} color={RainbowColors.pureWhite} />
             </TouchableOpacity>
           </View>
         ) : (
@@ -120,7 +121,7 @@ export default function CartScreen() {
               onPress={() => router.push("/delivery-address")}
             >
               <View style={styles.addressLeft}>
-                <Ionicons name="location" size={20} color="#D4588A" />
+                <Ionicons name="location" size={20} color={RainbowColors.tangerine} />
                 <View style={{ marginLeft: 10, flex: 1 }}>
                   <Text style={styles.addressTitle}>Delivering to</Text>
                   <Text style={styles.addressText} numberOfLines={1}>
@@ -128,7 +129,7 @@ export default function CartScreen() {
                   </Text>
                 </View>
               </View>
-              <Feather name="chevron-right" size={18} color="#999" />
+              <Feather name="chevron-right" size={18} color={RainbowColors.stone} />
             </TouchableOpacity>
 
             {/* Cart Items List */}
@@ -155,7 +156,7 @@ export default function CartScreen() {
                           onPress={() => removeFromCart(item.id)}
                           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                         >
-                          <Feather name="x" size={18} color="#999" />
+                          <Feather name="x" size={18} color={RainbowColors.stone} />
                         </TouchableOpacity>
                       </View>
 
@@ -192,7 +193,7 @@ export default function CartScreen() {
                               updateQuantity(item.id, item.quantity - 1)
                             }
                           >
-                            <Feather name="minus" size={14} color="#333" />
+                            <Feather name="minus" size={14} color={RainbowColors.inkBlack} />
                           </TouchableOpacity>
                           <Text style={styles.qtyText}>{item.quantity}</Text>
                           <TouchableOpacity
@@ -201,7 +202,7 @@ export default function CartScreen() {
                               updateQuantity(item.id, item.quantity + 1)
                             }
                           >
-                            <Feather name="plus" size={14} color="#333" />
+                            <Feather name="plus" size={14} color={RainbowColors.inkBlack} />
                           </TouchableOpacity>
                         </View>
                       </View>
@@ -211,7 +212,7 @@ export default function CartScreen() {
                   {/* Gift message snippet if present */}
                   {item.giftMessage && (
                     <View style={styles.messageBox}>
-                      <Feather name="message-square" size={13} color="#D4588A" />
+                      <Feather name="message-square" size={13} color={RainbowColors.hotPink} />
                       <Text style={styles.messageText} numberOfLines={1}>
                         "{item.giftMessage}"
                       </Text>
@@ -226,7 +227,7 @@ export default function CartScreen() {
               <Text style={styles.sectionHeader}>Promo Voucher</Text>
               <View style={styles.promoInputRow}>
                 <View style={styles.inputContainer}>
-                  <Feather name="tag" size={18} color="#999" />
+                  <Feather name="tag" size={18} color={RainbowColors.stone} />
                   <TextInput
                     placeholder="Enter promo code"
                     placeholderTextColor="#A0A0A0"
@@ -270,7 +271,7 @@ export default function CartScreen() {
                     </Text>
                   </View>
                   <TouchableOpacity onPress={removePromo}>
-                    <Feather name="x" size={16} color="#666" />
+                    <Feather name="x" size={16} color={RainbowColors.stone} />
                   </TouchableOpacity>
                 </View>
               )}
@@ -336,7 +337,7 @@ export default function CartScreen() {
               </View>
               <View style={styles.checkoutBtnRight}>
                 <Text style={styles.checkoutBtnPrice}>${total.toFixed(2)}</Text>
-                <Feather name="arrow-right" size={20} color="#FFFFFF" />
+                <Feather name="arrow-right" size={20} color={RainbowColors.pureWhite} />
               </View>
             </TouchableOpacity>
           </ScrollView>
@@ -349,7 +350,7 @@ export default function CartScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FDF6F9",
+    backgroundColor: RainbowColors.pureWhite,
   },
   header: {
     flexDirection: "row",
@@ -357,16 +358,16 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingVertical: 12,
-    backgroundColor: "#FDF6F9",
+    backgroundColor: RainbowColors.pureWhite,
   },
   backBtn: {
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: RainbowColors.inkBlack,
     shadowOpacity: 0.05,
     shadowRadius: 6,
     elevation: 2,
@@ -377,11 +378,11 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   headerSubtitle: {
     fontSize: 13,
-    color: "#888",
+    color: RainbowColors.stone,
     marginTop: 2,
   },
   clearBtn: {
@@ -401,12 +402,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#FFFFFF",
-    borderRadius: 18,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     padding: 14,
     marginBottom: 16,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.06,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 8,
     elevation: 2,
   },
@@ -417,13 +418,13 @@ const styles = StyleSheet.create({
   },
   addressTitle: {
     fontSize: 12,
-    color: "#888",
+    color: RainbowColors.stone,
     fontWeight: "500",
   },
   addressText: {
     fontSize: 14,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     marginTop: 2,
   },
   itemsList: {
@@ -431,11 +432,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   card: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 22,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     padding: 14,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 4 },
     elevation: 3,
@@ -447,7 +448,7 @@ const styles = StyleSheet.create({
     width: 90,
     height: 90,
     borderRadius: 16,
-    backgroundColor: "#FCF6F8",
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -468,7 +469,7 @@ const styles = StyleSheet.create({
   itemTitle: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     flex: 1,
     marginRight: 8,
   },
@@ -476,8 +477,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     alignSelf: "flex-start",
-    backgroundColor: "#F8F8FA",
-    borderRadius: 10,
+    backgroundColor: RainbowColors.cloudSurface,
+    borderRadius: RainbowRadii.pills,
     paddingHorizontal: 8,
     paddingVertical: 3,
     marginTop: 4,
@@ -490,12 +491,12 @@ const styles = StyleSheet.create({
   },
   wrappingText: {
     fontSize: 11.5,
-    color: "#666",
+    color: RainbowColors.stone,
     fontWeight: "600",
   },
   recipientTag: {
     fontSize: 12,
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     fontWeight: "600",
     marginTop: 2,
   },
@@ -508,13 +509,13 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 18,
     fontWeight: "800",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
   qtyContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#F3F3F7",
-    borderRadius: 20,
+    backgroundColor: RainbowColors.cloudSurface,
+    borderRadius: RainbowRadii.pills,
     paddingHorizontal: 6,
     paddingVertical: 3,
     gap: 8,
@@ -522,11 +523,11 @@ const styles = StyleSheet.create({
   qtyBtn: {
     width: 26,
     height: 26,
-    borderRadius: 13,
-    backgroundColor: "#FFFFFF",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: RainbowColors.inkBlack,
     shadowOpacity: 0.05,
     shadowRadius: 3,
     elevation: 1,
@@ -534,42 +535,42 @@ const styles = StyleSheet.create({
   qtyText: {
     fontSize: 14,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     minWidth: 16,
     textAlign: "center",
   },
   messageBox: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FFF8FB",
+    backgroundColor: RainbowColors.cloudSurface,
     borderRadius: 12,
     paddingHorizontal: 10,
     paddingVertical: 6,
     marginTop: 10,
     gap: 6,
     borderWidth: 1,
-    borderColor: "#FCE4EC",
+    borderColor: RainbowColors.cloudSurface,
   },
   messageText: {
     fontSize: 12,
-    color: "#B03A72",
+    color: RainbowColors.hotPink,
     fontStyle: "italic",
     flex: 1,
   },
   promoSection: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 22,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     padding: 16,
     marginBottom: 20,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.06,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 8,
     elevation: 2,
   },
   sectionHeader: {
     fontSize: 15,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     marginBottom: 10,
   },
   promoInputRow: {
@@ -580,29 +581,29 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#F8F8FA",
+    backgroundColor: RainbowColors.cloudSurface,
     borderRadius: 14,
     paddingHorizontal: 14,
     height: 48,
     borderWidth: 1,
-    borderColor: "#EAEAEA",
+    borderColor: RainbowColors.cloudSurface,
     gap: 10,
   },
   promoInput: {
     flex: 1,
     fontSize: 14,
     fontWeight: "600",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   applyBtn: {
-    backgroundColor: "#D4588A",
-    borderRadius: 14,
+    backgroundColor: RainbowColors.tangerine,
+    borderRadius: RainbowRadii.pills,
     paddingHorizontal: 20,
     justifyContent: "center",
     alignItems: "center",
   },
   applyBtnText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 14,
     fontWeight: "700",
   },
@@ -613,17 +614,17 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   quickChip: {
-    backgroundColor: "#FFF0F5",
-    borderRadius: 12,
+    backgroundColor: RainbowColors.cloudSurface,
+    borderRadius: RainbowRadii.pills,
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderWidth: 1,
-    borderColor: "#F8D7E8",
+    borderColor: RainbowColors.cloudSurface,
   },
   quickChipText: {
     fontSize: 11.5,
     fontWeight: "600",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
   appliedPromoBadge: {
     flexDirection: "row",
@@ -653,19 +654,19 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   summaryCard: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 22,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     padding: 18,
     marginBottom: 20,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.06,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 8,
     elevation: 2,
   },
   summaryTitle: {
     fontSize: 17,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     marginBottom: 14,
   },
   summaryRow: {
@@ -676,16 +677,16 @@ const styles = StyleSheet.create({
   },
   summaryLabel: {
     fontSize: 14,
-    color: "#7E7E8F",
+    color: RainbowColors.stone,
   },
   summaryValue: {
     fontSize: 14.5,
     fontWeight: "600",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   summaryDivider: {
     height: 1,
-    backgroundColor: "#F0F0F2",
+    backgroundColor: RainbowColors.cloudSurface,
     marginVertical: 12,
   },
   summaryRowTotal: {
@@ -696,22 +697,22 @@ const styles = StyleSheet.create({
   totalLabel: {
     fontSize: 17,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   totalValue: {
     fontSize: 22,
     fontWeight: "800",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
   checkoutBtn: {
-    backgroundColor: "#D4588A",
-    borderRadius: 24,
+    backgroundColor: RainbowColors.tangerine,
+    borderRadius: RainbowRadii.pills,
     paddingHorizontal: 22,
     paddingVertical: 16,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.35,
     shadowRadius: 12,
     shadowOffset: { width: 0, height: 6 },
@@ -723,7 +724,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   checkoutBtnTitle: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 17,
     fontWeight: "800",
     marginTop: 2,
@@ -734,7 +735,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   checkoutBtnPrice: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 18,
     fontWeight: "800",
   },
@@ -749,7 +750,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 60,
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 20,
@@ -757,12 +758,12 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 24,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     marginBottom: 8,
   },
   emptySubtitle: {
     fontSize: 15,
-    color: "#8E8E93",
+    color: RainbowColors.stone,
     textAlign: "center",
     lineHeight: 22,
     marginBottom: 28,
@@ -770,18 +771,18 @@ const styles = StyleSheet.create({
   exploreBtn: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     paddingHorizontal: 28,
     paddingVertical: 15,
-    borderRadius: 24,
+    borderRadius: RainbowRadii.pills,
     gap: 10,
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.3,
     shadowRadius: 10,
     elevation: 5,
   },
   exploreBtnText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 16,
     fontWeight: "700",
   },

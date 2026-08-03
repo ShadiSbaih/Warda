@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   Alert,
   Animated,
@@ -10,6 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 import { Feather, FontAwesome5, Ionicons } from "@expo/vector-icons";
 
@@ -87,6 +89,14 @@ export default function PaymentMethodsCard({
   return (
     <>
       <View style={styles.container}>
+      {/* 3D inset gloss — top-edge white shimmer, inflated-card effect */}
+      <LinearGradient
+        colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.0)"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 0.55 }}
+        style={StyleSheet.absoluteFillObject}
+        pointerEvents="none"
+      />
         <Text style={styles.sectionTitle}>Payment Method</Text>
 
         {/* Apple Pay */}
@@ -139,7 +149,7 @@ export default function PaymentMethodsCard({
         >
           <View style={styles.left}>
             <View style={[styles.iconBox, styles.addIconBox]}>
-              <Feather name="credit-card" size={20} color="#D4588A" />
+              <Feather name="credit-card" size={20} color={RainbowColors.tangerine} />
             </View>
             <View>
               <Text style={styles.title}>New Credit / Debit Card</Text>
@@ -206,16 +216,16 @@ export default function PaymentMethodsCard({
 
 const styles = StyleSheet.create({
   container: {
+    overflow: "hidden",
     marginTop: 20,
     marginHorizontal: 20,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderRadius: 24,
     shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
+    shadowOpacity: 0.15,
+    shadowRadius: 18,
     shadowOffset: { width: 0, height: 4 },
     elevation: 5,
-    overflow: "hidden",
   },
 
   sectionTitle: {
@@ -289,12 +299,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  radioOuterActive: { borderColor: "#D4588A" },
+  radioOuterActive: { borderColor: RainbowColors.tangerine },
   radioInner: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
   },
 });
 
@@ -306,7 +316,7 @@ const modal = StyleSheet.create({
   },
 
   sheet: {
-    backgroundColor: "#FFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
     paddingHorizontal: 22,
@@ -369,6 +379,6 @@ const modal = StyleSheet.create({
   amountValue: {
     fontSize: 22,
     fontWeight: "800",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
 });

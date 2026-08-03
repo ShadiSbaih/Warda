@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface CategoryItemProps {
@@ -46,30 +47,30 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 10,
     borderRadius: 20,
-    backgroundColor: "#FFFFFF",
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.05,
+    backgroundColor: RainbowColors.pureWhite,
+    shadowColor: RainbowColors.tangerine,
+    shadowOpacity: 0.12,
     shadowRadius: 6,
     elevation: 2,
     minWidth: 80,
   },
   containerActive: {
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     shadowOpacity: 0.25,
-    shadowRadius: 10,
-    elevation: 4,
+    shadowRadius: 16,
+    elevation: 6,
   },
   imageCircle: {
     width: 52,
     height: 52,
     borderRadius: 26,
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 6,
   },
   imageCircleActive: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
   },
   image: {
     width: 38,
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   nameActive: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontWeight: "800",
   },
 });

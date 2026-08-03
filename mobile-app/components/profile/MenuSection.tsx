@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import { StyleSheet, Text, View } from "react-native";
 
 interface MenuSectionProps {
@@ -30,12 +31,12 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   card: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderRadius: 22,
     overflow: "hidden",
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.06,
-    shadowRadius: 10,
+    shadowColor: RainbowColors.tangerine,
+    shadowOpacity: 0.13,
+    shadowRadius: 16,
     shadowOffset: { width: 0, height: 4 },
     elevation: 2,
   },

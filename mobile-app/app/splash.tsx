@@ -1,3 +1,4 @@
+import { RainbowColors, RainbowRadii } from "../constants/Colors";
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
 import {
@@ -50,7 +51,7 @@ export default function SplashScreen() {
     <>
       <StatusBar
         barStyle="light-content"
-        backgroundColor="#D4588A"
+        backgroundColor={RainbowColors.tangerine}
       />
 
       <SafeAreaView style={styles.container}>
@@ -79,7 +80,7 @@ export default function SplashScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     justifyContent: "space-between",
   },
 

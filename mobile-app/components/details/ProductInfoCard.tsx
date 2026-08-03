@@ -1,5 +1,6 @@
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     StyleSheet,
     Text,
@@ -40,7 +41,7 @@ export default function ProductInfoCard({
           <FontAwesome
             name="star"
             size={15}
-            color="#D4588A"
+            color={RainbowColors.tangerine}
           />
 
           <Text style={styles.rating}>{rating}</Text>
@@ -54,7 +55,7 @@ export default function ProductInfoCard({
           <Ionicons
             name="time"
             size={15}
-            color="#D4588A"
+            color={RainbowColors.tangerine}
           />
 
           <Text style={styles.time}>{time}</Text>
@@ -95,15 +96,15 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: -45,
 
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
 
     borderRadius: 24,
 
     padding: 18,
 
     shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 14,
+    shadowOpacity: 0.15,
+    shadowRadius: 20,
     shadowOffset: {
       width: 0,
       height: 5,
@@ -121,13 +122,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#222",
+    color: RainbowColors.inkBlack,
   },
 
   price: {
     fontSize: 20,
     fontWeight: "700",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
 
   ratingRow: {
@@ -149,7 +150,7 @@ const styles = StyleSheet.create({
 
   gray: {
     marginLeft: 4,
-    color: "#888",
+    color: RainbowColors.stone,
     fontSize: 14,
   },
 
@@ -157,7 +158,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     fontWeight: "600",
     fontSize: 15,
-    color: "#222",
+    color: RainbowColors.inkBlack,
   },
 
   description: {
@@ -183,7 +184,7 @@ const styles = StyleSheet.create({
   },
 
   tagText: {
-    color: "#777",
+    color: RainbowColors.stone,
     fontSize: 13,
     fontWeight: "500",
   },

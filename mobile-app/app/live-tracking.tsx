@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../constants/Colors";
 import {
   StatusBar,
   StyleSheet,
@@ -59,7 +60,7 @@ export default function LiveTrackingScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
   },
   headerSafeArea: {
     position: "absolute",
@@ -73,13 +74,13 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingHorizontal: 20,
     paddingTop: 12,
     paddingBottom: 35,
-    shadowColor: "#000",
+    shadowColor: RainbowColors.inkBlack,
     shadowOpacity: 0.12,
     shadowRadius: 15,
     shadowOffset: { width: 0, height: -5 },
@@ -89,8 +90,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: 45,
     height: 5,
-    borderRadius: 3,
-    backgroundColor: "#D6D6D6",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.stone,
     marginBottom: 16,
   },
 });

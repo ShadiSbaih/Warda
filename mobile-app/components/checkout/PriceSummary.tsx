@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import { StyleSheet, Text, View } from "react-native";
 import { useCart } from "../../context/CartContext";
 
@@ -68,14 +69,14 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
     marginTop: 18,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 22,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     padding: 20,
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
+    shadowColor: "#5a5a7a",
+    shadowOpacity: 0.12,
+    shadowRadius: 18,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
+    elevation: 6,
   },
   header: {
     flexDirection: "row",
@@ -85,16 +86,16 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   time: {
     fontSize: 13,
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     fontWeight: "600",
   },
   divider: {
     height: 1,
-    backgroundColor: "#F0F0F2",
+    backgroundColor: RainbowColors.cloudSurface,
     marginVertical: 14,
   },
   row: {
@@ -104,13 +105,13 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    color: "#7E7E8F",
+    color: RainbowColors.stone,
     fontWeight: "500",
   },
   value: {
     fontSize: 14.5,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   discount: {
     fontSize: 14.5,
@@ -120,11 +121,11 @@ const styles = StyleSheet.create({
   totalText: {
     fontSize: 17,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   totalPrice: {
     fontSize: 22,
     fontWeight: "900",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
 });

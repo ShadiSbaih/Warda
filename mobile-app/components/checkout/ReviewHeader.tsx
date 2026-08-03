@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -16,7 +17,7 @@ export default function ReviewHeader({ title = "Review & Checkout" }: ReviewHead
         style={styles.backBtn}
         onPress={() => router.back()}
       >
-        <Feather name="arrow-left" size={20} color="#1E1E2D" />
+        <Feather name="arrow-left" size={20} color={RainbowColors.inkBlack} />
       </TouchableOpacity>
 
       <Text style={styles.title}>{title}</Text>
@@ -37,18 +38,18 @@ const styles = StyleSheet.create({
   backBtn: {
     width: 42,
     height: 42,
-    borderRadius: 21,
-    backgroundColor: "#FFFFFF",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
+    shadowColor: "#5a5a7a",
+    shadowOpacity: 0.12,
     shadowRadius: 6,
     elevation: 2,
   },
   title: {
     fontSize: 20,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
 });

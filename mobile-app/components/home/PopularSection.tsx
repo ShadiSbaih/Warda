@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   FlatList,
   StyleSheet,
@@ -7,7 +8,7 @@ import {
   View,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { ALL_PRODUCTS, Product } from "../../data/productsData";
+import { Product } from "../../data/productsData";
 import { productsAPI } from "../../services/api";
 import GiftCard from "./GiftCard";
 
@@ -17,12 +18,12 @@ interface Props {
 
 export default function PopularSection({ selectedCategoryName }: Props) {
   const router = useRouter();
-  const [products, setProducts] = useState<Product[]>(ALL_PRODUCTS);
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     productsAPI.getProducts().then((res) => {
-      if (res.success && res.data) {
-        setProducts(res.data);
+      if (res.success && res.products) {
+        setProducts(res.products);
       }
     }).catch(() => {});
   }, []);
@@ -49,14 +50,14 @@ export default function PopularSection({ selectedCategoryName }: Props) {
       {/* Cards */}
       <FlatList
         data={displayedGifts}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => (item as any)._id?.toString() || item.id.toString()}
         numColumns={2}
         scrollEnabled={false}
         columnWrapperStyle={styles.row}
         renderItem={({ item }) => (
           <GiftCard
             item={item}
-            onPress={() => router.push(`/details/${item.id}` as any)}
+            onPress={() => router.push(`/details/${(item as any)._id || item.id}` as any)}
           />
         )}
       />
@@ -79,12 +80,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   seeAll: {
     fontSize: 14,
     fontWeight: "700",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
   row: {
     justifyContent: "space-between",

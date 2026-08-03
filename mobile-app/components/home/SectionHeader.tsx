@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface SectionHeaderProps {
@@ -36,11 +37,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   action: {
     fontSize: 13.5,
     fontWeight: "700",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
 });

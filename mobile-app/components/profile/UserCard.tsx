@@ -1,5 +1,7 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {  StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { Feather } from "@expo/vector-icons";
 
 interface UserCardProps {
@@ -23,7 +25,7 @@ export default function UserCard({
           </Text>
         </View>
         <View style={styles.vipBadge}>
-          <Feather name="award" size={12} color="#FFFFFF" />
+          <Feather name="award" size={12} color={RainbowColors.pureWhite} />
         </View>
       </View>
 
@@ -42,7 +44,7 @@ export default function UserCard({
         onPress={onEditPress}
         activeOpacity={0.8}
       >
-        <Feather name="edit-2" size={16} color="#D4588A" />
+        <Feather name="edit-2" size={16} color={RainbowColors.tangerine} />
       </TouchableOpacity>
     </View>
   );
@@ -50,18 +52,18 @@ export default function UserCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 24,
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     padding: 16,
     marginHorizontal: 20,
     marginTop: 10,
     flexDirection: "row",
     alignItems: "center",
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
+    shadowColor: "#5a5a7a",
+    shadowOpacity: 0.12,
+    shadowRadius: 18,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
+    elevation: 6,
   },
   avatarContainer: {
     position: "relative",
@@ -70,29 +72,29 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: "#F8D7E8",
+    borderColor: RainbowColors.cloudSurface,
   },
   avatarText: {
     fontSize: 24,
     fontWeight: "800",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
   },
   vipBadge: {
     position: "absolute",
     bottom: -2,
     right: -2,
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     width: 22,
     height: 22,
     borderRadius: 11,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: "#FFFFFF",
+    borderColor: RainbowColors.pureWhite,
   },
   info: {
     flex: 1,
@@ -106,7 +108,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 17,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   tierPill: {
     backgroundColor: "#FEF3C7",
@@ -122,14 +124,14 @@ const styles = StyleSheet.create({
   },
   email: {
     fontSize: 13,
-    color: "#888",
+    color: RainbowColors.stone,
     marginTop: 3,
   },
   editBtn: {
     width: 38,
     height: 38,
     borderRadius: 19,
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
   },

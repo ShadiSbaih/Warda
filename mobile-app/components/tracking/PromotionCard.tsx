@@ -1,10 +1,12 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
@@ -13,9 +15,17 @@ export default function PromotionCard() {
 
   return (
     <View style={styles.container}>
+      {/* 3D inset gloss — top-edge white shimmer, inflated-card effect */}
+      <LinearGradient
+        colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.0)"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 0.55 }}
+        style={StyleSheet.absoluteFillObject}
+        pointerEvents="none"
+      />
       <View style={styles.left}>
         <View style={styles.tag}>
-          <Ionicons name="sparkles" size={12} color="#D4588A" />
+          <Ionicons name="sparkles" size={12} color={RainbowColors.tangerine} />
           <Text style={styles.tagText}>VIP MEMBER PERK</Text>
         </View>
 
@@ -30,12 +40,12 @@ export default function PromotionCard() {
           onPress={() => router.push("/(tabs)/menu")}
         >
           <Text style={styles.buttonText}>Explore Collection</Text>
-          <Feather name="arrow-right" size={15} color="#D4588A" />
+          <Feather name="arrow-right" size={15} color={RainbowColors.tangerine} />
         </TouchableOpacity>
       </View>
 
       <View style={styles.iconCircle}>
-        <Feather name="gift" size={38} color="#D4588A" />
+        <Feather name="gift" size={38} color={RainbowColors.tangerine} />
       </View>
     </View>
   );
@@ -43,20 +53,21 @@ export default function PromotionCard() {
 
 const styles = StyleSheet.create({
   container: {
+    overflow: "hidden",
     marginHorizontal: 20,
     marginTop: 20,
     borderRadius: 24,
-    backgroundColor: "#FFF0F5",
+    backgroundColor: RainbowColors.cloudSurface,
     borderWidth: 1,
-    borderColor: "#F8D7E8",
+    borderColor: RainbowColors.cloudSurface,
     flexDirection: "row",
     padding: 20,
     alignItems: "center",
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
+    shadowColor: RainbowColors.tangerine,
+    shadowOpacity: 0.15,
+    shadowRadius: 18,
     shadowOffset: { width: 0, height: 4 },
-    elevation: 3,
+    elevation: 5,
   },
   left: {
     flex: 1,
@@ -65,7 +76,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 8,
@@ -75,17 +86,17 @@ const styles = StyleSheet.create({
   tagText: {
     fontSize: 10.5,
     fontWeight: "800",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     letterSpacing: 0.5,
   },
   title: {
     fontSize: 18,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   subtitle: {
     marginTop: 6,
-    color: "#7E7E8F",
+    color: RainbowColors.stone,
     fontSize: 12.5,
     lineHeight: 18,
   },
@@ -97,29 +108,29 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 18,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     alignSelf: "flex-start",
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.15,
     shadowRadius: 6,
     elevation: 2,
   },
   buttonText: {
     fontWeight: "700",
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     fontSize: 13,
   },
   iconCircle: {
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 12,
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.15,
     shadowRadius: 8,
-    elevation: 4,
+    elevation: 6,
   },
 });

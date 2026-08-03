@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../constants/Colors";
 import {
   Alert,
   KeyboardAvoidingView,
@@ -48,11 +49,11 @@ export default function EditProfileScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="#FDF6F9" />
+      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.pureWhite} />
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         <View style={styles.header}>
           <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
-            <Feather name="arrow-left" size={20} color="#1E1E2D" />
+            <Feather name="arrow-left" size={20} color={RainbowColors.inkBlack} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Edit Profile</Text>
           <View style={{ width: 44 }} />
@@ -122,7 +123,7 @@ export default function EditProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FDF6F9",
+    backgroundColor: RainbowColors.pureWhite,
   },
   header: {
     flexDirection: "row",
@@ -134,19 +135,19 @@ const styles = StyleSheet.create({
   backBtn: {
     width: 44,
     height: 44,
-    borderRadius: 22,
-    backgroundColor: "#FFFFFF",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOpacity: 0.06,
+    shadowColor: RainbowColors.inkBlack,
+    shadowOpacity: 0.05,
     shadowRadius: 6,
     elevation: 2,
   },
   headerTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   content: {
     padding: 24,
@@ -157,26 +158,26 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 13.5,
     fontWeight: "700",
-    color: "#444",
+    color: RainbowColors.stone,
     marginBottom: 8,
   },
   input: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderWidth: 1,
-    borderColor: "#EAEAEA",
-    borderRadius: 14,
+    borderColor: RainbowColors.cloudSurface,
+    borderRadius: RainbowRadii.cards,
     paddingHorizontal: 16,
     paddingVertical: 14,
     fontSize: 15,
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
   inputDisabled: {
-    backgroundColor: "#F5F5F5",
-    color: "#888",
+    backgroundColor: RainbowColors.cloudSurface,
+    color: RainbowColors.stone,
   },
   helpText: {
     fontSize: 11.5,
-    color: "#888",
+    color: RainbowColors.stone,
     marginTop: 6,
     marginLeft: 4,
   },
@@ -185,18 +186,18 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   saveBtn: {
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     height: 56,
-    borderRadius: 28,
+    borderRadius: RainbowRadii.pills,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.35,
     shadowRadius: 10,
     elevation: 6,
   },
   saveBtnText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 16,
     fontWeight: "700",
   },

@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import { RainbowColors, RainbowRadii } from "../constants/Colors";
 import {
     ScrollView,
     StatusBar,
@@ -31,7 +32,7 @@ export default function NotificationsScreen() {
   return (
     <>
       <StatusBar
-        backgroundColor="#FFFFFF"
+        backgroundColor={RainbowColors.cloudSurface}
         barStyle="dark-content"
       />
 
@@ -69,7 +70,7 @@ export default function NotificationsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F8F8F8",
+    backgroundColor: RainbowColors.cloudSurface,
   },
 
   content: {

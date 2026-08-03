@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     Dimensions,
     Image,
@@ -33,7 +34,7 @@ export default function DetailsHeader({ image }: Props) {
         <Ionicons
           name="arrow-back"
           size={24}
-          color="#222"
+          color={RainbowColors.inkBlack}
         />
       </TouchableOpacity>
 
@@ -45,7 +46,7 @@ export default function DetailsHeader({ image }: Props) {
         <Ionicons
           name="heart-outline"
           size={23}
-          color="#222"
+          color={RainbowColors.inkBlack}
         />
       </TouchableOpacity>
 
@@ -63,7 +64,7 @@ export default function DetailsHeader({ image }: Props) {
 const styles = StyleSheet.create({
   container: {
     height: 290,
-    backgroundColor: "#FCF6F8",
+    backgroundColor: RainbowColors.cloudSurface,
     alignItems: "center",
     justifyContent: "flex-end",
   },
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: width,
     height: 290,
-    backgroundColor: "#FCF6F8",
+    backgroundColor: RainbowColors.cloudSurface,
   },
 
   circleButton: {
@@ -83,20 +84,20 @@ const styles = StyleSheet.create({
     height: 44,
     borderRadius: 22,
 
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
 
     justifyContent: "center",
     alignItems: "center",
 
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.12,
-    shadowRadius: 10,
+    shadowRadius: 16,
     shadowOffset: {
       width: 0,
       height: 3,
     },
 
-    elevation: 4,
+    elevation: 6,
 
     zIndex: 20,
   },

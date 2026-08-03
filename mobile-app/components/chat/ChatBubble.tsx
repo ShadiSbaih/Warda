@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     StyleSheet,
     Text,
@@ -81,40 +82,40 @@ const styles = StyleSheet.create({
   },
 
   myBubble: {
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     borderBottomRightRadius: 4,
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.25,
     shadowRadius: 6,
-    elevation: 3,
+    elevation: 5,
   },
 
   driverBubble: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: RainbowColors.pureWhite,
     borderBottomLeftRadius: 4,
     shadowColor: "#000",
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.12,
     shadowRadius: 6,
     elevation: 2,
     borderWidth: 1,
-    borderColor: "#F3E5ED",
+    borderColor: RainbowColors.cloudSurface,
   },
 
   message: {
     fontSize: 15,
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
     lineHeight: 22,
   },
 
   myMessage: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontWeight: "500",
   },
 
   time: {
     marginTop: 4,
     fontSize: 11,
-    color: "#B4A8B8",
+    color: RainbowColors.stone,
   },
 
   timeRight: {

@@ -1,4 +1,5 @@
 import React from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
     Image,
     StyleSheet,
@@ -6,6 +7,7 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface Props {
   item: {
@@ -23,6 +25,14 @@ export default function OrderedItemCard({
 }: Props) {
   return (
     <View style={styles.container}>
+      {/* 3D inset gloss — top-edge white shimmer, inflated-card effect */}
+      <LinearGradient
+        colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.0)"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 0.55 }}
+        style={StyleSheet.absoluteFillObject}
+        pointerEvents="none"
+      />
       {/* Image */}
 
       <Image
@@ -56,7 +66,7 @@ export default function OrderedItemCard({
               color:
                 item.status === "Delivered"
                   ? "#34C759"
-                  : "#D4588A",
+                  : RainbowColors.tangerine,
             },
           ]}
         >
@@ -77,28 +87,29 @@ export default function OrderedItemCard({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 24,
+    overflow: "hidden",
+    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: RainbowRadii.cards,
     marginHorizontal: 20,
     marginBottom: 16,
     padding: 16,
     flexDirection: "row",
     alignItems: "center",
-    shadowColor: "#D4588A",
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
+    shadowColor: "#5a5a7a",
+    shadowOpacity: 0.12,
+    shadowRadius: 18,
     shadowOffset: {
       width: 0,
       height: 4,
     },
-    elevation: 4,
+    elevation: 6,
   },
 
   image: {
     width: 80,
     height: 80,
     borderRadius: 16,
-    backgroundColor: "#FCF6F8",
+    backgroundColor: RainbowColors.cloudSurface,
   },
 
   info: {
@@ -109,19 +120,19 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "800",
-    color: "#1E1E2D",
+    color: RainbowColors.inkBlack,
   },
 
   address: {
     marginTop: 4,
     fontSize: 13,
-    color: "#8E8292",
+    color: RainbowColors.stone,
   },
 
   shop: {
     marginTop: 2,
     fontSize: 12,
-    color: "#D4588A",
+    color: RainbowColors.tangerine,
     fontWeight: "600",
   },
 
@@ -134,19 +145,19 @@ const styles = StyleSheet.create({
   trackButton: {
     paddingHorizontal: 16,
     height: 36,
-    borderRadius: 18,
-    backgroundColor: "#D4588A",
+    borderRadius: RainbowRadii.pills,
+    backgroundColor: RainbowColors.tangerine,
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.3,
     shadowRadius: 6,
-    elevation: 3,
+    elevation: 5,
   },
 
   trackText: {
-    color: "#FFFFFF",
+    color: RainbowColors.pureWhite,
     fontSize: 13,
     fontWeight: "700",
   },

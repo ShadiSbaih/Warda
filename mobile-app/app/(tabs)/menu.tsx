@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   ScrollView,
   StatusBar,
@@ -18,7 +19,7 @@ export default function MenuScreen() {
     <>
       <StatusBar
         barStyle="dark-content"
-        backgroundColor="#FDF6F9"
+        backgroundColor={RainbowColors.pureWhite}
       />
 
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
@@ -49,7 +50,7 @@ export default function MenuScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FDF6F9",
+    backgroundColor: RainbowColors.pureWhite,
   },
   content: {
     paddingBottom: 130,

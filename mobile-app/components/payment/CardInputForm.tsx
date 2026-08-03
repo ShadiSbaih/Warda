@@ -1,9 +1,9 @@
 import React, {
   useRef,
   useState,
-  forwardRef,
-  useImperativeHandle,
+
 } from "react";
+import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   ActivityIndicator,
   Animated,
@@ -152,7 +152,7 @@ const fieldStyles = StyleSheet.create({
     justifyContent: "center",
   },
   inputBoxFocused: {
-    borderColor: "#D4588A",
+    borderColor: RainbowColors.tangerine,
     backgroundColor: "#FFF5F9",
   },
   inputBoxError: {
@@ -357,10 +357,10 @@ export default function CardInputForm({ onSuccess, onError, amount, currency = "
         disabled={loading}
       >
         {loading ? (
-          <ActivityIndicator color="#FFF" />
+          <ActivityIndicator color={RainbowColors.pureWhite} />
         ) : (
           <>
-            <Feather name="lock" size={18} color="#FFF" style={{ marginRight: 8 }} />
+            <Feather name="lock" size={18} color={RainbowColors.pureWhite} style={{ marginRight: 8 }} />
             <Text style={styles.payButtonText}>
               Pay ${amount.toFixed(2)}
             </Text>
@@ -393,7 +393,7 @@ const styles = StyleSheet.create({
   },
   cardPreviewNumber: {
     flex: 1,
-    color: "#FFF",
+    color: RainbowColors.pureWhite,
     fontSize: 16,
     fontWeight: "600",
     letterSpacing: 2,
@@ -428,14 +428,14 @@ const styles = StyleSheet.create({
   payButton: {
     height: 56,
     borderRadius: 28,
-    backgroundColor: "#D4588A",
+    backgroundColor: RainbowColors.tangerine,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     marginTop: 4,
-    shadowColor: "#D4588A",
+    shadowColor: RainbowColors.tangerine,
     shadowOpacity: 0.4,
-    shadowRadius: 12,
+    shadowRadius: 18,
     shadowOffset: { width: 0, height: 6 },
     elevation: 10,
   },
@@ -443,7 +443,7 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   payButtonText: {
-    color: "#FFF",
+    color: RainbowColors.pureWhite,
     fontSize: 18,
     fontWeight: "700",
   },
@@ -452,7 +452,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 12,
     fontSize: 12,
-    color: "#AAAAAA",
+    color: RainbowColors.stone,
     fontWeight: "500",
   },
 
