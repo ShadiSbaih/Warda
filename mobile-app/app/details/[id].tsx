@@ -75,8 +75,8 @@ export default function DynamicDetailsScreen() {
   const [showGiftMessageModal, setShowGiftMessageModal] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
-  const fav = isFavorite(product.id);
-  const unitPrice = product.numericPrice;
+  const fav = product ? isFavorite(product.id || product._id) : false;
+  const unitPrice = product ? product.numericPrice || product.price : 0;
   const totalPrice = unitPrice * quantity;
 
   const handleColorPick = (opt: { color: string; name: string }) => {
