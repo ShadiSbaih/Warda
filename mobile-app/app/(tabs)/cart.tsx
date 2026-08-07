@@ -88,29 +88,33 @@ export default function CartScreen() {
       <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.surface }]} edges={["top", "left", "right"]}>
         <View style={styles.header}>
           <WardaIconButton icon="arrow-left" onPress={() => router.back()} />
-          <View style={{ alignItems: "center" }}>
+          <View style={styles.headerTitleContainer}>
             <WardaText variant="h2">Shopping Bag</WardaText>
-            <WardaText variant="caption" color={theme.colors.textMuted}>
-              {itemsCount} {itemsCount === 1 ? "item" : "items"}
-            </WardaText>
+            <View style={[styles.countBadge, { backgroundColor: theme.colors.brandLight }]}>
+              <WardaText variant="caption" weight="bold" color={theme.colors.brand}>
+                {itemsCount} {itemsCount === 1 ? "item" : "items"}
+              </WardaText>
+            </View>
           </View>
           <WardaIconButton icon="trash-2" onPress={confirmClearCart} />
         </View>
 
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
           <TouchableOpacity activeOpacity={0.8} onPress={() => router.push("/delivery-address")}>
-            <WardaCard style={styles.addressBanner}>
-              <View style={styles.addressLeft}>
-                <Ionicons name="location" size={20} color={theme.colors.brand} />
-                <View style={{ marginLeft: 10, flex: 1 }}>
-                  <WardaText variant="label">Delivering to</WardaText>
-                  <WardaText variant="body" weight="bold" numberOfLines={1}>
-                    King Fahd Road, Al Olaya, Riyadh
-                  </WardaText>
-                </View>
+            <View style={[styles.addressBanner, { backgroundColor: theme.colors.background, borderColor: theme.colors.borderSubtle }]}>
+              <View style={[styles.addressIcon, { backgroundColor: theme.colors.brandLight }]}>
+                <Ionicons name="location-sharp" size={18} color={theme.colors.brand} />
+              </View>
+              <View style={styles.addressTextGroup}>
+                <WardaText variant="caption" weight="bold" color={theme.colors.textMuted} style={styles.addressLabel}>
+                  DELIVERING TO
+                </WardaText>
+                <WardaText variant="body" weight="bold" numberOfLines={1} style={styles.addressMain}>
+                  King Fahd Road, Al Olaya, Riyadh
+                </WardaText>
               </View>
               <Feather name="chevron-right" size={18} color={theme.colors.textMuted} />
-            </WardaCard>
+            </View>
           </TouchableOpacity>
 
           <View style={styles.itemsList}>
@@ -309,6 +313,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 12,
   },
+  headerTitleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  countBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 12,
+  },
   emptyContainer: {
     flex: 1,
     justifyContent: "center",
@@ -330,12 +344,32 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   addressBanner: {
-    marginBottom: 16,
-  },
-  addressLeft: {
     flexDirection: "row",
     alignItems: "center",
+    padding: 14,
+    borderRadius: 16,
+    borderWidth: 1,
+    marginBottom: 16,
+  },
+  addressIcon: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  addressTextGroup: {
     flex: 1,
+    marginLeft: 12,
+    marginRight: 8,
+  },
+  addressLabel: {
+    fontSize: 10,
+    letterSpacing: 0.6,
+  },
+  addressMain: {
+    fontSize: 14,
+    marginTop: 2,
   },
   itemsList: {
     gap: 14,

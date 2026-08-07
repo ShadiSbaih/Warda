@@ -16,11 +16,13 @@ export default function Header() {
         activeOpacity={0.8}
         onPress={() => router.push("/delivery-address")}
       >
-        <WardaIconButton icon="map-pin" variant="default" size="md" />
+        <View style={[styles.iconCircle, { backgroundColor: theme.colors.brandLight }]}>
+          <Ionicons name="location-sharp" size={18} color={theme.colors.brand} />
+        </View>
 
         <View style={styles.locationContainer}>
-          <Text style={[styles.deliveryText, { color: theme.colors.textMuted }]}>
-            Delivering to
+          <Text style={[styles.deliveryLabel, { color: theme.colors.textMuted }]}>
+            DELIVERING TO
           </Text>
           <View style={styles.row}>
             <Text
@@ -29,7 +31,7 @@ export default function Header() {
             >
               Al Olaya, Riyadh
             </Text>
-            <Feather name="chevron-down" size={16} color={theme.colors.textMuted} />
+            <Feather name="chevron-down" size={14} color={theme.colors.textMuted} />
           </View>
         </View>
       </TouchableOpacity>
@@ -61,13 +63,21 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 12,
   },
+  iconCircle: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   locationContainer: {
     marginLeft: 10,
     flex: 1,
   },
-  deliveryText: {
-    fontSize: 12,
-    fontWeight: "500",
+  deliveryLabel: {
+    fontSize: 10,
+    fontWeight: "700",
+    letterSpacing: 0.6,
   },
   row: {
     flexDirection: "row",
@@ -75,10 +85,10 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   address: {
-    fontSize: 16,
-    fontWeight: "800",
+    fontSize: 15,
+    fontWeight: "700",
     marginRight: 4,
-    maxWidth: "80%",
+    maxWidth: "85%",
   },
   iconWrapper: {
     position: "relative",
