@@ -1,12 +1,14 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaButton, WardaIconButton, WardaText } from "@/components/ui";
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Alert, TextInput, Image, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import { View, StyleSheet, FlatList, ActivityIndicator, Alert, TextInput, Image, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { adminAPI } from "../../services/api";
 
 export default function ManageCategoriesScreen() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const router = useRouter();
   const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -82,13 +84,13 @@ export default function ManageCategoriesScreen() {
   return (
     <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
-          <Feather name="arrow-left" size={22} color={RainbowColors.inkBlack} />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Manage Categories</Text>
-        <TouchableOpacity style={styles.addBtnHeader} onPress={() => setIsAdding(!isAdding)}>
-          <Feather name={isAdding ? "x" : "plus"} size={22} color={RainbowColors.tangerine} />
-        </TouchableOpacity>
+        <WardaIconButton icon="arrow-left" onPress={() => router.back()} variant="ghost" />
+        <WardaText style={styles.headerTitle}>Manage Categories</WardaText>
+        <WardaIconButton
+          icon={isAdding ? "x" : "plus"}
+          variant="secondary"
+          onPress={() => setIsAdding(!isAdding)}
+        />
       </View>
 
       <KeyboardAvoidingView 
@@ -97,10 +99,10 @@ export default function ManageCategoriesScreen() {
       >
         {isAdding && (
           <View style={styles.addForm}>
-            <Text style={styles.formTitle}>New Category</Text>
+            <WardaText style={styles.formTitle}>New Category</WardaText>
             
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>Name</Text>
+              <WardaText style={styles.label}>Name</WardaText>
               <TextInput
                 style={styles.input}
                 placeholder="e.g. Luxury Chocolates"
@@ -110,7 +112,7 @@ export default function ManageCategoriesScreen() {
             </View>
 
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>Image URL</Text>
+              <WardaText style={styles.label}>Image URL</WardaText>
               <TextInput
                 style={styles.input}
                 placeholder="https://images.unsplash.com/..."
@@ -120,23 +122,19 @@ export default function ManageCategoriesScreen() {
               />
             </View>
 
-            <TouchableOpacity 
-              style={styles.submitBtn} 
-              onPress={handleCreate}
+            <WardaButton
+              title="Create Category"
+              size="md"
+              loading={submitting}
               disabled={submitting}
-            >
-              {submitting ? (
-                <ActivityIndicator color={RainbowColors.pureWhite} />
-              ) : (
-                <Text style={styles.submitBtnText}>Create Category</Text>
-              )}
-            </TouchableOpacity>
+              onPress={handleCreate}
+            />
           </View>
         )}
 
         {loading ? (
           <View style={styles.center}>
-            <ActivityIndicator size="large" color={RainbowColors.tangerine} />
+            <ActivityIndicator size="large" color={theme.colors.brand} />
           </View>
         ) : (
           <FlatList
@@ -147,21 +145,16 @@ export default function ManageCategoriesScreen() {
               <View style={styles.card}>
                 <Image source={{ uri: item.image }} style={styles.cardImage} />
                 <View style={styles.cardInfo}>
-                  <Text style={styles.name}>{item.name}</Text>
+                  <WardaText style={styles.name}>{item.name}</WardaText>
                 </View>
                 
                 <View style={styles.actions}>
-                  <TouchableOpacity 
-                    style={[styles.actionBtn, { backgroundColor: "rgba(239, 68, 68, 0.1)" }]}
+                  <WardaIconButton
+                    icon="trash-2"
+                    variant="danger"
+                    size="sm"
                     onPress={() => handleDelete(item._id)}
-                    disabled={deleting === item._id}
-                  >
-                    {deleting === item._id ? (
-                      <ActivityIndicator size="small" color="#EF4444" />
-                    ) : (
-                      <Feather name="trash-2" size={16} color="#EF4444" />
-                    )}
-                  </TouchableOpacity>
+                  />
                 </View>
               </View>
             )}
@@ -172,10 +165,10 @@ export default function ManageCategoriesScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
   },
   header: {
     flexDirection: "row",
@@ -186,26 +179,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "rgba(0,0,0,0.05)",
   },
-  backBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: "rgba(0,0,0,0.04)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
   headerTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: RainbowColors.inkBlack,
-  },
-  addBtnHeader: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: "rgba(255, 127, 80, 0.1)",
-    justifyContent: "center",
-    alignItems: "center",
+    color: theme.colors.text,
   },
   center: {
     flex: 1,
@@ -220,12 +197,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
     padding: 12,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
-    shadowColor: RainbowColors.inkBlack,
+    borderColor: theme.colors.borderSubtle,
+    shadowColor: theme.colors.text,
     shadowOpacity: 0.05,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 4 },
@@ -235,7 +212,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 10,
-    backgroundColor: RainbowColors.cloudSurface,
+    backgroundColor: theme.colors.background,
   },
   cardInfo: {
     flex: 1,
@@ -244,24 +221,17 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     fontWeight: "700",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
   actions: {
     flexDirection: "row",
     gap: 8,
   },
-  actionBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   addForm: {
     padding: 20,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
     borderBottomWidth: 1,
-    borderBottomColor: RainbowColors.cloudSurface,
+    borderBottomColor: theme.colors.borderSubtle,
     shadowColor: "#000",
     shadowOpacity: 0.05,
     shadowRadius: 10,
@@ -272,7 +242,7 @@ const styles = StyleSheet.create({
   formTitle: {
     fontSize: 18,
     fontWeight: "800",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
     marginBottom: 16,
   },
   inputGroup: {
@@ -281,7 +251,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 13,
     fontWeight: "600",
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     marginBottom: 6,
     marginLeft: 4,
   },
@@ -289,23 +259,10 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.03)",
     borderWidth: 1,
     borderColor: "rgba(0,0,0,0.05)",
-    borderRadius: RainbowRadii.pills,
+    borderRadius: theme.radii.full,
     paddingHorizontal: 16,
     height: 48,
     fontSize: 14.5,
-    color: RainbowColors.inkBlack,
-  },
-  submitBtn: {
-    height: 48,
-    backgroundColor: RainbowColors.tangerine,
-    borderRadius: RainbowRadii.pills,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 8,
-  },
-  submitBtnText: {
-    color: RainbowColors.pureWhite,
-    fontSize: 16,
-    fontWeight: "700",
+    color: theme.colors.text,
   },
 });

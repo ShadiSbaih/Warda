@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { favoritesAPI } from "../services/api";
 
 export interface FavoriteProduct {
-  id: number;
+  id: string | number;
   name?: string;
   title?: string;
   price: string | number;
@@ -82,18 +82,24 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
   };
 
-  const isFavorite = (id: number) => {
-    return favorites.some((item) => item.id === id);
+  const resolveProductId = (product: any) => {
+    return product._id?.toString?.() || product.id?.toString?.() || product.productId?.toString?.();
+  };
+
+  const isFavorite = (id: number | string) => {
+    return favorites.some((item) => item.id.toString() === id?.toString?.());
   };
 
   const toggleFavorite = (product: any) => {
-    const id = product.id;
+    const id = resolveProductId(product);
+    if (!id) return;
+
     if (isFavorite(id)) {
-      const updated = favorites.filter((item) => item.id !== id);
+      const updated = favorites.filter((item) => item.id.toString() !== id.toString());
       saveFavorites(updated);
     } else {
       const newFav: FavoriteProduct = {
-        id: product.id,
+        id,
         title: product.title || product.name || "Gift Item",
         name: product.name || product.title || "Gift Item",
         price: product.price || "85",

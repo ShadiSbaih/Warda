@@ -1,19 +1,20 @@
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
+
+import { useTheme } from "../../context/ThemeContext";
+import { WardaBadge, WardaText } from "../ui";
 
 interface MenuItemProps {
   icon: keyof typeof Feather.glyphMap;
   title: string;
   subtitle?: string;
   badge?: string;
-  badgeColor?: string;
+  badgeVariant?: "default" | "brand" | "success" | "warning" | "error" | "info";
   iconBgColor?: string;
   iconColor?: string;
   isDestructive?: boolean;
   onPress: () => void;
-  showDivider?: boolean;
 }
 
 export default function MenuItem({
@@ -21,53 +22,37 @@ export default function MenuItem({
   title,
   subtitle,
   badge,
-  badgeColor = RainbowColors.hotPink,
-  iconBgColor = RainbowColors.cloudSurface,
-  iconColor = RainbowColors.tangerine,
+  badgeVariant = "brand",
+  iconBgColor,
+  iconColor,
   isDestructive = false,
   onPress,
-  showDivider = true,
 }: MenuItemProps) {
+  const { theme } = useTheme();
+
+  const bg = isDestructive ? theme.colors.errorSurface : iconBgColor || theme.colors.background;
+  const tint = isDestructive ? theme.colors.error : iconColor || theme.colors.textMuted;
+
   return (
-    <TouchableOpacity
-      activeOpacity={0.7}
-      style={styles.container}
-      onPress={onPress}
-    >
-      <View
-        style={[
-          styles.iconBox,
-          { backgroundColor: isDestructive ? "#FFF0F0" : iconBgColor },
-        ]}
-      >
-        <Feather
-          name={icon}
-          size={18}
-          color={isDestructive ? "#E53935" : iconColor}
-        />
+    <TouchableOpacity activeOpacity={0.75} style={styles.container} onPress={onPress}>
+      <View style={[styles.iconBox, { backgroundColor: bg }]}>
+        <Feather name={icon} size={20} color={tint} />
       </View>
 
       <View style={styles.textContainer}>
-        <Text
-          style={[
-            styles.title,
-            isDestructive && { color: "#E53935", fontWeight: "700" },
-          ]}
-        >
+        <WardaText variant="body" weight={isDestructive ? "bold" : "semibold"} color={isDestructive ? theme.colors.error : theme.colors.text}>
           {title}
-        </Text>
-        {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
+        </WardaText>
+        {subtitle && (
+          <WardaText variant="caption" color={theme.colors.textMuted} numberOfLines={1}>
+            {subtitle}
+          </WardaText>
+        )}
       </View>
 
-      {badge && (
-        <View style={[styles.badge, { backgroundColor: badgeColor }]}>
-          <Text style={styles.badgeText}>{badge}</Text>
-        </View>
-      )}
+      {badge && <WardaBadge text={badge} variant={badgeVariant} style={{ marginRight: 8 }} />}
 
-      {!isDestructive && (
-        <Feather name="chevron-right" size={18} color="#C4C4C4" />
-      )}
+      {!isDestructive && <Feather name="chevron-right" size={18} color={theme.colors.textMuted} />}
     </TouchableOpacity>
   );
 }
@@ -80,35 +65,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   iconBox: {
-    width: 40,
-    height: 40,
-    borderRadius: RainbowRadii.pills,
+    width: 42,
+    height: 42,
+    borderRadius: 21,
     justifyContent: "center",
     alignItems: "center",
   },
   textContainer: {
     flex: 1,
     marginLeft: 14,
-  },
-  title: {
-    fontSize: 15,
-    fontWeight: "600",
-    color: RainbowColors.inkBlack,
-  },
-  subtitle: {
-    fontSize: 12,
-    color: RainbowColors.stone,
-    marginTop: 2,
-  },
-  badge: {
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 10,
-    marginRight: 8,
-  },
-  badgeText: {
-    color: RainbowColors.pureWhite,
-    fontSize: 11,
-    fontWeight: "700",
   },
 });

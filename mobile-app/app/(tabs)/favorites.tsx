@@ -1,18 +1,19 @@
 import React, { useState } from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   Dimensions,
   FlatList,
   Image,
   StatusBar,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+
+import { useTheme } from "../../context/ThemeContext";
+import { WardaButton, WardaIconButton, WardaText } from "../../components/ui";
 import { useFavorites } from "../../context/FavoritesContext";
 import { useCart } from "../../context/CartContext";
 
@@ -23,6 +24,7 @@ const CATEGORY_FILTERS = ["All", "Rose Bouquets", "Chocolate", "Custom Boxes", "
 
 export default function FavoritesScreen() {
   const router = useRouter();
+  const { theme } = useTheme();
   const { favorites, favoritesCount, toggleFavorite } = useFavorites();
   const { addToCart } = useCart();
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -41,38 +43,28 @@ export default function FavoritesScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.pureWhite} />
-      <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
-        {/* Header */}
+      <StatusBar barStyle="dark-content" backgroundColor={theme.colors.surface} />
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={["top", "left", "right"]}>
         <View style={styles.header}>
-          <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
-            <Feather name="arrow-left" size={20} color={RainbowColors.inkBlack} />
-          </TouchableOpacity>
-
+          <WardaIconButton icon="arrow-left" onPress={() => router.back()} />
           <View style={styles.headerCenter}>
-            <Text style={styles.headerTitle}>My Wishlist</Text>
-            <Text style={styles.headerSubtitle}>
+            <WardaText variant="h2">My Wishlist</WardaText>
+            <WardaText variant="caption" color={theme.colors.textMuted}>
               {favoritesCount} saved {favoritesCount === 1 ? "gift" : "gifts"}
-            </Text>
+            </WardaText>
           </View>
-
-          <TouchableOpacity
-            style={styles.cartBtn}
-            onPress={() => router.push("/(tabs)/cart")}
-          >
-            <Feather name="shopping-bag" size={20} color={RainbowColors.tangerine} />
-          </TouchableOpacity>
+          <WardaIconButton icon="shopping-bag" onPress={() => router.push("/(tabs)/cart")} />
         </View>
 
-        {/* Added Toast */}
         {addedToast && (
-          <View style={styles.toast}>
-            <Ionicons name="checkmark-circle" size={18} color="#10B981" />
-            <Text style={styles.toastText}>{addedToast}</Text>
+          <View style={[styles.toast, { backgroundColor: theme.colors.text }]}>
+            <Ionicons name="checkmark-circle" size={18} color={theme.colors.success} />
+            <WardaText variant="caption" color={theme.colors.textInverse}>
+              {addedToast}
+            </WardaText>
           </View>
         )}
 
-        {/* Category Filters */}
         {favorites.length > 0 && (
           <View style={styles.categoriesWrapper}>
             <FlatList
@@ -83,20 +75,23 @@ export default function FavoritesScreen() {
               contentContainerStyle={styles.categoriesList}
               renderItem={({ item }) => (
                 <TouchableOpacity
+                  activeOpacity={0.85}
+                  onPress={() => setSelectedCategory(item)}
                   style={[
                     styles.chip,
-                    selectedCategory === item && styles.activeChip,
+                    {
+                      backgroundColor: selectedCategory === item ? theme.colors.brand : theme.colors.surface,
+                      borderColor: selectedCategory === item ? theme.colors.brand : theme.colors.borderSubtle,
+                    },
                   ]}
-                  onPress={() => setSelectedCategory(item)}
                 >
-                  <Text
-                    style={[
-                      styles.chipText,
-                      selectedCategory === item && styles.activeChipText,
-                    ]}
+                  <WardaText
+                    variant="caption"
+                    weight={selectedCategory === item ? "bold" : "semibold"}
+                    color={selectedCategory === item ? theme.colors.textInverse : theme.colors.textMuted}
                   >
                     {item}
-                  </Text>
+                  </WardaText>
                 </TouchableOpacity>
               )}
             />
@@ -105,23 +100,18 @@ export default function FavoritesScreen() {
 
         {filtered.length === 0 ? (
           <View style={styles.emptyContainer}>
-            <View style={styles.emptyIconBox}>
-              <Ionicons name="heart-dislike-outline" size={60} color={RainbowColors.tangerine} />
+            <View style={[styles.emptyIconBox, { backgroundColor: theme.colors.brandLight }]}>
+              <Ionicons name="heart-dislike-outline" size={60} color={theme.colors.brand} />
             </View>
-            <Text style={styles.emptyTitle}>No Saved Gifts</Text>
-            <Text style={styles.emptySubtitle}>
+            <WardaText variant="h2" style={{ marginBottom: 6 }}>
+              No Saved Gifts
+            </WardaText>
+            <WardaText variant="body" color={theme.colors.textMuted} align="center" style={{ marginBottom: 28 }}>
               {selectedCategory === "All"
                 ? "Tap the heart icon on any bouquet or luxury gift box to save it here for later."
                 : `No saved items in "${selectedCategory}".`}
-            </Text>
-            <TouchableOpacity
-              style={styles.exploreBtn}
-              onPress={() => router.push("/(tabs)/menu")}
-              activeOpacity={0.85}
-            >
-              <Text style={styles.exploreBtnText}>Browse Gifts</Text>
-              <Feather name="arrow-right" size={18} color={RainbowColors.pureWhite} />
-            </TouchableOpacity>
+            </WardaText>
+            <WardaButton title="Browse Gifts" iconRight="arrow-right" onPress={() => router.push("/(tabs)/menu")} />
           </View>
         ) : (
           <FlatList
@@ -133,46 +123,50 @@ export default function FavoritesScreen() {
             contentContainerStyle={styles.listContent}
             renderItem={({ item }) => (
               <TouchableOpacity
-                activeOpacity={0.9}
-                style={styles.card}
+                activeOpacity={0.92}
                 onPress={() => router.push(`/details/${item.id}` as any)}
+                style={[
+                  styles.card,
+                  { backgroundColor: theme.colors.surface, borderRadius: theme.radii.lg },
+                  theme.shadows.sm,
+                ]}
               >
-                {/* Image */}
-                <View style={styles.imageBox}>
-                  <Image
-                    source={item.image}
-                    style={styles.productImage}
-                    resizeMode="contain"
-                  />
+                <View style={[styles.imageBox, { backgroundColor: theme.colors.background }]}>
+                  <Image source={item.image} style={styles.productImage} resizeMode="contain" />
                   <TouchableOpacity
-                    style={styles.favBtn}
+                    style={[styles.favBtn, { backgroundColor: theme.colors.surface }]}
                     onPress={() => toggleFavorite(item)}
                   >
-                    <Ionicons name="heart" size={18} color={RainbowColors.hotPink} />
+                    <Ionicons name="heart" size={18} color={theme.colors.error} />
                   </TouchableOpacity>
                 </View>
 
-                {/* Details */}
-                <Text numberOfLines={1} style={styles.cardTitle}>
+                <WardaText variant="body" weight="bold" numberOfLines={1} style={styles.cardTitle}>
                   {item.title || item.name}
-                </Text>
+                </WardaText>
 
                 <View style={styles.metaRow}>
                   <View style={styles.ratingBadge}>
-                    <Ionicons name="star" size={12} color="#FFA726" />
-                    <Text style={styles.ratingText}>{item.rating || "4.9"}</Text>
+                    <Ionicons name="star" size={12} color={theme.colors.warning} />
+                    <WardaText variant="caption" weight="semibold" color={theme.colors.text}>
+                      {item.rating || "4.9"}
+                    </WardaText>
                   </View>
-                  <Text style={styles.timeText}>{item.time || "45 mins"}</Text>
+                  <WardaText variant="caption" color={theme.colors.textMuted}>
+                    {item.time || "45 mins"}
+                  </WardaText>
                 </View>
 
                 <View style={styles.priceRow}>
-                  <Text style={styles.price}>${item.price}</Text>
+                  <WardaText variant="h3" color={theme.colors.brand}>
+                    ${item.price}
+                  </WardaText>
                   <TouchableOpacity
-                    style={styles.addBtn}
+                    style={[styles.addBtn, { backgroundColor: theme.colors.brand }]}
                     activeOpacity={0.85}
                     onPress={() => handleQuickAdd(item)}
                   >
-                    <Feather name="plus" size={16} color={RainbowColors.pureWhite} />
+                    <Feather name="plus" size={16} color={theme.colors.textInverse} />
                   </TouchableOpacity>
                 </View>
               </TouchableOpacity>
@@ -187,7 +181,6 @@ export default function FavoritesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: RainbowColors.pureWhite,
   },
   header: {
     flexDirection: "row",
@@ -196,62 +189,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 12,
   },
-  backBtn: {
-    width: 42,
-    height: 42,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.pureWhite,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: RainbowColors.inkBlack,
-    shadowOpacity: 0.05,
-    shadowRadius: 6,
-    elevation: 2,
-  },
   headerCenter: {
-    alignItems: "center",
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
-  },
-  headerSubtitle: {
-    fontSize: 13,
-    color: RainbowColors.stone,
-    marginTop: 2,
-  },
-  cartBtn: {
-    width: 42,
-    height: 42,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.cloudSurface,
-    justifyContent: "center",
     alignItems: "center",
   },
   toast: {
     flexDirection: "row",
     alignItems: "center",
     alignSelf: "center",
-    backgroundColor: RainbowColors.inkBlack,
     paddingHorizontal: 16,
     paddingVertical: 10,
-    borderRadius: 20,
+    borderRadius: 999,
     gap: 8,
     marginHorizontal: 20,
     marginBottom: 8,
-    shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 6,
-  },
-  toastText: {
-    color: RainbowColors.pureWhite,
-    fontSize: 13,
-    fontWeight: "600",
   },
   categoriesWrapper: {
-    marginVertical: 10,
+    marginVertical: 12,
   },
   categoriesList: {
     paddingHorizontal: 20,
@@ -260,23 +213,8 @@ const styles = StyleSheet.create({
   chip: {
     paddingHorizontal: 16,
     paddingVertical: 8,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: 999,
     borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
-  },
-  activeChip: {
-    backgroundColor: RainbowColors.tangerine,
-    borderColor: RainbowColors.tangerine,
-  },
-  chipText: {
-    fontSize: 13,
-    fontWeight: "600",
-    color: RainbowColors.stone,
-  },
-  activeChipText: {
-    color: RainbowColors.pureWhite,
-    fontWeight: "700",
   },
   listContent: {
     paddingHorizontal: 20,
@@ -289,20 +227,14 @@ const styles = StyleSheet.create({
   },
   card: {
     width: CARD_WIDTH,
-    backgroundColor: RainbowColors.pureWhite,
-    borderRadius: RainbowRadii.cards,
     padding: 10,
-    shadowColor: RainbowColors.inkBlack,
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 3,
+    borderWidth: 1,
+    borderColor: "transparent",
   },
   imageBox: {
     width: "100%",
     height: 130,
-    borderRadius: 16, // inner radius
-    backgroundColor: RainbowColors.cloudSurface,
+    borderRadius: 14,
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
@@ -317,19 +249,16 @@ const styles = StyleSheet.create({
     right: 8,
     width: 32,
     height: 32,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: 16,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: RainbowColors.inkBlack,
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
     elevation: 2,
+    shadowColor: "#000",
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
   },
   cardTitle: {
-    fontSize: 14.5,
-    fontWeight: "700",
-    color: RainbowColors.inkBlack,
     marginTop: 10,
     marginBottom: 4,
   },
@@ -344,36 +273,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 3,
   },
-  ratingText: {
-    fontSize: 12,
-    fontWeight: "600",
-    color: "#444",
-  },
-  timeText: {
-    fontSize: 11.5,
-    color: RainbowColors.stone,
-  },
   priceRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  price: {
-    fontSize: 17,
-    fontWeight: "800",
-    color: RainbowColors.tangerine,
-  },
   addBtn: {
-    width: 30,
-    height: 30,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.tangerine,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 2,
   },
   emptyContainer: {
     flex: 1,
@@ -385,41 +295,9 @@ const styles = StyleSheet.create({
   emptyIconBox: {
     width: 120,
     height: 120,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.cloudSurface,
+    borderRadius: 60,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 20,
-  },
-  emptyTitle: {
-    fontSize: 24,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
-    marginBottom: 8,
-  },
-  emptySubtitle: {
-    fontSize: 15,
-    color: RainbowColors.stone,
-    textAlign: "center",
-    lineHeight: 22,
-    marginBottom: 28,
-  },
-  exploreBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: RainbowColors.tangerine,
-    paddingHorizontal: 28,
-    paddingVertical: 15,
-    borderRadius: RainbowRadii.pills,
-    gap: 10,
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    elevation: 5,
-  },
-  exploreBtnText: {
-    color: RainbowColors.pureWhite,
-    fontSize: 16,
-    fontWeight: "700",
   },
 });

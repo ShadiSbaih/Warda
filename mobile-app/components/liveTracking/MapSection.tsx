@@ -1,60 +1,87 @@
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
-export default function MapSection() {
+import { useTheme } from "../../context/ThemeContext";
+import { WardaText } from "../ui";
+
+const BRAND_RGBA = "rgba(230, 103, 103, 0.25)";
+
+export default function MapSection({
+  driverLocation,
+  destination,
+  status,
+}: {
+  driverLocation?: { latitude: number; longitude: number };
+  destination?: { latitude: number; longitude: number };
+  status?: string;
+}) {
+  const { theme } = useTheme();
+  const driver = driverLocation || { latitude: 24.7136, longitude: 46.6753 };
+  const dest = destination || { latitude: 24.71, longitude: 46.68 };
+
+  if (Platform.OS === "web") {
+    return (
+      <View style={[styles.webFallback, { backgroundColor: theme.colors.background }]}>
+        <MaterialCommunityIcons name="map-outline" size={48} color={theme.colors.textMuted} />
+        <WardaText variant="body" color={theme.colors.textMuted}>
+          Live map is available on iOS / Android
+        </WardaText>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      {/* Base Map */}
       <MapView
         style={styles.map}
-        initialRegion={{
-          latitude: 24.7136,
-          longitude: 46.6753,
+        region={{
+          latitude: driver.latitude,
+          longitude: driver.longitude,
           latitudeDelta: 0.05,
           longitudeDelta: 0.05,
         }}
       >
-        <Polyline
-          coordinates={[
-            { latitude: 24.7336, longitude: 46.6953 },
-            { latitude: 24.7136, longitude: 46.6753 },
-          ]}
-          strokeColor={RainbowColors.tangerine}
-          strokeWidth={4}
-        />
-        
-        <Marker coordinate={{ latitude: 24.7336, longitude: 46.6953 }}>
+        <Polyline coordinates={[driver, dest]} strokeColor={theme.colors.brand} strokeWidth={4} />
+
+        <Marker coordinate={driver}>
           <View style={styles.courierMarker}>
-            <View style={styles.courierPulse} />
-            <View style={styles.courierIconBox}>
-              <MaterialCommunityIcons name="moped" size={22} color={RainbowColors.pureWhite} />
+            <View style={[styles.courierPulse, { backgroundColor: BRAND_RGBA }]} />
+            <View style={[styles.courierIconBox, { backgroundColor: theme.colors.brand, borderColor: theme.colors.surface }]}>
+              <MaterialCommunityIcons name="moped" size={22} color={theme.colors.textInverse} />
             </View>
-            <View style={styles.courierPill}>
-              <View style={styles.activeDot} />
-              <Text style={styles.courierPillText}>Tariq · 4 min away</Text>
+            <View style={[styles.courierPill, { backgroundColor: theme.colors.text }]}>
+              <View style={[styles.activeDot, { backgroundColor: theme.colors.success }]} />
+              <WardaText variant="caption" color={theme.colors.textInverse}>
+                Live
+              </WardaText>
             </View>
           </View>
         </Marker>
 
-        <Marker coordinate={{ latitude: 24.7136, longitude: 46.6753 }}>
+        <Marker coordinate={dest}>
           <View style={styles.destinationMarker}>
-            <View style={styles.destinationPill}>
-              <Text style={styles.destinationPillText}>Delivery Address</Text>
+            <View style={[styles.destinationPill, { backgroundColor: theme.colors.surface, borderColor: theme.colors.borderSubtle }]}>
+              <WardaText variant="caption" weight="bold" color={theme.colors.text}>
+                Delivery Address
+              </WardaText>
             </View>
             <View style={styles.destinationIconBox}>
-              <Ionicons name="location-sharp" size={26} color={RainbowColors.tangerine} />
+              <Ionicons name="location-sharp" size={26} color={theme.colors.brand} />
             </View>
           </View>
         </Marker>
       </MapView>
+
+      {status && (
+        <View style={[styles.statusPill, { backgroundColor: theme.colors.surface }, theme.shadows.md]}>
+          <Feather name="map-pin" size={12} color={theme.colors.brand} />
+          <WardaText variant="caption" weight="bold" color={theme.colors.text}>
+            Status: {status.replace(/_/g, " ")}
+          </WardaText>
+        </View>
+      )}
     </View>
   );
 }
@@ -67,53 +94,22 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  mapOverlay: {
+  webFallback: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(253, 246, 249, 0.15)",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 10,
   },
-  routeContainer: {
+  statusPill: {
     position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  routeSegment1: {
-    position: "absolute",
-    top: 200,
-    left: 105,
-    width: 140,
-    height: 5,
-    borderRadius: 3,
-    backgroundColor: RainbowColors.tangerine,
-    transform: [{ rotate: "35deg" }],
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.5,
-    shadowRadius: 6,
-  },
-  routeSegment2: {
-    position: "absolute",
-    top: 155,
-    left: 195,
-    width: 110,
-    height: 5,
-    borderRadius: 3,
-    backgroundColor: RainbowColors.tangerine,
-    transform: [{ rotate: "-40deg" }],
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.5,
-    shadowRadius: 6,
-  },
-  waypoint: {
-    position: "absolute",
-    top: 235,
-    left: 215,
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: RainbowColors.tangerine,
-    borderWidth: 2,
-    borderColor: RainbowColors.pureWhite,
+    top: 90,
+    right: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
   },
   courierMarker: {
     alignItems: "center",
@@ -124,72 +120,38 @@ const styles = StyleSheet.create({
     width: 58,
     height: 58,
     borderRadius: 29,
-    backgroundColor: "rgba(212, 88, 138, 0.25)",
   },
   courierIconBox: {
     width: 46,
     height: 46,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.tangerine,
+    borderRadius: 23,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 3,
-    borderColor: RainbowColors.pureWhite,
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 8,
   },
   courierPill: {
     flexDirection: "row",
     alignItems: "center",
     gap: 5,
     marginTop: 6,
-    backgroundColor: RainbowColors.inkBlack,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    borderRadius: RainbowRadii.pills,
-    shadowColor: "#000",
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
-    elevation: 6,
+    borderRadius: 16,
   },
   activeDot: {
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: "#10B981",
-  },
-  courierPillText: {
-    color: RainbowColors.pureWhite,
-    fontSize: 11,
-    fontWeight: "700",
   },
   destinationMarker: {
     alignItems: "center",
   },
   destinationPill: {
-    backgroundColor: RainbowColors.pureWhite,
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: RainbowRadii.pills,
+    borderRadius: 16,
     marginBottom: 2,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 5,
     borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
   },
-  destinationPillText: {
-    color: RainbowColors.inkBlack,
-    fontSize: 11,
-    fontWeight: "700",
-  },
-  destinationIconBox: {
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-  },
+  destinationIconBox: {},
 });

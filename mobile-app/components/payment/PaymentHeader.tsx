@@ -1,30 +1,22 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaIconButton, WardaText } from "@/components/ui";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { Feather } from "@expo/vector-icons";
+
+import { StyleSheet, View } from "react-native";
 import { useRouter } from "expo-router";
 
 export default function PaymentHeader() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const router = useRouter();
 
   return (
     <View style={styles.container}>
       {/* Back Button */}
-      <TouchableOpacity
-        style={styles.iconButton}
-        onPress={() => router.back()}
-        activeOpacity={0.8}
-      >
-        <Feather name="arrow-left" size={20} color={RainbowColors.inkBlack} />
-      </TouchableOpacity>
+      <WardaIconButton icon="arrow-left" onPress={() => router.back()} />
 
       {/* Title */}
-      <Text style={styles.title}>Payment</Text>
+      <WardaText style={styles.title}>Payment</WardaText>
 
       {/* Empty View for Center Alignment */}
       <View style={styles.placeholder} />
@@ -32,7 +24,7 @@ export default function PaymentHeader() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     paddingVertical: 10,
@@ -40,23 +32,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  iconButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: RainbowColors.pureWhite,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 5,
-  },
   title: {
     fontSize: 22,
     fontWeight: "800",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
   placeholder: {
     width: 44,

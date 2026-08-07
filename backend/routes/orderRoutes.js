@@ -8,6 +8,8 @@ const {
   getOrders,
   getOrder,
   updateStatus,
+  updatePaymentStatus,
+  cancelOrder,
   getAllOrders,
 } = require("../controllers/orderController");
 
@@ -15,7 +17,12 @@ router.post("/", protect, createOrder);
 router.get("/", protect, getOrders);
 router.get("/all", protect, admin, getAllOrders);
 router.get("/:id", protect, getOrder);
+
+// User can cancel their own order before preparation
+router.patch("/:id/cancel", protect, cancelOrder);
+
+// Admin order management
 router.patch("/:id/status", protect, admin, updateStatus);
-router.put("/:id/status", protect, admin, updateStatus);
+router.patch("/:id/payment", protect, admin, updatePaymentStatus);
 
 module.exports = router;

@@ -1,56 +1,43 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaBadge, WardaCard, WardaText } from "@/components/ui";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+
+import { Image, StyleSheet, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function DeliverySummaryCard() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   return (
-    <View style={styles.card}>
+    <WardaCard shadow="md" radius="xl" padding="lg" style={styles.card}>
       <View style={styles.topRow}>
         <View style={styles.left}>
           <View style={styles.logoBadge}>
-            <Ionicons name="sparkles" size={18} color={RainbowColors.tangerine} />
+            <Ionicons name="sparkles" size={18} color={theme.colors.brand} />
           </View>
 
-          <Text style={styles.store}>Warda Luxury Gifts</Text>
+          <WardaText style={styles.store}>Warda Luxury Gifts</WardaText>
         </View>
 
-        <View style={styles.badge}>
-          <Text style={styles.badgeText}>#ORD-8452</Text>
-        </View>
+        <WardaBadge variant="brand" text="#ORD-8452" />
       </View>
 
-      <Text style={styles.label}>Total paid: $23.00</Text>
+      <WardaText style={styles.label}>Total paid: $23.00</WardaText>
 
-      <Text style={styles.status}>Order Delivered</Text>
+      <WardaText style={styles.status}>Order Delivered</WardaText>
 
       <Image
         source={require("../../assets/gifts/custom-hamper.png")}
         style={styles.gift}
       />
-    </View>
+    </WardaCard>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   card: {
     marginHorizontal: 20,
     marginTop: 20,
-    backgroundColor: RainbowColors.pureWhite,
-    borderRadius: 24,
-    padding: 20,
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.15,
-    shadowRadius: 20,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 6,
-    position: "relative",
   },
   topRow: {
     flexDirection: "row",
@@ -65,32 +52,21 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: RainbowColors.cloudSurface,
+    backgroundColor: theme.colors.background,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 10,
     borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
+    borderColor: theme.colors.borderSubtle,
   },
   store: {
     fontSize: 16,
     fontWeight: "800",
-    color: RainbowColors.inkBlack,
-  },
-  badge: {
-    backgroundColor: RainbowColors.cloudSurface,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 14,
-  },
-  badgeText: {
-    color: RainbowColors.tangerine,
-    fontSize: 12,
-    fontWeight: "700",
+    color: theme.colors.text,
   },
   label: {
     marginTop: 18,
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     fontSize: 14,
     fontWeight: "500",
   },
@@ -98,7 +74,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontSize: 28,
     fontWeight: "800",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
   gift: {
     position: "absolute",

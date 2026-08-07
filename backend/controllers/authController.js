@@ -1,5 +1,3 @@
-const bcrypt = require("bcryptjs");
-
 const User = require("../models/User");
 
 const generateToken = require("../utils/generateToken");
@@ -17,7 +15,7 @@ exports.register = async (
     } = req.body;
 
     const exists =
-      await User.findOne({ email });
+      await User.findOne({ email: email.toLowerCase().trim() });
 
     if (exists) {
       return res.status(400).json({
@@ -27,15 +25,12 @@ exports.register = async (
       });
     }
 
-    const hashedPassword =
-      await bcrypt.hash(password, 10);
-
     const user =
       await User.create({
         name,
-        email,
+        email: email.toLowerCase().trim(),
         phone,
-        password: hashedPassword,
+        password,
       });
 
     res.status(201).json({
@@ -67,7 +62,7 @@ exports.login = async (
     } = req.body;
 
     const user =
-      await User.findOne({ email });
+      await User.findOne({ email: email.toLowerCase().trim() });
 
     if (!user) {
       return res.status(400).json({
@@ -77,11 +72,7 @@ exports.login = async (
       });
     }
 
-    const match =
-      await bcrypt.compare(
-        password,
-        user.password
-      );
+    const match = await user.comparePassword(password);
 
     if (!match) {
       return res.status(400).json({

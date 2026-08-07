@@ -1,21 +1,14 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaButton, WardaIconButton, WardaText } from "@/components/ui";
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-  ActivityIndicator,
-  Alert,
-} from "react-native";
+import { View, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { RainbowColors } from "../../constants/Colors";
-import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { productsAPI, shopsAPI } from "../../services/api";
 
 export default function AddProductScreen() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const router = useRouter();
   
   const [name, setName] = useState("");
@@ -78,16 +71,14 @@ export default function AddProductScreen() {
   return (
     <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
-          <Feather name="arrow-left" size={22} color={RainbowColors.inkBlack} />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Add New Product</Text>
+        <WardaIconButton icon="arrow-left" onPress={() => router.back()} variant="ghost" />
+        <WardaText style={styles.headerTitle}>Add New Product</WardaText>
         <View style={{ width: 44 }} />
       </View>
 
       <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Product Name *</Text>
+          <WardaText style={styles.label}>Product Name *</WardaText>
           <TextInput
             style={styles.input}
             placeholder="e.g. Red Roses Bouquet"
@@ -97,7 +88,7 @@ export default function AddProductScreen() {
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Price (SR) *</Text>
+          <WardaText style={styles.label}>Price (SR) *</WardaText>
           <TextInput
             style={styles.input}
             placeholder="e.g. 150"
@@ -108,7 +99,7 @@ export default function AddProductScreen() {
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Category</Text>
+          <WardaText style={styles.label}>Category</WardaText>
           <TextInput
             style={styles.input}
             placeholder="e.g. Flowers"
@@ -118,7 +109,7 @@ export default function AddProductScreen() {
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Image URL *</Text>
+          <WardaText style={styles.label}>Image URL *</WardaText>
           <TextInput
             style={styles.input}
             placeholder="https://example.com/image.jpg"
@@ -129,7 +120,7 @@ export default function AddProductScreen() {
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Description</Text>
+          <WardaText style={styles.label}>Description</WardaText>
           <TextInput
             style={[styles.input, styles.textArea]}
             placeholder="Describe the product..."
@@ -142,7 +133,7 @@ export default function AddProductScreen() {
 
         {shops.length > 0 && (
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Shop *</Text>
+            <WardaText style={styles.label}>Shop *</WardaText>
             {/* Simple selection for MVP since Picker requires an extra package usually */}
             <View style={styles.shopChips}>
               {shops.map((shop) => (
@@ -154,40 +145,36 @@ export default function AddProductScreen() {
                   ]}
                   onPress={() => setSelectedShop(shop._id)}
                 >
-                  <Text
+                  <WardaText
                     style={[
                       styles.shopChipText,
                       selectedShop === shop._id && styles.shopChipTextActive,
                     ]}
                   >
                     {shop.name}
-                  </Text>
+                  </WardaText>
                 </TouchableOpacity>
               ))}
             </View>
           </View>
         )}
 
-        <TouchableOpacity
-          style={[styles.saveBtn, loading && { opacity: 0.7 }]}
-          onPress={handleSave}
+        <WardaButton
+          title="Save Product"
+          size="lg"
+          loading={loading}
           disabled={loading}
-        >
-          {loading ? (
-            <ActivityIndicator color={RainbowColors.pureWhite} />
-          ) : (
-            <Text style={styles.saveBtnText}>Save Product</Text>
-          )}
-        </TouchableOpacity>
+          onPress={handleSave}
+        />
       </ScrollView>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
   },
   header: {
     flexDirection: "row",
@@ -198,18 +185,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "rgba(0,0,0,0.05)",
   },
-  backBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: "rgba(0,0,0,0.04)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
   headerTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
   scroll: {
     padding: 20,
@@ -221,7 +200,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: "600",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
     marginBottom: 8,
   },
   input: {
@@ -232,7 +211,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     fontSize: 15,
     backgroundColor: "rgba(0,0,0,0.02)",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
   textArea: {
     height: 100,
@@ -252,33 +231,15 @@ const styles = StyleSheet.create({
     borderColor: "transparent",
   },
   shopChipActive: {
-    backgroundColor: RainbowColors.tangerine,
-    borderColor: RainbowColors.tangerine,
+    backgroundColor: theme.colors.brand,
+    borderColor: theme.colors.brand,
   },
   shopChipText: {
     fontSize: 14,
     fontWeight: "600",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
   shopChipTextActive: {
-    color: RainbowColors.pureWhite,
-  },
-  saveBtn: {
-    height: 56,
-    backgroundColor: RainbowColors.tangerine,
-    borderRadius: 16,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 10,
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
-  },
-  saveBtnText: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: RainbowColors.pureWhite,
+    color: theme.colors.textInverse,
   },
 });

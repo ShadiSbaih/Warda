@@ -191,6 +191,12 @@ export const adminAPI = {
       body: JSON.stringify({ status })
     });
   },
+  async updateOrderPaymentStatus(id: string, paymentStatus: string) {
+    return request(`/orders/${id}/payment`, {
+      method: "PATCH",
+      body: JSON.stringify({ paymentStatus })
+    });
+  },
   async getAllOrders() {
     return request("/orders/all", { method: "GET" });
   },
@@ -226,9 +232,22 @@ export const ordersAPI = {
   },
 
   async cancelOrder(id: string) {
-    return request(`/orders/${id}/status`, {
+    return request(`/orders/${id}/cancel`, {
       method: "PATCH",
-      body: JSON.stringify({ status: "cancelled" }),
+    });
+  },
+};
+
+// 3.5 Tracking API
+export const trackingAPI = {
+  async getDriverLocation(orderId: string) {
+    return request(`/tracking/${orderId}/location`, { method: "GET" });
+  },
+
+  async updateDriverLocation(orderId: string, lat: number, lng: number) {
+    return request(`/tracking/${orderId}/location`, {
+      method: "PUT",
+      body: JSON.stringify({ lat, lng }),
     });
   },
 };

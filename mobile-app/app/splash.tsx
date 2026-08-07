@@ -1,4 +1,3 @@
-import { RainbowColors, RainbowRadii } from "../constants/Colors";
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
 import {
@@ -6,22 +5,24 @@ import {
   Image,
   StatusBar,
   StyleSheet,
-  Text,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { useTheme } from "../context/ThemeContext";
+import { WardaText } from "../components/ui";
 import { useAuth } from "../context/AuthContext";
 
 const { width } = Dimensions.get("window");
 
 export default function SplashScreen() {
   const router = useRouter();
+  const { theme } = useTheme();
   const { isAuthenticated, isLoading } = useAuth();
 
   useEffect(() => {
     if (isLoading) return;
-
     const timer = setTimeout(async () => {
       try {
         const hasSeenOnboarding = await AsyncStorage.getItem("hasSeenOnboarding");
@@ -29,7 +30,6 @@ export default function SplashScreen() {
           router.replace("/onboarding");
           return;
         }
-
         if (isAuthenticated) {
           router.replace("/(tabs)/home");
         } else {
@@ -49,24 +49,23 @@ export default function SplashScreen() {
 
   return (
     <>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={RainbowColors.tangerine}
-      />
+      <StatusBar barStyle="light-content" backgroundColor={theme.colors.brand} />
 
-      <SafeAreaView style={styles.container}>
-        {/* Center Logo */}
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.brand }]}>
         <View style={styles.center}>
           <Image
             source={require("../assets/images/icon.png")}
             resizeMode="contain"
             style={styles.logoImage}
           />
-          <Text style={styles.logo}>Warda</Text>
-          <Text style={styles.tagline}>Gifts & Flowers Delivery</Text>
+          <WardaText variant="h1" color={theme.colors.textInverse}>
+            Warda
+          </WardaText>
+          <WardaText variant="body" color={theme.colors.textInverse} style={{ opacity: 0.85, marginTop: 6 }}>
+            Gifts & Flowers Delivery
+          </WardaText>
         </View>
 
-        {/* Gift Image */}
         <Image
           source={require("../assets/gifts/mixed-bouquet.png")}
           resizeMode="contain"
@@ -80,16 +79,13 @@ export default function SplashScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: RainbowColors.tangerine,
     justifyContent: "space-between",
   },
-
   center: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-
   logoImage: {
     width: 120,
     height: 120,
@@ -101,22 +97,6 @@ const styles = StyleSheet.create({
     shadowRadius: 16,
     elevation: 8,
   },
-
-  logo: {
-    color: "#fff",
-    fontSize: 40,
-    fontWeight: "800",
-    letterSpacing: 0.5,
-  },
-
-  tagline: {
-    color: "rgba(255, 255, 255, 0.85)",
-    fontSize: 16,
-    fontWeight: "500",
-    marginTop: 6,
-    letterSpacing: 0.3,
-  },
-
   image: {
     width: width,
     height: 240,

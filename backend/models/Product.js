@@ -11,6 +11,7 @@ const productSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
+      trim: true,
     },
 
     description: {
@@ -31,11 +32,14 @@ const productSchema = new mongoose.Schema(
     price: {
       type: Number,
       required: true,
+      min: 0,
     },
 
     rating: {
       type: Number,
       default: 4.8,
+      min: 0,
+      max: 5,
     },
 
     reviews: {
@@ -43,9 +47,9 @@ const productSchema = new mongoose.Schema(
       default: 0,
     },
 
-    deliveryTime: {
+    time: {
       type: String,
-      default: "20 mins",
+      default: "45 mins",
     },
 
     isPopular: {
@@ -64,20 +68,21 @@ const productSchema = new mongoose.Schema(
       default: [],
     },
 
-    occasion: {
-      type: String,
-      enum: ["roses", "chocolate", "graduation", "birthday", "custom", "anniversary", "general"],
-      default: "general",
-    },
-
-    isCustomizable: {
-      type: Boolean,
-      default: false,
+    tags: {
+      type: [String],
+      default: [],
     },
   },
   {
     timestamps: true,
   }
 );
+
+productSchema.virtual("numericPrice").get(function () {
+  return this.price;
+});
+
+productSchema.set("toJSON", { virtuals: true });
+productSchema.set("toObject", { virtuals: true });
 
 module.exports = mongoose.model("Product", productSchema);

@@ -1,16 +1,8 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaBadge, WardaButton, WardaIconButton, WardaText } from "@/components/ui";
 import React, { useState } from "react";
-import { RainbowColors, RainbowRadii } from "../constants/Colors";
-import {
-  Alert,
-  Image,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+
+import { Alert, Image, ScrollView, StatusBar, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useOrders } from "../context/OrdersContext";
@@ -27,6 +19,8 @@ const REVIEW_TAGS = [
 ];
 
 export default function ReviewScreen() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const router = useRouter();
   const { orderId } = useLocalSearchParams();
   const { orders, addReview } = useOrders();
@@ -80,17 +74,12 @@ export default function ReviewScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.pureWhite} />
+      <StatusBar barStyle="dark-content" backgroundColor={theme.colors.surface} />
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         {/* Header */}
         <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.backBtn}
-            onPress={() => router.back()}
-          >
-            <Feather name="arrow-left" size={20} color={RainbowColors.inkBlack} />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Rate Your Experience</Text>
+          <WardaIconButton icon="arrow-left" onPress={() => router.back()} />
+          <WardaText style={styles.headerTitle}>Rate Your Experience</WardaText>
           <View style={{ width: 42 }} />
         </View>
 
@@ -102,13 +91,10 @@ export default function ReviewScreen() {
           {targetOrder && (
             <View style={styles.orderCard}>
               <View style={styles.orderHeader}>
-                <Text style={styles.orderId}>
+                <WardaText style={styles.orderId}>
                   Order #{targetOrder.id.slice(-6).toUpperCase()}
-                </Text>
-                <View style={styles.deliveredBadge}>
-                  <Feather name="check" size={12} color="#10B981" />
-                  <Text style={styles.deliveredText}>Delivered</Text>
-                </View>
+                </WardaText>
+                <WardaBadge variant="success" icon="check" text="Delivered" />
               </View>
 
               <View style={styles.itemRow}>
@@ -118,12 +104,12 @@ export default function ReviewScreen() {
                   resizeMode="contain"
                 />
                 <View style={{ flex: 1, marginLeft: 12 }}>
-                  <Text numberOfLines={1} style={styles.itemName}>
+                  <WardaText numberOfLines={1} style={styles.itemName}>
                     {targetOrder.items[0]?.title || "Luxury Rose Bouquet"}
-                  </Text>
-                  <Text style={styles.itemSubtitle}>
+                  </WardaText>
+                  <WardaText style={styles.itemSubtitle}>
                     Total: ${targetOrder.total.toFixed(2)} · {targetOrder.items.length} items
-                  </Text>
+                  </WardaText>
                 </View>
               </View>
             </View>
@@ -131,8 +117,8 @@ export default function ReviewScreen() {
 
           {/* Star Rating Card */}
           <View style={styles.ratingCard}>
-            <Text style={styles.ratingPrompt}>How was your overall gift delivery?</Text>
-            <Text style={styles.ratingScore}>{rating}.0 / 5.0</Text>
+            <WardaText style={styles.ratingPrompt}>How was your overall gift delivery?</WardaText>
+            <WardaText style={styles.ratingScore}>{rating}.0 / 5.0</WardaText>
 
             <View style={styles.starsRow}>
               {[1, 2, 3, 4, 5].map((star) => (
@@ -154,7 +140,7 @@ export default function ReviewScreen() {
 
           {/* Compliments & Tags Card */}
           <View style={styles.tagsCard}>
-            <Text style={styles.sectionTitle}>What did you love most?</Text>
+            <WardaText style={styles.sectionTitle}>What did you love most?</WardaText>
             <View style={styles.tagsGrid}>
               {REVIEW_TAGS.map((tag) => {
                 const active = selectedTags.includes(tag);
@@ -165,9 +151,9 @@ export default function ReviewScreen() {
                     activeOpacity={0.8}
                     onPress={() => toggleTag(tag)}
                   >
-                    <Text style={[styles.tagText, active && styles.tagTextActive]}>
+                    <WardaText style={[styles.tagText, active && styles.tagTextActive]}>
                       {tag}
-                    </Text>
+                    </WardaText>
                   </TouchableOpacity>
                 );
               })}
@@ -176,7 +162,7 @@ export default function ReviewScreen() {
 
           {/* Written Feedback Card */}
           <View style={styles.commentCard}>
-            <Text style={styles.sectionTitle}>Detailed Thoughts (Optional)</Text>
+            <WardaText style={styles.sectionTitle}>Detailed Thoughts (Optional)</WardaText>
             <TextInput
               placeholder="Tell us about the recipient's reaction, flower freshness, or delivery speed..."
               placeholderTextColor="#A0A0A0"
@@ -189,27 +175,24 @@ export default function ReviewScreen() {
           </View>
 
           {/* Submit Button */}
-          <TouchableOpacity
-            style={styles.submitBtn}
-            activeOpacity={0.9}
-            onPress={handleSubmit}
+          <WardaButton
+            title="Submit Review & Claim Reward"
+            iconRight="award"
+            size="lg"
+            loading={isSubmitting}
             disabled={isSubmitting}
-          >
-            <Text style={styles.submitBtnText}>
-              {isSubmitting ? "Submitting..." : "Submit Review & Claim Reward"}
-            </Text>
-            <Feather name="award" size={18} color={RainbowColors.pureWhite} />
-          </TouchableOpacity>
+            onPress={handleSubmit}
+          />
         </ScrollView>
       </SafeAreaView>
     </>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
   },
   header: {
     flexDirection: "row",
@@ -218,22 +201,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 12,
   },
-  backBtn: {
-    width: 42,
-    height: 42,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.pureWhite,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: RainbowColors.inkBlack,
-    shadowOpacity: 0.05,
-    shadowRadius: 6,
-    elevation: 2,
-  },
   headerTitle: {
     fontSize: 19,
     fontWeight: "800",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
   scrollContent: {
     paddingHorizontal: 20,
@@ -241,10 +212,10 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   orderCard: {
-    backgroundColor: RainbowColors.pureWhite,
-    borderRadius: RainbowRadii.cards,
+    backgroundColor: theme.colors.surface,
+    borderRadius: theme.radii.xl,
     padding: 16,
-    shadowColor: RainbowColors.inkBlack,
+    shadowColor: theme.colors.text,
     shadowOpacity: 0.05,
     shadowRadius: 10,
     elevation: 2,
@@ -254,28 +225,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: RainbowColors.cloudSurface,
+    borderBottomColor: theme.colors.borderSubtle,
     paddingBottom: 10,
     marginBottom: 10,
   },
   orderId: {
     fontSize: 14,
     fontWeight: "700",
-    color: RainbowColors.inkBlack,
-  },
-  deliveredBadge: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#ECFDF5",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 10,
-    gap: 4,
-  },
-  deliveredText: {
-    fontSize: 11,
-    fontWeight: "700",
-    color: "#10B981",
+    color: theme.colors.text,
   },
   itemRow: {
     flexDirection: "row",
@@ -285,24 +242,24 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 12,
-    backgroundColor: RainbowColors.cloudSurface,
+    backgroundColor: theme.colors.background,
   },
   itemName: {
     fontSize: 14.5,
     fontWeight: "700",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
   itemSubtitle: {
     fontSize: 12,
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     marginTop: 2,
   },
   ratingCard: {
-    backgroundColor: RainbowColors.pureWhite,
-    borderRadius: RainbowRadii.cards,
+    backgroundColor: theme.colors.surface,
+    borderRadius: theme.radii.xl,
     padding: 20,
     alignItems: "center",
-    shadowColor: RainbowColors.inkBlack,
+    shadowColor: theme.colors.text,
     shadowOpacity: 0.05,
     shadowRadius: 10,
     elevation: 3,
@@ -310,7 +267,7 @@ const styles = StyleSheet.create({
   ratingPrompt: {
     fontSize: 16,
     fontWeight: "700",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
     textAlign: "center",
   },
   ratingScore: {
@@ -328,10 +285,10 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   tagsCard: {
-    backgroundColor: RainbowColors.pureWhite,
-    borderRadius: RainbowRadii.cards,
+    backgroundColor: theme.colors.surface,
+    borderRadius: theme.radii.xl,
     padding: 18,
-    shadowColor: RainbowColors.inkBlack,
+    shadowColor: theme.colors.text,
     shadowOpacity: 0.05,
     shadowRadius: 10,
     elevation: 2,
@@ -339,7 +296,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 15,
     fontWeight: "700",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
     marginBottom: 12,
   },
   tagsGrid: {
@@ -350,62 +307,42 @@ const styles = StyleSheet.create({
   tagChip: {
     paddingHorizontal: 12,
     paddingVertical: 8,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.cloudSurface,
+    borderRadius: theme.radii.full,
+    backgroundColor: theme.colors.background,
     borderWidth: 1,
     borderColor: "transparent",
   },
   tagChipActive: {
-    backgroundColor: RainbowColors.cloudSurface,
-    borderColor: RainbowColors.tangerine,
+    backgroundColor: theme.colors.background,
+    borderColor: theme.colors.brand,
   },
   tagText: {
     fontSize: 12.5,
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     fontWeight: "500",
   },
   tagTextActive: {
-    color: RainbowColors.tangerine,
+    color: theme.colors.brand,
     fontWeight: "700",
   },
   commentCard: {
-    backgroundColor: RainbowColors.pureWhite,
-    borderRadius: RainbowRadii.cards,
+    backgroundColor: theme.colors.surface,
+    borderRadius: theme.radii.xl,
     padding: 18,
-    shadowColor: RainbowColors.inkBlack,
+    shadowColor: theme.colors.text,
     shadowOpacity: 0.05,
     shadowRadius: 10,
     elevation: 2,
   },
   textArea: {
-    backgroundColor: RainbowColors.cloudSurface,
-    borderRadius: RainbowRadii.cards,
+    backgroundColor: theme.colors.background,
+    borderRadius: theme.radii.xl,
     padding: 14,
     fontSize: 14,
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
     height: 90,
     textAlignVertical: "top",
     borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
-  },
-  submitBtn: {
-    backgroundColor: RainbowColors.tangerine,
-    height: 56,
-    borderRadius: RainbowRadii.pills,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 10,
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.35,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 6 },
-    elevation: 6,
-    marginTop: 6,
-  },
-  submitBtnText: {
-    color: RainbowColors.pureWhite,
-    fontSize: 16,
-    fontWeight: "700",
+    borderColor: theme.colors.borderSubtle,
   },
 });

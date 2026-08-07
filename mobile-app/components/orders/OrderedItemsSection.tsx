@@ -1,18 +1,16 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import { useRouter } from "expo-router";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-    FlatList,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
+
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { ordersData } from "../../data/ordersData";
 import OrderedItemCard from "./OrderedItemCard";
 
 export default function OrderedItemsSection() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const router = useRouter();
 
   return (
@@ -20,14 +18,14 @@ export default function OrderedItemsSection() {
       {/* Header */}
 
       <View style={styles.header}>
-        <Text style={styles.title}>
+        <WardaText style={styles.title}>
           Past Orders
-        </Text>
+        </WardaText>
 
         <TouchableOpacity>
-          <Text style={styles.seeAll}>
+          <WardaText style={styles.seeAll}>
             See All
-          </Text>
+          </WardaText>
         </TouchableOpacity>
       </View>
 
@@ -46,7 +44,7 @@ export default function OrderedItemsSection() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     marginTop: 28,
   },
@@ -68,7 +66,7 @@ const styles = StyleSheet.create({
 
     fontWeight: "700",
 
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
 
   seeAll: {
@@ -76,6 +74,6 @@ const styles = StyleSheet.create({
 
     fontWeight: "700",
 
-    color: RainbowColors.tangerine,
+    color: theme.colors.brand,
   },
 });

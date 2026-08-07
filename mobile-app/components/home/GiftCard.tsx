@@ -1,16 +1,9 @@
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useFavorites } from "../../context/FavoritesContext";
 import { useCart } from "../../context/CartContext";
+import { useTheme } from "../../context/ThemeContext";
 
 interface Props {
   item: any;
@@ -23,84 +16,74 @@ const { width } = Dimensions.get("window");
 const CARD_WIDTH = (width - 54) / 2;
 
 export default function GiftCard({ item, onPress, onFavoriteToggle, onAddToCart }: Props) {
+  const { theme } = useTheme();
   const { isFavorite, toggleFavorite } = useFavorites();
   const { addToCart } = useCart();
 
-  const fav = isFavorite(item._id || item.id);
+  const id = item._id || item.id;
+  const fav = isFavorite(id);
 
-  const handleFav = () => {
-    if (onFavoriteToggle) {
-      onFavoriteToggle();
-    } else {
-      toggleFavorite(item);
-    }
+  const getImageSource = () => {
+    if (typeof item.image === "string" && item.image) return { uri: item.image };
+    return item.image;
   };
 
   const handleAdd = () => {
-    if (onAddToCart) {
-      onAddToCart();
-    } else {
-      addToCart(item, 1);
-    }
+    if (onAddToCart) onAddToCart();
+    else addToCart(item, 1);
   };
 
   return (
-    <TouchableOpacity
-      activeOpacity={0.88}
-      style={styles.card}
-      onPress={onPress}
-    >
-      {/* Image Container */}
-      <View style={styles.imageWrapper}>
-        <Image
-          source={{ uri: item.image }}
-          resizeMode="cover"
-          style={styles.image}
-        />
+    <TouchableOpacity activeOpacity={0.88} style={styles.card} onPress={onPress}>
+      <View style={[styles.imageWrapper, { backgroundColor: theme.colors.background }]}>
+        <Image source={getImageSource()} resizeMode="cover" style={styles.image} />
 
         <TouchableOpacity
           activeOpacity={0.8}
-          style={styles.favoriteButton}
-          onPress={handleFav}
+          style={[
+            styles.favoriteButton,
+            { backgroundColor: theme.colors.surface },
+          ]}
+          onPress={() => (onFavoriteToggle ? onFavoriteToggle() : toggleFavorite(item))}
         >
           <Ionicons
             name={fav ? "heart" : "heart-outline"}
             size={18}
-            color={fav ? RainbowColors.tangerine : RainbowColors.inkBlack}
+            color={fav ? theme.colors.brand : theme.colors.text}
           />
         </TouchableOpacity>
       </View>
 
       <View style={styles.content}>
-        {/* Name */}
-        <Text numberOfLines={2} style={styles.title}>
+        <Text numberOfLines={2} style={[styles.title, { color: theme.colors.text }]}>
           {item.name || item.title}
         </Text>
 
-        {/* Details Row: Rating & Stock */}
         <View style={styles.detailsRow}>
-          <View style={styles.ratingBadge}>
-            <Ionicons name="star" size={12} color={RainbowColors.tangerine} />
-            <Text style={styles.ratingText}>{item.rating || "4.89"}</Text>
+          <View style={[styles.ratingBadge, { backgroundColor: theme.colors.background }]}>
+            <Ionicons name="star" size={12} color={theme.colors.brand} />
+            <Text style={[styles.ratingText, { color: theme.colors.text }]}>
+              {item.rating || "4.8"}
+            </Text>
           </View>
-          <Text style={styles.reviewsText}>14k reviews</Text>
+          <Text style={[styles.reviewsText, { color: theme.colors.textMuted }]}>
+            {item.reviews ? `${item.reviews} reviews` : "Fresh"}
+          </Text>
         </View>
 
-        <Text style={styles.stockText}>3 items left in stock</Text>
-
-        {/* Price Row */}
         <View style={styles.priceRow}>
-          <Text style={styles.price}>${item.price}</Text>
-          <Text style={styles.oldPrice}>${Math.floor(item.price * 1.5)}</Text>
+          <Text style={[styles.price, { color: theme.colors.text }]}>${item.price}</Text>
+          <Text style={[styles.oldPrice, { color: theme.colors.textMuted }]}>
+            ${Math.floor((item.price || 0) * 1.5)}
+          </Text>
         </View>
 
-        {/* Full width add to cart button */}
         <TouchableOpacity
-          style={styles.cartButton}
+          style={[styles.cartButton, { backgroundColor: theme.colors.brandLight }]}
           activeOpacity={0.8}
           onPress={handleAdd}
         >
-          <Text style={styles.cartButtonText}>Add to cart</Text>
+          <Text style={[styles.cartButtonText, { color: theme.colors.brand }]}>Add to cart</Text>
         </TouchableOpacity>
       </View>
     </TouchableOpacity>
@@ -110,17 +93,16 @@ export default function GiftCard({ item, onPress, onFavoriteToggle, onAddToCart 
 const styles = StyleSheet.create({
   card: {
     width: CARD_WIDTH,
-    backgroundColor: RainbowColors.pureWhite,
-    borderRadius: RainbowRadii.cards,
+    backgroundColor: "#fff",
+    borderRadius: 24,
     marginBottom: 16,
     overflow: "hidden",
     borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
+    borderColor: "#f0f0f0",
   },
   imageWrapper: {
     width: "100%",
     height: 150,
-    backgroundColor: "#eef1f4",
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
@@ -128,7 +110,6 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
-    zIndex: 1,
   },
   favoriteButton: {
     position: "absolute",
@@ -137,7 +118,6 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
     zIndex: 2,
@@ -148,34 +128,29 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 13,
     fontWeight: "600",
-    color: RainbowColors.inkBlack,
-    marginBottom: 4,
+    marginBottom: 6,
     lineHeight: 18,
   },
   detailsRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 4,
+    marginBottom: 8,
   },
   ratingBadge: {
     flexDirection: "row",
     alignItems: "center",
     gap: 3,
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 8,
   },
   ratingText: {
     fontSize: 11,
     fontWeight: "700",
-    color: RainbowColors.inkBlack,
   },
   reviewsText: {
     fontSize: 11,
-    color: RainbowColors.stone,
-    marginLeft: 4,
-  },
-  stockText: {
-    fontSize: 11,
-    color: RainbowColors.tangerine,
-    marginBottom: 8,
+    marginLeft: 6,
   },
   priceRow: {
     flexDirection: "row",
@@ -185,25 +160,21 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 16,
     fontWeight: "800",
-    color: RainbowColors.inkBlack,
     marginRight: 6,
   },
   oldPrice: {
     fontSize: 12,
-    color: RainbowColors.stone,
     textDecorationLine: "line-through",
   },
   cartButton: {
     width: "100%",
     height: 36,
     borderRadius: 12,
-    backgroundColor: "#F2F2F2",
     justifyContent: "center",
     alignItems: "center",
   },
   cartButtonText: {
     fontSize: 13,
     fontWeight: "600",
-    color: RainbowColors.inkBlack,
   },
 });

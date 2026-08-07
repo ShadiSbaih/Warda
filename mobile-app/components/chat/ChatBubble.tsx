@@ -1,10 +1,8 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-    StyleSheet,
-    Text,
-    View,
-} from "react-native";
+
+import { StyleSheet, View } from "react-native";
 
 interface Props {
   message: string;
@@ -17,6 +15,8 @@ export default function ChatBubble({
   time,
   sender,
 }: Props) {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const isMe = sender === "me";
 
   return (
@@ -36,17 +36,17 @@ export default function ChatBubble({
             : styles.driverBubble,
         ]}
       >
-        <Text
+        <WardaText
           style={[
             styles.message,
             isMe && styles.myMessage,
           ]}
         >
           {message}
-        </Text>
+        </WardaText>
       </View>
 
-      <Text
+      <WardaText
         style={[
           styles.time,
           isMe
@@ -55,12 +55,12 @@ export default function ChatBubble({
         ]}
       >
         {time}
-      </Text>
+      </WardaText>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   wrapper: {
     marginHorizontal: 20,
     marginTop: 14,
@@ -82,40 +82,40 @@ const styles = StyleSheet.create({
   },
 
   myBubble: {
-    backgroundColor: RainbowColors.tangerine,
+    backgroundColor: theme.colors.brand,
     borderBottomRightRadius: 4,
-    shadowColor: RainbowColors.tangerine,
+    shadowColor: theme.colors.brand,
     shadowOpacity: 0.25,
     shadowRadius: 6,
     elevation: 5,
   },
 
   driverBubble: {
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
     borderBottomLeftRadius: 4,
     shadowColor: "#000",
     shadowOpacity: 0.12,
     shadowRadius: 6,
     elevation: 2,
     borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
+    borderColor: theme.colors.borderSubtle,
   },
 
   message: {
     fontSize: 15,
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
     lineHeight: 22,
   },
 
   myMessage: {
-    color: RainbowColors.pureWhite,
+    color: theme.colors.textInverse,
     fontWeight: "500",
   },
 
   time: {
     marginTop: 4,
     fontSize: 11,
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
   },
 
   timeRight: {

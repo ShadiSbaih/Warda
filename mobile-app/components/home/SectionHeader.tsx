@@ -1,6 +1,8 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 interface SectionHeaderProps {
   title: string;
@@ -13,19 +15,21 @@ export default function SectionHeader({
   actionText = "See All",
   onActionPress,
 }: SectionHeaderProps) {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
+      <WardaText style={styles.title}>{title}</WardaText>
       {onActionPress && (
         <TouchableOpacity onPress={onActionPress} activeOpacity={0.7}>
-          <Text style={styles.action}>{actionText}</Text>
+          <WardaText style={styles.action}>{actionText}</WardaText>
         </TouchableOpacity>
       )}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -37,11 +41,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "800",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
   action: {
     fontSize: 13.5,
     fontWeight: "700",
-    color: RainbowColors.tangerine,
+    color: theme.colors.brand,
   },
 });

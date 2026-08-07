@@ -4,6 +4,10 @@ const cors = require("cors");
 const path = require("path");
 const http = require("http");
 const morgan = require("morgan");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+const mongoSanitize = require("express-mongo-sanitize");
+const hpp = require("hpp");
 
 // Config
 dotenv.config();
@@ -12,6 +16,22 @@ const connectDB = require("./config/db");
 const logger = require("./config/logger");
 const { swaggerUi, specs } = require("./config/swagger");
 const { initializeSocket } = require("./socket/socket");
+
+// ======================
+// Environment validation
+// ======================
+
+const requiredEnv = ["MONGO_URI", "JWT_SECRET"];
+for (const key of requiredEnv) {
+  if (!process.env[key]) {
+    logger.error(`Missing required environment variable: ${key}`);
+    process.exit(1);
+  }
+}
+
+if (process.env.JWT_SECRET.length < 32) {
+  logger.warn("JWT_SECRET is shorter than 32 characters. Generate a stronger random secret for production.");
+}
 
 // ======================
 // Database
@@ -30,24 +50,66 @@ const server = http.createServer(app);
 initializeSocket(server);
 
 // ======================
-// Middlewares
+// Security Middlewares
 // ======================
 
-app.use(cors());
+app.use(helmet());
 
-app.use(express.json());
+const corsOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(",").map((o) => o.trim())
+  : ["http://localhost:8081", "http://localhost:19006", "http://localhost:3000"];
 
-app.use(express.urlencoded({ extended: true }));
-
-app.use(morgan("dev"));
-
-// Upload Folder
 app.use(
-  "/uploads",
-  express.static(path.join(__dirname, "uploads"))
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || corsOrigins.includes(origin)) return callback(null, true);
+      callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
 );
 
-// Swagger Docs
+app.use(express.json({ limit: "100kb" }));
+app.use(express.urlencoded({ extended: true, limit: "100kb" }));
+
+app.use(mongoSanitize());
+app.use(hpp());
+
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
+
+// Rate limiting
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 200,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: "Too many requests, please try again later" },
+});
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { success: false, message: "Too many authentication attempts, please try again later" },
+});
+
+const adminLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 50,
+  message: { success: false, message: "Too many admin requests, please try again later" },
+});
+
+app.use("/api", generalLimiter);
+app.use("/api/auth", authLimiter);
+app.use("/api/admin", adminLimiter);
+
+// ======================
+// Static & Docs
+// ======================
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 app.use(
   "/api-docs",
   swaggerUi.serve,
@@ -79,9 +141,6 @@ const cartRoutes = require("./routes/cartRoutes");
 
 // Orders
 const orderRoutes = require("./routes/orderRoutes");
-
-// Payment
-const paymentRoutes = require("./routes/paymentRoutes");
 
 // Coupons
 const couponRoutes = require("./routes/couponRoutes");
@@ -128,9 +187,6 @@ const trackingRoutes = require("./routes/trackingRoutes");
 // Push Notification
 const pushRoutes = require("./routes/pushRoutes");
 
-// Stripe
-const stripeRoutes = require("./routes/stripeRoutes");
-
 // Reminders
 const reminderRoutes = require("./routes/reminderRoutes");
 
@@ -152,8 +208,6 @@ app.use("/api/search", searchRoutes);
 app.use("/api/cart", cartRoutes);
 
 app.use("/api/orders", orderRoutes);
-
-app.use("/api/payment", paymentRoutes);
 
 app.use("/api/coupons", couponRoutes);
 
@@ -184,8 +238,6 @@ app.use("/api/verification", verificationRoutes);
 app.use("/api/tracking", trackingRoutes);
 
 app.use("/api/push", pushRoutes);
-
-app.use("/api/stripe", stripeRoutes);
 
 app.use("/api/reminders", reminderRoutes);
 
@@ -221,9 +273,11 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   logger.error(err.stack);
 
+  const isDev = process.env.NODE_ENV === "development";
   res.status(err.status || 500).json({
     success: false,
     message: err.message || "Internal Server Error",
+    ...(isDev && { stack: err.stack }),
   });
 });
 

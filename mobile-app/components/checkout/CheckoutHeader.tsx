@@ -1,53 +1,36 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaIconButton, WardaText } from "@/components/ui";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
 
-import { Feather } from "@expo/vector-icons";
+import { StyleSheet, View } from "react-native";
+
 import { useRouter } from "expo-router";
 
 export default function CheckoutHeader() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const router = useRouter();
 
   return (
     <View style={styles.container}>
       {/* Back Button */}
 
-      <TouchableOpacity
-        style={styles.iconButton}
-        onPress={() => router.back()}
-      >
-        <Feather
-          name="arrow-left"
-          size={22}
-          color={RainbowColors.inkBlack}
-        />
-      </TouchableOpacity>
+      <WardaIconButton icon="arrow-left" onPress={() => router.back()} />
 
       {/* Title */}
 
-      <Text style={styles.title}>
+      <WardaText style={styles.title}>
         Checkout
-      </Text>
+      </WardaText>
 
       {/* Edit Button */}
 
-      <TouchableOpacity style={styles.iconButton}>
-        <Feather
-          name="edit-2"
-          size={20}
-          color={RainbowColors.inkBlack}
-        />
-      </TouchableOpacity>
+      <WardaIconButton icon="edit-2" />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     marginTop: 12,
     marginHorizontal: 20,
@@ -59,31 +42,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  iconButton: {
-    width: 48,
-    height: 48,
-
-    borderRadius: 24,
-
-    backgroundColor: RainbowColors.pureWhite,
-
-    justifyContent: "center",
-    alignItems: "center",
-
-    shadowColor: "#000",
-    shadowOpacity: 0.15,
-    shadowRadius: 16,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-
-    elevation: 5,
-  },
-
   title: {
     fontSize: 24,
     fontWeight: "700",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
 });

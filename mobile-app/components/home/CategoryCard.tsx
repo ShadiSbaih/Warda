@@ -1,12 +1,6 @@
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useTheme } from "../../context/ThemeContext";
 
 interface Props {
   item: any;
@@ -14,29 +8,32 @@ interface Props {
   onPress: () => void;
 }
 
-export default function CategoryCard({
-  item,
-  selected,
-  onPress,
-}: Props) {
+export default function CategoryCard({ item, selected, onPress }: Props) {
+  const { theme } = useTheme();
+
   return (
-    <TouchableOpacity
-      activeOpacity={0.85}
-      onPress={onPress}
-      style={styles.container}
-    >
-      <View style={[styles.imageContainer, selected && styles.activeImageContainer]}>
-        <Image 
-          source={{ uri: item.image }} 
-          resizeMode="cover" 
-          style={styles.image} 
-        />
+    <TouchableOpacity activeOpacity={0.85} onPress={onPress} style={styles.container}>
+      <View
+        style={[
+          styles.imageContainer,
+          {
+            backgroundColor: theme.colors.surface,
+            borderColor: selected ? theme.colors.brand : theme.colors.borderSubtle,
+          },
+          selected && { borderWidth: 2 },
+          !selected && { borderWidth: 1 },
+        ]}
+      >
+        <Image source={{ uri: item.image }} resizeMode="cover" style={styles.image} />
       </View>
-      <Text 
-        numberOfLines={2} 
+      <Text
+        numberOfLines={2}
         style={[
           styles.title,
-          selected && styles.activeTitle,
+          {
+            color: selected ? theme.colors.brand : theme.colors.text,
+            fontWeight: selected ? "700" : "500",
+          },
         ]}
       >
         {item.name}
@@ -55,17 +52,10 @@ const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 32,
-    backgroundColor: RainbowColors.pureWhite,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 8,
     overflow: "hidden",
-    borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
-  },
-  activeImageContainer: {
-    borderColor: RainbowColors.tangerine,
-    borderWidth: 2,
   },
   image: {
     width: "100%",
@@ -73,13 +63,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 11,
-    color: RainbowColors.inkBlack,
-    fontWeight: "500",
     textAlign: "center",
     lineHeight: 14,
-  },
-  activeTitle: {
-    color: RainbowColors.tangerine,
-    fontWeight: "700",
   },
 });

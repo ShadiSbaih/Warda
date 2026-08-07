@@ -1,12 +1,8 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import React, { useState } from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-} from "react-native";
+
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 interface Props {
@@ -22,13 +18,15 @@ export default function PasswordInput({
   value,
   onChangeText,
 }: Props) {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const [show, setShow] = useState(false);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>
+      <WardaText style={styles.label}>
         {label}
-      </Text>
+      </WardaText>
 
       <View style={styles.inputContainer}>
         <TextInput
@@ -54,7 +52,7 @@ export default function PasswordInput({
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     marginBottom: 18,
   },
@@ -63,16 +61,16 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     fontSize: 14,
     fontWeight: "700",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
 
   inputContainer: {
     height: 52,
     borderWidth: 1.5,
-    borderColor: RainbowColors.cloudSurface,
+    borderColor: theme.colors.borderSubtle,
     borderRadius: 24,
     paddingHorizontal: 16,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
     flexDirection: "row",
     alignItems: "center",
   },
@@ -80,6 +78,6 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 15,
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
 });

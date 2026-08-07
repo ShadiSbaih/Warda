@@ -1,32 +1,29 @@
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { useTheme } from "../../context/ThemeContext";
 
 export default function SearchBar() {
   const router = useRouter();
+  const { theme } = useTheme();
 
   return (
     <TouchableOpacity
       activeOpacity={0.88}
-      style={styles.container}
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.colors.background,
+          borderRadius: theme.radii.full,
+        },
+      ]}
       onPress={() => router.push("/(tabs)/search")}
     >
-      <Feather name="search" size={20} color="#9A9A9A" />
-      <Text style={styles.placeholder}>
+      <Feather name="search" size={20} color={theme.colors.textMuted} />
+      <Text style={[styles.placeholder, { color: theme.colors.textPlaceholder }]}>
         Search roses, chocolates, gifts...
       </Text>
-
-      {/* Clear Button (simulate) */}
-      <View style={styles.clearButton}>
-        <Ionicons name="close" size={14} color="#9A9A9A" />
-      </View>
     </TouchableOpacity>
   );
 }
@@ -34,27 +31,15 @@ export default function SearchBar() {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
-    height: 48,
-    backgroundColor: "#F0F0F0",
-    borderRadius: RainbowRadii.pills,
+    height: 52,
     flexDirection: "row",
     alignItems: "center",
-    paddingLeft: 18,
-    paddingRight: 10,
-    overflow: "hidden",
+    paddingHorizontal: 18,
   },
   placeholder: {
     flex: 1,
     marginLeft: 12,
     fontSize: 15,
-    color: "#9A9A9A",
-  },
-  clearButton: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: "#E0E0E0",
-    justifyContent: "center",
-    alignItems: "center",
+    fontWeight: "500",
   },
 });

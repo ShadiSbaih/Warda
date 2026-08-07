@@ -1,17 +1,15 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaButton, WardaText } from "@/components/ui";
 import React, { useState } from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-    Image,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
+
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { Feather } from "@expo/vector-icons";
 
 export default function OrderSummaryCard() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const [qty, setQty] = useState(1);
 
   return (
@@ -34,18 +32,18 @@ export default function OrderSummaryCard() {
         />
 
         <View style={styles.info}>
-          <Text style={styles.title}>
+          <WardaText style={styles.title}>
             Red Roses Bouquet
-          </Text>
+          </WardaText>
 
-          <Text style={styles.description}>
+          <WardaText style={styles.description}>
             Luxury bouquet of natural red roses
-          </Text>
+          </WardaText>
         </View>
 
-        <Text style={styles.price}>
+        <WardaText style={styles.price}>
           $12.50
-        </Text>
+        </WardaText>
       </View>
 
       {/* Quantity */}
@@ -60,13 +58,13 @@ export default function OrderSummaryCard() {
             <Feather
               name="minus"
               size={18}
-              color={RainbowColors.stone}
+              color={theme.colors.textMuted}
             />
           </TouchableOpacity>
 
-          <Text style={styles.qty}>
+          <WardaText style={styles.qty}>
             {qty}
-          </Text>
+          </WardaText>
 
           <TouchableOpacity
             onPress={() => setQty(qty + 1)}
@@ -74,7 +72,7 @@ export default function OrderSummaryCard() {
             <Feather
               name="plus"
               size={18}
-              color={RainbowColors.stone}
+              color={theme.colors.textMuted}
             />
           </TouchableOpacity>
         </View>
@@ -87,33 +85,29 @@ export default function OrderSummaryCard() {
       {/* Bottom */}
 
       <View style={styles.bottom}>
-        <Text style={styles.items}>
+        <WardaText style={styles.items}>
           Total 2 items
-        </Text>
+        </WardaText>
 
-        <Text style={styles.total}>
+        <WardaText style={styles.total}>
           $25.00
-        </Text>
+        </WardaText>
       </View>
 
       {/* Button */}
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>
-          Place Order
-        </Text>
-      </TouchableOpacity>
+      <WardaButton title="Place Order" size="lg" style={{ marginTop: 4 }} />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     overflow: "hidden",
     marginHorizontal: 20,
     marginTop: 18,
-    backgroundColor: RainbowColors.pureWhite,
-    borderRadius: RainbowRadii.cards,
+    backgroundColor: theme.colors.surface,
+    borderRadius: theme.radii.xl,
     padding: 18,
     shadowColor: "#5a5a7a",
     shadowOpacity: 0.12,
@@ -131,7 +125,7 @@ const styles = StyleSheet.create({
     width: 85,
     height: 85,
     borderRadius: 16,
-    backgroundColor: RainbowColors.cloudSurface,
+    backgroundColor: theme.colors.background,
   },
 
   info: {
@@ -142,12 +136,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 17,
     fontWeight: "800",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
 
   description: {
     marginTop: 4,
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     lineHeight: 18,
     fontSize: 13,
   },
@@ -155,7 +149,7 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 18,
     fontWeight: "800",
-    color: RainbowColors.tangerine,
+    color: theme.colors.brand,
   },
 
   quantityRow: {
@@ -166,8 +160,8 @@ const styles = StyleSheet.create({
   quantity: {
     width: 96,
     height: 36,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.cloudSurface,
+    borderRadius: theme.radii.full,
+    backgroundColor: theme.colors.background,
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
@@ -176,13 +170,13 @@ const styles = StyleSheet.create({
   qty: {
     fontSize: 15,
     fontWeight: "700",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
 
   line: {
     marginVertical: 16,
     height: 1,
-    backgroundColor: RainbowColors.cloudSurface,
+    backgroundColor: theme.colors.background,
   },
 
   bottom: {
@@ -193,7 +187,7 @@ const styles = StyleSheet.create({
   },
 
   items: {
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     fontSize: 14,
     fontWeight: "500",
   },
@@ -201,24 +195,7 @@ const styles = StyleSheet.create({
   total: {
     fontSize: 20,
     fontWeight: "800",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
 
-  button: {
-    height: 50,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.tangerine,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.35,
-    shadowRadius: 16,
-    elevation: 5,
-  },
-
-  buttonText: {
-    color: RainbowColors.pureWhite,
-    fontSize: 16,
-    fontWeight: "700",
-  },
 });

@@ -1,11 +1,8 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import {
   Feather,
@@ -15,6 +12,8 @@ import {
 import { useRouter } from "expo-router";
 
 export default function DeliveryCard() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const router = useRouter();
 
   return (
@@ -34,15 +33,15 @@ export default function DeliveryCard() {
             />
           </View>
 
-          <Text style={styles.text}>
+          <WardaText style={styles.text}>
             Deliver to: My Address
-          </Text>
+          </WardaText>
         </View>
 
         <Feather
           name="chevron-right"
           size={22}
-          color={RainbowColors.stone}
+          color={theme.colors.textMuted}
         />
       </TouchableOpacity>
 
@@ -67,27 +66,27 @@ export default function DeliveryCard() {
             />
           </View>
 
-          <Text style={styles.discount}>
+          <WardaText style={styles.discount}>
             20% OFF Applied
-          </Text>
+          </WardaText>
         </View>
 
         <Feather
           name="chevron-right"
           size={22}
-          color={RainbowColors.stone}
+          color={theme.colors.textMuted}
         />
       </TouchableOpacity>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     marginHorizontal: 20,
     marginTop: 18,
 
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
 
     borderRadius: 22,
 

@@ -1,25 +1,26 @@
-import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import { authAPI } from "../../services/api";
 import {
-  ActivityIndicator,
+  ImageBackground,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   StyleSheet,
-  Text,
-  TextInput,
   TouchableOpacity,
   View,
-  ImageBackground,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
+import { useRouter } from "expo-router";
+
+import { useTheme } from "../../context/ThemeContext";
+import { WardaButton, WardaIconButton, WardaInput, WardaText } from "../../components/ui";
+import { authAPI } from "../../services/api";
 
 export default function ForgotPasswordScreen() {
   const router = useRouter();
+  const { theme } = useTheme();
+
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -30,10 +31,8 @@ export default function ForgotPasswordScreen() {
       setErrorMsg("Please enter your email address");
       return;
     }
-
     setErrorMsg(null);
     setLoading(true);
-
     try {
       const res = await authAPI.forgotPassword({ email });
       if (res.success) {
@@ -48,6 +47,13 @@ export default function ForgotPasswordScreen() {
     }
   };
 
+  const inputBase = {
+    backgroundColor: "rgba(255,255,255,0.6)",
+    borderColor: "rgba(255,255,255,0.5)",
+    borderRadius: 20,
+    color: theme.colors.text,
+  };
+
   return (
     <ImageBackground
       source={require("../../assets/images/auth-bg.png")}
@@ -55,88 +61,78 @@ export default function ForgotPasswordScreen() {
       resizeMode="cover"
     >
       <SafeAreaView style={styles.safeArea}>
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior={Platform.OS === "ios" ? "padding" : undefined}
-        >
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.scroll}
             keyboardShouldPersistTaps="handled"
           >
-            {/* Back Button */}
-            <TouchableOpacity
-              style={styles.backBtn}
+            <WardaIconButton
+              icon="arrow-left"
               onPress={() => router.back()}
-              activeOpacity={0.8}
-            >
-              <Feather name="arrow-left" size={22} color={RainbowColors.inkBlack} />
-            </TouchableOpacity>
+              style={styles.backBtn}
+            />
 
             <BlurView intensity={75} tint="light" style={styles.glassCard}>
               <View style={styles.header}>
-                <View style={styles.iconCircle}>
-                  <Feather name="lock" size={28} color={RainbowColors.tangerine} />
+                <View style={[styles.iconCircle, { backgroundColor: theme.colors.brandLight }]}>
+                  <Feather name="lock" size={28} color={theme.colors.brand} />
                 </View>
-                <Text style={styles.title}>Reset Password</Text>
-                <Text style={styles.subtitle}>
-                  Enter the email associated with your account and we'll send you
-                  instructions to reset your password.
-                </Text>
+                <WardaText variant="h1" align="center" style={styles.title}>
+                  Reset Password
+                </WardaText>
+                <WardaText variant="body" align="center" color={theme.colors.text} style={{ opacity: 0.8 }}>
+                  Enter the email associated with your account and we'll send you instructions to reset your password.
+                </WardaText>
               </View>
 
               {sent ? (
-                <View style={styles.successBox}>
-                  <Feather name="check-circle" size={28} color="#2E7D32" />
-                  <Text style={styles.successTitle}>Check Your Inbox</Text>
-                  <Text style={styles.successText}>
+                <View style={[styles.successBox, { backgroundColor: "rgba(255,255,255,0.8)", borderColor: "rgba(255,255,255,0.5)" }]}>
+                  <Feather name="check-circle" size={28} color={theme.colors.success} />
+                  <WardaText variant="h3" align="center" color={theme.colors.success}>
+                    Check Your Inbox
+                  </WardaText>
+                  <WardaText variant="body" align="center" color={theme.colors.text} style={{ opacity: 0.8 }}>
                     We've sent a password reset link to{" "}
-                    <Text style={{ fontWeight: "700" }}>{email}</Text>.
-                  </Text>
-                  <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => router.replace("/(auth)/login")}
-                    activeOpacity={0.85}
-                  >
-                    <Text style={styles.buttonText}>Back to Sign In</Text>
-                  </TouchableOpacity>
+                    <WardaText variant="body" weight="bold" color={theme.colors.text}>
+                      {email}
+                    </WardaText>
+                    .
+                  </WardaText>
+                  <WardaButton title="Back to Sign In" onPress={() => router.replace("/(auth)/login")} />
                 </View>
               ) : (
-                <View style={styles.form}>
+                <View style={{ marginTop: 8 }}>
                   {errorMsg && (
-                    <View style={styles.errorBox}>
-                      <Text style={styles.errorText}>{errorMsg}</Text>
+                    <View style={[styles.errorBox, { backgroundColor: theme.colors.errorSurface, borderColor: "#FFCDD2" }]}>
+                      <WardaText variant="caption" align="center" color={theme.colors.error}>
+                        {errorMsg}
+                      </WardaText>
                     </View>
                   )}
 
-                  <View style={styles.inputGroup}>
-                    <Text style={styles.label}>Email Address</Text>
-                    <TextInput
-                      placeholder="example@warda.app"
-                      placeholderTextColor="rgba(0,0,0,0.4)"
-                      value={email}
-                      onChangeText={(text) => {
-                        setEmail(text);
-                        if (errorMsg) setErrorMsg(null);
-                      }}
-                      autoCapitalize="none"
-                      keyboardType="email-address"
-                      style={styles.input}
-                    />
-                  </View>
+                  <WardaInput
+                    label="Email Address"
+                    placeholder="example@warda.app"
+                    autoCapitalize="none"
+                    keyboardType="email-address"
+                    leftIcon="mail"
+                    value={email}
+                    onChangeText={(t) => {
+                      setEmail(t);
+                      if (errorMsg) setErrorMsg(null);
+                    }}
+                    containerStyle={styles.inputGroup}
+                    style={[styles.input, inputBase]}
+                  />
 
-                  <TouchableOpacity
-                    style={[styles.button, loading && styles.buttonDisabled]}
-                    onPress={handleReset}
+                  <WardaButton
+                    title="Send Reset Link"
+                    size="lg"
+                    loading={loading}
                     disabled={loading}
-                    activeOpacity={0.85}
-                  >
-                    {loading ? (
-                      <ActivityIndicator color={RainbowColors.pureWhite} />
-                    ) : (
-                      <Text style={styles.buttonText}>Send Reset Link</Text>
-                    )}
-                  </TouchableOpacity>
+                    onPress={handleReset}
+                  />
                 </View>
               )}
             </BlurView>
@@ -150,7 +146,7 @@ export default function ForgotPasswordScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: "#FFFFFF",
   },
   safeArea: {
     flex: 1,
@@ -161,15 +157,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
   },
   backBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: "rgba(255, 255, 255, 0.6)",
-    justifyContent: "center",
-    alignItems: "center",
     marginBottom: 20,
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.4)",
   },
   glassCard: {
     borderRadius: 24,
@@ -187,105 +175,32 @@ const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 32,
-    backgroundColor: "rgba(255, 255, 255, 0.7)",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 16,
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.5)",
   },
   title: {
-    fontSize: 28,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
-    marginBottom: 8,
-    textAlign: "center",
-    letterSpacing: -0.5,
-  },
-  subtitle: {
-    fontSize: 15,
-    color: RainbowColors.inkBlack,
-    opacity: 0.7,
-    textAlign: "center",
-    lineHeight: 22,
-  },
-  form: {
-    marginTop: 8,
-  },
-  inputGroup: {
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: RainbowColors.inkBlack,
-    marginBottom: 6,
-  },
-  input: {
-    height: 56,
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.5)",
-    borderRadius: 20,
-    paddingHorizontal: 18,
-    fontSize: 15.5,
-    backgroundColor: "rgba(255, 255, 255, 0.6)",
-    color: RainbowColors.inkBlack,
-  },
-  button: {
-    height: 56,
-    backgroundColor: RainbowColors.tangerine,
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
-    marginTop: 6,
-  },
-  buttonDisabled: {
-    opacity: 0.7,
-  },
-  buttonText: {
-    color: RainbowColors.pureWhite,
-    fontWeight: "700",
-    fontSize: 17,
+    marginBottom: 10,
   },
   errorBox: {
-    backgroundColor: "rgba(255, 235, 238, 0.9)",
     borderRadius: 12,
     padding: 12,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: "#FFCDD2",
   },
-  errorText: {
-    color: "#D32F2F",
-    fontSize: 14,
-    fontWeight: "500",
-    textAlign: "center",
+  inputGroup: {
+    marginBottom: 20,
+  },
+  input: {
+    height: 56,
+    borderWidth: 1,
+    paddingHorizontal: 16,
   },
   successBox: {
-    backgroundColor: "rgba(255, 255, 255, 0.8)",
     borderRadius: 20,
     padding: 24,
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.5)",
     gap: 12,
-  },
-  successTitle: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#2E7D32",
-  },
-  successText: {
-    fontSize: 14.5,
-    color: RainbowColors.inkBlack,
-    opacity: 0.8,
-    textAlign: "center",
-    lineHeight: 20,
-    marginBottom: 8,
+    borderWidth: 1,
   },
 });

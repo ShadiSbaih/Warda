@@ -1,73 +1,30 @@
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-    StyleSheet,
-    Text,
-    TouchableOpacity
-} from "react-native";
-
-import { Feather } from "@expo/vector-icons";
+import { StyleSheet, View } from "react-native";
 import { useRouter } from "expo-router";
+
+import { useTheme } from "../../context/ThemeContext";
+import { WardaIconButton, WardaText } from "../ui";
 
 export default function TrackingHeader() {
   const router = useRouter();
+  const { theme } = useTheme();
 
   return (
-    <>
-      <TouchableOpacity
-        style={styles.closeButton}
-        onPress={() => router.replace("/(tabs)/home")}
-      >
-        <Feather
-          name="x"
-          size={24}
-          color={RainbowColors.inkBlack}
-        />
-      </TouchableOpacity>
-
-      <Text style={styles.title}>
+    <View style={styles.container}>
+      <WardaIconButton icon="x" onPress={() => router.replace("/(tabs)/home")} />
+      <WardaText variant="h1" color={theme.colors.text} style={styles.title}>
         Hang in there, we're on it!
-      </Text>
-    </>
+      </WardaText>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  closeButton: {
-    width: 48,
-    height: 48,
-
-    borderRadius: 24,
-
-    backgroundColor: RainbowColors.pureWhite,
-
-    justifyContent: "center",
-    alignItems: "center",
-
-    marginTop: 10,
-    marginLeft: 20,
-
-    shadowColor: "#000",
-    shadowOpacity: 0.15,
-    shadowRadius: 16,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-
-    elevation: 5,
+  container: {
+    paddingHorizontal: 20,
   },
-
   title: {
-    marginTop: 24,
-    marginHorizontal: 20,
-
-    fontSize: 32,
-
-    fontWeight: "700",
-
-    color: RainbowColors.inkBlack,
-
+    marginTop: 20,
     lineHeight: 42,
   },
 });

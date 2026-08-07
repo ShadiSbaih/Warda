@@ -1,6 +1,8 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import { StyleSheet, Text, View } from "react-native";
+
+import { StyleSheet, View } from "react-native";
 import { Tabs } from "expo-router";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useCart } from "../../context/CartContext";
@@ -8,6 +10,8 @@ import { useOrders } from "../../context/OrdersContext";
 import { useAuth } from "../../context/AuthContext";
 
 export default function TabsLayout() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const { itemsCount } = useCart();
   const { activeOrder } = useOrders();
   const { user } = useAuth();
@@ -28,7 +32,7 @@ export default function TabsLayout() {
               <Ionicons
                 name={focused ? "home" : "home-outline"}
                 size={24}
-                color={focused ? RainbowColors.tangerine : RainbowColors.stone}
+                color={focused ? theme.colors.brand : theme.colors.textMuted}
               />
             </View>
           ),
@@ -43,7 +47,7 @@ export default function TabsLayout() {
               <MaterialCommunityIcons
                 name={focused ? "flower-tulip" : "flower-tulip-outline"}
                 size={26}
-                color={focused ? RainbowColors.tangerine : RainbowColors.stone}
+                color={focused ? theme.colors.brand : theme.colors.textMuted}
               />
             </View>
           ),
@@ -58,13 +62,13 @@ export default function TabsLayout() {
               <Feather
                 name="shopping-bag"
                 size={23}
-                color={focused ? RainbowColors.tangerine : RainbowColors.stone}
+                color={focused ? theme.colors.brand : theme.colors.textMuted}
               />
               {itemsCount > 0 && (
                 <View style={styles.badge}>
-                  <Text style={styles.badgeText}>
+                  <WardaText style={styles.badgeText}>
                     {itemsCount > 9 ? "9+" : itemsCount}
-                  </Text>
+                  </WardaText>
                 </View>
               )}
             </View>
@@ -80,7 +84,7 @@ export default function TabsLayout() {
               <Feather
                 name="package"
                 size={23}
-                color={focused ? RainbowColors.tangerine : RainbowColors.stone}
+                color={focused ? theme.colors.brand : theme.colors.textMuted}
               />
               {activeOrder && (
                 <View style={styles.activeDot} />
@@ -98,7 +102,7 @@ export default function TabsLayout() {
               <Ionicons
                 name={focused ? "person" : "person-outline"}
                 size={24}
-                color={focused ? RainbowColors.tangerine : RainbowColors.stone}
+                color={focused ? theme.colors.brand : theme.colors.textMuted}
               />
             </View>
           ),
@@ -115,7 +119,7 @@ export default function TabsLayout() {
               <Feather
                 name="shield"
                 size={23}
-                color={focused ? RainbowColors.tangerine : RainbowColors.stone}
+                color={focused ? theme.colors.brand : theme.colors.textMuted}
               />
             </View>
           ),
@@ -140,7 +144,7 @@ export default function TabsLayout() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   tabBar: {
     position: "absolute",
     left: 18,
@@ -148,8 +152,8 @@ const styles = StyleSheet.create({
     bottom: 22,
     height: 72,
     borderRadius: 26,
-    backgroundColor: RainbowColors.pureWhite,
-    shadowColor: RainbowColors.inkBlack,
+    backgroundColor: theme.colors.surface,
+    shadowColor: theme.colors.text,
     shadowOpacity: 0.15,
     shadowRadius: 18,
     shadowOffset: { width: 0, height: 6 },
@@ -168,13 +172,13 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   activeIconBox: {
-    backgroundColor: RainbowColors.cloudSurface,
+    backgroundColor: theme.colors.background,
   },
   badge: {
     position: "absolute",
     top: 4,
     right: 4,
-    backgroundColor: RainbowColors.tangerine,
+    backgroundColor: theme.colors.brand,
     minWidth: 18,
     height: 18,
     borderRadius: 9,
@@ -182,10 +186,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 4,
     borderWidth: 1.5,
-    borderColor: RainbowColors.pureWhite,
+    borderColor: theme.colors.surface,
   },
   badgeText: {
-    color: RainbowColors.pureWhite,
+    color: theme.colors.textInverse,
     fontSize: 10,
     fontWeight: "800",
   },
@@ -198,6 +202,6 @@ const styles = StyleSheet.create({
     borderRadius: 4.5,
     backgroundColor: "#10B981", // Keep green for active order
     borderWidth: 1.5,
-    borderColor: RainbowColors.pureWhite,
+    borderColor: theme.colors.surface,
   },
 });

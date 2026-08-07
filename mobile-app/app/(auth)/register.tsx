@@ -1,25 +1,26 @@
-import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
+  ImageBackground,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
-  ImageBackground,
-  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { BlurView } from "expo-blur";
 import { Feather } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+
+import { useTheme } from "../../context/ThemeContext";
+import { WardaButton, WardaInput, WardaText } from "../../components/ui";
 import { useAuth } from "../../context/AuthContext";
 
 export default function RegisterScreen() {
   const router = useRouter();
+  const { theme } = useTheme();
   const { register } = useAuth();
 
   const [name, setName] = useState("");
@@ -43,24 +44,27 @@ export default function RegisterScreen() {
       setErrorMsg("Password must be at least 6 characters");
       return;
     }
-
     setErrorMsg(null);
     setLoading(true);
-
     const result = await register({
       name: name.trim(),
       email: email.trim(),
       phone: phone.trim() || undefined,
       password,
     });
-
     setLoading(false);
-
     if (result.success) {
       router.replace("/(tabs)/home");
     } else {
       setErrorMsg(result.error || "Registration failed. Please try again.");
     }
+  };
+
+  const inputBase = {
+    backgroundColor: "rgba(255,255,255,0.6)",
+    borderColor: "rgba(255,255,255,0.5)",
+    borderRadius: 20,
+    color: theme.colors.text,
   };
 
   return (
@@ -70,117 +74,107 @@ export default function RegisterScreen() {
       resizeMode="cover"
     >
       <SafeAreaView style={styles.safeArea}>
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior={Platform.OS === "ios" ? "padding" : undefined}
-        >
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined}>
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.scroll}
             keyboardShouldPersistTaps="handled"
           >
             <BlurView intensity={75} tint="light" style={styles.glassCard}>
-              <Text style={styles.title}>Create Account</Text>
-              <Text style={styles.subtitle}>
+              <WardaText variant="h1" align="center" style={styles.title}>
+                Create Account
+              </WardaText>
+              <WardaText variant="body" align="center" color={theme.colors.text} style={{ opacity: 0.8, marginBottom: 28 }}>
                 Create your account to send gifts to those you love.
-              </Text>
+              </WardaText>
 
               {errorMsg && (
-                <View style={styles.errorBox}>
-                  <Text style={styles.errorText}>{errorMsg}</Text>
+                <View style={[styles.errorBox, { backgroundColor: theme.colors.errorSurface, borderColor: "#FFCDD2" }]}>
+                  <WardaText variant="caption" align="center" color={theme.colors.error}>
+                    {errorMsg}
+                  </WardaText>
                 </View>
               )}
 
-              <View style={styles.inputGroup}>
-                <Text style={styles.label}>Full Name</Text>
-                <TextInput
-                  placeholder="e.g. Sarah Connor"
-                  placeholderTextColor="rgba(0,0,0,0.4)"
-                  value={name}
-                  onChangeText={(text) => {
-                    setName(text);
-                    if (errorMsg) setErrorMsg(null);
-                  }}
-                  style={styles.input}
-                />
-              </View>
+              <WardaInput
+                label="Full Name"
+                placeholder="e.g. Sarah Connor"
+                leftIcon="user"
+                value={name}
+                onChangeText={(t) => {
+                  setName(t);
+                  if (errorMsg) setErrorMsg(null);
+                }}
+                containerStyle={styles.inputGroup}
+                style={[styles.input, inputBase]}
+              />
+
+              <WardaInput
+                label="Email Address"
+                placeholder="example@warda.app"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                leftIcon="mail"
+                value={email}
+                onChangeText={(t) => {
+                  setEmail(t);
+                  if (errorMsg) setErrorMsg(null);
+                }}
+                containerStyle={styles.inputGroup}
+                style={[styles.input, inputBase]}
+              />
+
+              <WardaInput
+                label="Phone Number"
+                placeholder="+966 50 123 4567"
+                keyboardType="phone-pad"
+                leftIcon="phone"
+                value={phone}
+                onChangeText={(t) => {
+                  setPhone(t);
+                  if (errorMsg) setErrorMsg(null);
+                }}
+                containerStyle={styles.inputGroup}
+                style={[styles.input, inputBase]}
+              />
 
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>Email Address</Text>
-                <TextInput
-                  placeholder="example@warda.app"
-                  placeholderTextColor="rgba(0,0,0,0.4)"
-                  keyboardType="email-address"
-                  value={email}
-                  onChangeText={(text) => {
-                    setEmail(text);
-                    if (errorMsg) setErrorMsg(null);
-                  }}
-                  autoCapitalize="none"
-                  style={styles.input}
-                />
-              </View>
-
-              <View style={styles.inputGroup}>
-                <Text style={styles.label}>Phone Number</Text>
-                <TextInput
-                  placeholder="+966 50 123 4567"
-                  placeholderTextColor="rgba(0,0,0,0.4)"
-                  keyboardType="phone-pad"
-                  value={phone}
-                  onChangeText={(text) => {
-                    setPhone(text);
-                    if (errorMsg) setErrorMsg(null);
-                  }}
-                  style={styles.input}
-                />
-              </View>
-
-              <View style={styles.inputGroup}>
-                <Text style={styles.label}>Password</Text>
-                <View style={styles.passwordContainer}>
+                <WardaText variant="label" color={theme.colors.text}>Password</WardaText>
+                <View style={[styles.passwordContainer, inputBase]}>
+                  <Feather name="lock" size={18} color={theme.colors.textMuted} style={{ marginLeft: 16 }} />
                   <TextInput
                     placeholder="••••••••"
-                    placeholderTextColor="rgba(0,0,0,0.4)"
+                    placeholderTextColor={theme.colors.textPlaceholder}
                     secureTextEntry={!showPassword}
                     value={password}
-                    onChangeText={(text) => {
-                      setPassword(text);
+                    onChangeText={(t) => {
+                      setPassword(t);
                       if (errorMsg) setErrorMsg(null);
                     }}
-                    style={styles.passwordInput}
+                    style={[styles.passwordInput, { color: theme.colors.text }]}
                   />
-                  <TouchableOpacity
-                    style={styles.eyeIcon}
-                    onPress={() => setShowPassword(!showPassword)}
-                  >
-                    <Feather
-                      name={showPassword ? "eye" : "eye-off"}
-                      size={20}
-                      color="rgba(0,0,0,0.6)"
-                    />
+                  <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                    <Feather name={showPassword ? "eye" : "eye-off"} size={20} color={theme.colors.textMuted} />
                   </TouchableOpacity>
                 </View>
               </View>
 
-              <TouchableOpacity
-                style={[styles.button, loading && styles.buttonDisabled]}
-                onPress={handleRegister}
+              <WardaButton
+                title="Create Account"
+                size="lg"
+                loading={loading}
                 disabled={loading}
-                activeOpacity={0.85}
-              >
-                {loading ? (
-                  <ActivityIndicator color={RainbowColors.pureWhite} />
-                ) : (
-                  <Text style={styles.buttonText}>Create Account</Text>
-                )}
-              </TouchableOpacity>
+                onPress={handleRegister}
+              />
 
               <View style={styles.bottom}>
-                <Text style={styles.text}>Already have an account?</Text>
-
+                <WardaText variant="body" color={theme.colors.text} style={{ opacity: 0.8 }}>
+                  Already have an account?
+                </WardaText>
                 <TouchableOpacity onPress={() => router.back()}>
-                  <Text style={styles.login}>Sign In</Text>
+                  <WardaText variant="body" weight="bold" color={theme.colors.brand}>
+                    Sign In
+                  </WardaText>
                 </TouchableOpacity>
               </View>
             </BlurView>
@@ -194,7 +188,7 @@ export default function RegisterScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: "#FFFFFF",
   },
   safeArea: {
     flex: 1,
@@ -214,110 +208,40 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255, 255, 255, 0.85)",
   },
   title: {
-    fontSize: 32,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
-    letterSpacing: -0.5,
-    textAlign: "center",
-  },
-  subtitle: {
-    marginTop: 8,
-    fontSize: 16,
-    color: RainbowColors.inkBlack,
-    opacity: 0.7,
-    marginBottom: 28,
-    lineHeight: 22,
-    textAlign: "center",
+    marginBottom: 8,
   },
   errorBox: {
-    backgroundColor: "rgba(255, 235, 238, 0.9)",
     borderRadius: 12,
     padding: 12,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: "#FFCDD2",
-  },
-  errorText: {
-    color: "#D32F2F",
-    fontSize: 14,
-    fontWeight: "500",
-    textAlign: "center",
   },
   inputGroup: {
     marginBottom: 16,
   },
-  label: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: RainbowColors.inkBlack,
-    marginBottom: 6,
-  },
   input: {
     height: 56,
     borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.5)",
-    borderRadius: 20,
-    paddingHorizontal: 18,
-    fontSize: 15.5,
-    backgroundColor: "rgba(255, 255, 255, 0.6)",
-    color: RainbowColors.inkBlack,
+    paddingHorizontal: 16,
   },
   passwordContainer: {
     flexDirection: "row",
     alignItems: "center",
     height: 56,
     borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.5)",
-    borderRadius: 20,
-    backgroundColor: "rgba(255, 255, 255, 0.6)",
     paddingRight: 16,
+    marginTop: 6,
   },
   passwordInput: {
     flex: 1,
     height: "100%",
-    paddingHorizontal: 18,
-    fontSize: 15.5,
-    color: RainbowColors.inkBlack,
-  },
-  eyeIcon: {
-    padding: 4,
-  },
-  button: {
-    height: 56,
-    backgroundColor: RainbowColors.tangerine,
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
-    marginTop: 8,
-  },
-  buttonDisabled: {
-    opacity: 0.7,
-  },
-  buttonText: {
-    color: RainbowColors.pureWhite,
-    fontWeight: "700",
-    fontSize: 17,
-    letterSpacing: 0.3,
+    paddingHorizontal: 12,
+    fontSize: 15,
   },
   bottom: {
     flexDirection: "row",
     justifyContent: "center",
+    alignItems: "center",
     marginTop: 28,
-  },
-  text: {
-    fontSize: 15,
-    color: RainbowColors.inkBlack,
-    opacity: 0.8,
-  },
-  login: {
-    marginLeft: 6,
-    color: RainbowColors.tangerine,
-    fontWeight: "800",
-    fontSize: 15,
   },
 });

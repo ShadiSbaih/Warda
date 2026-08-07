@@ -1,131 +1,83 @@
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+
+import { useTheme } from "../../context/ThemeContext";
+import { WardaCard, WardaText } from "../ui";
 import { useCart } from "../../context/CartContext";
 
-interface PriceSummaryProps {
-  customDeliveryFee?: number;
-}
-
-export default function PriceSummary({ customDeliveryFee }: PriceSummaryProps) {
+export default function PriceSummary({ customDeliveryFee }: { customDeliveryFee?: number }) {
+  const { theme } = useTheme();
   const { subtotal, discount, appliedPromo, wrappingTotal, total, deliveryFee } = useCart();
   const activeDeliveryFee = customDeliveryFee !== undefined ? customDeliveryFee : deliveryFee;
   const grandTotal = Math.max(0, subtotal - discount + activeDeliveryFee + wrappingTotal);
 
-  return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.title}>Price Summary</Text>
-        <Text style={styles.time}>Express 30–45 mins</Text>
-      </View>
-
-      <View style={styles.divider} />
-
-      {/* Subtotal */}
-      <View style={styles.row}>
-        <Text style={styles.label}>Items Subtotal</Text>
-        <Text style={styles.value}>${subtotal.toFixed(2)}</Text>
-      </View>
-
-      {/* Wrapping */}
-      {wrappingTotal > 0 && (
-        <View style={styles.row}>
-          <Text style={styles.label}>Luxury Gift Wrapping</Text>
-          <Text style={styles.value}>${wrappingTotal.toFixed(2)}</Text>
-        </View>
-      )}
-
-      {/* Delivery Fee */}
-      <View style={styles.row}>
-        <Text style={styles.label}>Express Delivery</Text>
-        <Text style={styles.value}>
-          {activeDeliveryFee === 0 ? "FREE" : `$${activeDeliveryFee.toFixed(2)}`}
-        </Text>
-      </View>
-
-      {/* Discount */}
-      {discount > 0 && (
-        <View style={styles.row}>
-          <Text style={[styles.label, { color: "#10B981" }]}>
-            Discount ({appliedPromo?.code})
-          </Text>
-          <Text style={styles.discount}>-${discount.toFixed(2)}</Text>
-        </View>
-      )}
-
-      <View style={styles.divider} />
-
-      {/* Total */}
-      <View style={styles.row}>
-        <Text style={styles.totalText}>Total Amount</Text>
-        <Text style={styles.totalPrice}>${grandTotal.toFixed(2)}</Text>
-      </View>
+  const Row = ({
+    label,
+    value,
+    valueColor,
+  }: {
+    label: string;
+    value: string;
+    valueColor?: string;
+  }) => (
+    <View style={styles.row}>
+      <WardaText variant="body" color={theme.colors.textMuted}>
+        {label}
+      </WardaText>
+      <WardaText variant="body" weight="bold" color={valueColor || theme.colors.text}>
+        {value}
+      </WardaText>
     </View>
+  );
+
+  return (
+    <WardaCard style={{ marginBottom: 20 }}>
+      <View style={styles.header}>
+        <WardaText variant="h3">Price Summary</WardaText>
+        <WardaText variant="caption" weight="bold" color={theme.colors.brand}>
+          Express 30–45 mins
+        </WardaText>
+      </View>
+      <View style={[styles.divider, { backgroundColor: theme.colors.borderSubtle }]} />
+      <Row label="Items Subtotal" value={`$${subtotal.toFixed(2)}`} />
+      {wrappingTotal > 0 && (
+        <Row label="Luxury Gift Wrapping" value={`$${wrappingTotal.toFixed(2)}`} />
+      )}
+      <Row
+        label="Express Delivery"
+        value={activeDeliveryFee === 0 ? "FREE" : `$${activeDeliveryFee.toFixed(2)}`}
+      />
+      {discount > 0 && (
+        <Row label={`Discount (${appliedPromo?.code})`} value={`-$${discount.toFixed(2)}`} valueColor={theme.colors.success} />
+      )}
+      <View style={[styles.divider, { backgroundColor: theme.colors.borderSubtle }]} />
+      <View style={styles.row}>
+        <WardaText variant="body" weight="extrabold">
+          Total Amount
+        </WardaText>
+        <WardaText variant="h2" color={theme.colors.brand}>
+          ${grandTotal.toFixed(2)}
+        </WardaText>
+      </View>
+    </WardaCard>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 20,
-    marginTop: 18,
-    backgroundColor: RainbowColors.pureWhite,
-    borderRadius: RainbowRadii.cards,
-    padding: 20,
-    shadowColor: "#5a5a7a",
-    shadowOpacity: 0.12,
-    shadowRadius: 18,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 6,
-  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
-  },
-  time: {
-    fontSize: 13,
-    color: RainbowColors.tangerine,
-    fontWeight: "600",
+    marginBottom: 12,
   },
   divider: {
     height: 1,
-    backgroundColor: RainbowColors.cloudSurface,
-    marginVertical: 14,
+    marginVertical: 12,
   },
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginVertical: 5,
-  },
-  label: {
-    fontSize: 14,
-    color: RainbowColors.stone,
-    fontWeight: "500",
-  },
-  value: {
-    fontSize: 14.5,
-    fontWeight: "700",
-    color: RainbowColors.inkBlack,
-  },
-  discount: {
-    fontSize: 14.5,
-    fontWeight: "700",
-    color: "#10B981",
-  },
-  totalText: {
-    fontSize: 17,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
-  },
-  totalPrice: {
-    fontSize: 22,
-    fontWeight: "900",
-    color: RainbowColors.tangerine,
+    alignItems: "center",
+    marginBottom: 8,
   },
 });

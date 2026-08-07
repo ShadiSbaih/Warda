@@ -1,6 +1,8 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 
 interface CategoryItemProps {
   category: {
@@ -17,6 +19,8 @@ export default function CategoryItem({
   isActive = false,
   onPress,
 }: CategoryItemProps) {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   return (
     <TouchableOpacity
       activeOpacity={0.85}
@@ -30,32 +34,32 @@ export default function CategoryItem({
           resizeMode="contain"
         />
       </View>
-      <Text
+      <WardaText
         style={[styles.name, isActive && styles.nameActive]}
         numberOfLines={1}
       >
         {category.name}
-      </Text>
+      </WardaText>
     </TouchableOpacity>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     alignItems: "center",
     marginRight: 14,
     paddingHorizontal: 8,
     paddingVertical: 10,
     borderRadius: 20,
-    backgroundColor: RainbowColors.pureWhite,
-    shadowColor: RainbowColors.tangerine,
+    backgroundColor: theme.colors.surface,
+    shadowColor: theme.colors.brand,
     shadowOpacity: 0.12,
     shadowRadius: 6,
     elevation: 2,
     minWidth: 80,
   },
   containerActive: {
-    backgroundColor: RainbowColors.tangerine,
+    backgroundColor: theme.colors.brand,
     shadowOpacity: 0.25,
     shadowRadius: 16,
     elevation: 6,
@@ -64,13 +68,13 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 26,
-    backgroundColor: RainbowColors.cloudSurface,
+    backgroundColor: theme.colors.background,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 6,
   },
   imageCircleActive: {
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
   },
   image: {
     width: 38,
@@ -83,7 +87,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   nameActive: {
-    color: RainbowColors.pureWhite,
+    color: theme.colors.textInverse,
     fontWeight: "800",
   },
 });

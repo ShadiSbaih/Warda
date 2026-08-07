@@ -1,33 +1,33 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+
+import { StyleSheet, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function LocationPin() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   return (
     <View style={styles.container} pointerEvents="none">
       <View style={styles.tooltip}>
-        <Text style={styles.tooltipText}>
+        <WardaText style={styles.tooltipText}>
           Your gift will be delivered here 🌸
-        </Text>
+        </WardaText>
         <View style={styles.tooltipArrow} />
       </View>
 
       <View style={styles.pinWrapper}>
         <View style={styles.pinGlow} />
         <View style={styles.pin}>
-          <Ionicons name="location-sharp" size={26} color={RainbowColors.pureWhite} />
+          <Ionicons name="location-sharp" size={26} color={theme.colors.surface} />
         </View>
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     position: "absolute",
     top: 0,
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     marginTop: -34,
   },
   tooltip: {
-    backgroundColor: RainbowColors.inkBlack,
+    backgroundColor: theme.colors.text,
     paddingHorizontal: 16,
     paddingVertical: 9,
     borderRadius: 16,
@@ -57,11 +57,11 @@ const styles = StyleSheet.create({
     bottom: -6,
     width: 12,
     height: 12,
-    backgroundColor: RainbowColors.inkBlack,
+    backgroundColor: theme.colors.text,
     transform: [{ rotate: "45deg" }],
   },
   tooltipText: {
-    color: RainbowColors.pureWhite,
+    color: theme.colors.textInverse,
     fontWeight: "700",
     fontSize: 13,
   },
@@ -80,12 +80,12 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 26,
-    backgroundColor: RainbowColors.tangerine,
+    backgroundColor: theme.colors.brand,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 3,
-    borderColor: RainbowColors.pureWhite,
-    shadowColor: RainbowColors.tangerine,
+    borderColor: theme.colors.surface,
+    shadowColor: theme.colors.brand,
     shadowOpacity: 0.45,
     shadowRadius: 18,
     shadowOffset: { width: 0, height: 6 },

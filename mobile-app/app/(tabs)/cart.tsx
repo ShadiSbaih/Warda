@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
+  ActivityIndicator,
   Alert,
   Image,
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
@@ -14,10 +13,14 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+
+import { useTheme } from "../../context/ThemeContext";
 import { useCart } from "../../context/CartContext";
+import { WardaButton, WardaCard, WardaIconButton, WardaText } from "../../components/ui";
 
 export default function CartScreen() {
   const router = useRouter();
+  const { theme } = useTheme();
   const {
     items,
     itemsCount,
@@ -42,9 +45,7 @@ export default function CartScreen() {
     if (!code.trim()) return;
     const res = await applyPromo(code);
     setPromoFeedback(res.message);
-    if (res.success) {
-      setPromoInput("");
-    }
+    if (res.success) setPromoInput("");
   };
 
   const confirmClearCart = () => {
@@ -54,303 +55,252 @@ export default function CartScreen() {
     ]);
   };
 
+  if (items.length === 0) {
+    return (
+      <>
+        <StatusBar barStyle="dark-content" backgroundColor={theme.colors.surface} />
+        <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.surface }]} edges={["top", "left", "right"]}>
+          <View style={styles.header}>
+            <WardaIconButton icon="arrow-left" onPress={() => router.back()} />
+            <WardaText variant="h2">Shopping Bag</WardaText>
+            <View style={{ width: 44 }} />
+          </View>
+          <View style={styles.emptyContainer}>
+            <View style={[styles.emptyIconCircle, { backgroundColor: theme.colors.background }]}>
+              <MaterialCommunityIcons name="gift-open-outline" size={64} color={theme.colors.brand} />
+            </View>
+            <WardaText variant="h2" style={{ marginBottom: 6 }}>
+              Your Bag is Empty
+            </WardaText>
+            <WardaText variant="body" color={theme.colors.textMuted} align="center" style={{ marginBottom: 28 }}>
+              Explore our curated flower bouquets and luxury gift collections to send love today.
+            </WardaText>
+            <WardaButton title="Discover Gifts" iconRight="arrow-right" onPress={() => router.push("/(tabs)/menu")} />
+          </View>
+        </SafeAreaView>
+      </>
+    );
+  }
+
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.pureWhite} />
-      <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
-        {/* Header */}
+      <StatusBar barStyle="dark-content" backgroundColor={theme.colors.surface} />
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.surface }]} edges={["top", "left", "right"]}>
         <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.backBtn}
-            onPress={() => router.back()}
-          >
-            <Feather name="arrow-left" size={20} color={RainbowColors.inkBlack} />
-          </TouchableOpacity>
-
-          <View style={styles.headerCenter}>
-            <Text style={styles.headerTitle}>Shopping Bag</Text>
-            <Text style={styles.headerSubtitle}>
+          <WardaIconButton icon="arrow-left" onPress={() => router.back()} />
+          <View style={{ alignItems: "center" }}>
+            <WardaText variant="h2">Shopping Bag</WardaText>
+            <WardaText variant="caption" color={theme.colors.textMuted}>
               {itemsCount} {itemsCount === 1 ? "item" : "items"}
-            </Text>
+            </WardaText>
           </View>
-
-          {items.length > 0 ? (
-            <TouchableOpacity
-              style={styles.clearBtn}
-              onPress={confirmClearCart}
-            >
-              <Feather name="trash-2" size={18} color="#E53935" />
-            </TouchableOpacity>
-          ) : (
-            <View style={{ width: 40 }} />
-          )}
+          <WardaIconButton icon="trash-2" onPress={confirmClearCart} />
         </View>
 
-        {items.length === 0 ? (
-          /* Empty State */
-          <View style={styles.emptyContainer}>
-            <View style={styles.emptyIconCircle}>
-              <MaterialCommunityIcons
-                name="gift-open-outline"
-                size={64}
-                color={RainbowColors.tangerine}
-              />
-            </View>
-            <Text style={styles.emptyTitle}>Your Bag is Empty</Text>
-            <Text style={styles.emptySubtitle}>
-              Explore our curated flower bouquets and luxury gift collections to send love today.
-            </Text>
-            <TouchableOpacity
-              style={styles.exploreBtn}
-              activeOpacity={0.85}
-              onPress={() => router.push("/(tabs)/menu")}
-            >
-              <Text style={styles.exploreBtnText}>Discover Gifts</Text>
-              <Feather name="arrow-right" size={18} color={RainbowColors.pureWhite} />
-            </TouchableOpacity>
-          </View>
-        ) : (
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scrollContent}
-          >
-            {/* Delivery address banner */}
-            <TouchableOpacity
-              style={styles.addressBanner}
-              activeOpacity={0.8}
-              onPress={() => router.push("/delivery-address")}
-            >
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => router.push("/delivery-address")}>
+            <WardaCard style={styles.addressBanner}>
               <View style={styles.addressLeft}>
-                <Ionicons name="location" size={20} color={RainbowColors.tangerine} />
+                <Ionicons name="location" size={20} color={theme.colors.brand} />
                 <View style={{ marginLeft: 10, flex: 1 }}>
-                  <Text style={styles.addressTitle}>Delivering to</Text>
-                  <Text style={styles.addressText} numberOfLines={1}>
+                  <WardaText variant="label">Delivering to</WardaText>
+                  <WardaText variant="body" weight="bold" numberOfLines={1}>
                     King Fahd Road, Al Olaya, Riyadh
-                  </Text>
+                  </WardaText>
                 </View>
               </View>
-              <Feather name="chevron-right" size={18} color={RainbowColors.stone} />
-            </TouchableOpacity>
+              <Feather name="chevron-right" size={18} color={theme.colors.textMuted} />
+            </WardaCard>
+          </TouchableOpacity>
 
-            {/* Cart Items List */}
-            <View style={styles.itemsList}>
-              {items.map((item) => (
-                <View key={item.id} style={styles.card}>
-                  <View style={styles.cardTop}>
-                    {/* Item Image */}
-                    <View style={styles.imageBox}>
-                      <Image
-                        source={item.image}
-                        style={styles.productImage}
-                        resizeMode="contain"
-                      />
+          <View style={styles.itemsList}>
+            {items.map((item) => (
+              <WardaCard key={item.id} padding="md" radius="lg" shadow="md" style={styles.itemCard}>
+                <View style={styles.cardTop}>
+                  <View style={[styles.imageBox, { backgroundColor: theme.colors.background }]}>
+                    <Image
+                      source={typeof item.image === "string" ? { uri: item.image } : item.image}
+                      style={styles.productImage}
+                      resizeMode="contain"
+                    />
+                  </View>
+                  <View style={styles.infoBox}>
+                    <View style={styles.titleRow}>
+                      <WardaText variant="body" weight="bold" numberOfLines={1} style={{ flex: 1, marginRight: 8 }}>
+                        {item.title}
+                      </WardaText>
+                      <TouchableOpacity onPress={() => removeFromCart(item.id)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+                        <Feather name="x" size={18} color={theme.colors.textMuted} />
+                      </TouchableOpacity>
                     </View>
-
-                    {/* Item Info */}
-                    <View style={styles.infoBox}>
-                      <View style={styles.titleRow}>
-                        <Text numberOfLines={1} style={styles.itemTitle}>
-                          {item.title}
-                        </Text>
-                        <TouchableOpacity
-                          onPress={() => removeFromCart(item.id)}
-                          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                        >
-                          <Feather name="x" size={18} color={RainbowColors.stone} />
-                        </TouchableOpacity>
+                    {item.wrappingColor && (
+                      <View style={[styles.wrappingBadge, { backgroundColor: theme.colors.background }]}>
+                        <View style={[styles.colorDot, { backgroundColor: item.wrappingColor }]} />
+                        <WardaText variant="caption">{item.wrappingName || "Silk Wrap"}</WardaText>
                       </View>
-
-                      {/* Wrapping badge */}
-                      {item.wrappingColor && (
-                        <View style={styles.wrappingBadge}>
-                          <View
-                            style={[
-                              styles.colorDot,
-                              { backgroundColor: item.wrappingColor },
-                            ]}
-                          />
-                          <Text style={styles.wrappingText}>
-                            {item.wrappingName || "Silk Wrap"}
-                          </Text>
-                        </View>
-                      )}
-
-                      {/* Recipient info if present */}
-                      {item.recipientName && (
-                        <Text style={styles.recipientTag} numberOfLines={1}>
-                          For: {item.recipientName}
-                        </Text>
-                      )}
-
-                      {/* Price & Quantity Controls */}
-                      <View style={styles.bottomRow}>
-                        <Text style={styles.price}>${item.price}</Text>
-
-                        <View style={styles.qtyContainer}>
-                          <TouchableOpacity
-                            style={styles.qtyBtn}
-                            onPress={() =>
-                              updateQuantity(item.id, item.quantity - 1)
-                            }
-                          >
-                            <Feather name="minus" size={14} color={RainbowColors.inkBlack} />
-                          </TouchableOpacity>
-                          <Text style={styles.qtyText}>{item.quantity}</Text>
-                          <TouchableOpacity
-                            style={styles.qtyBtn}
-                            onPress={() =>
-                              updateQuantity(item.id, item.quantity + 1)
-                            }
-                          >
-                            <Feather name="plus" size={14} color={RainbowColors.inkBlack} />
-                          </TouchableOpacity>
-                        </View>
+                    )}
+                    {item.recipientName && (
+                      <WardaText variant="caption" color={theme.colors.brand}>
+                        For: {item.recipientName}
+                      </WardaText>
+                    )}
+                    <View style={styles.bottomRow}>
+                      <WardaText variant="body" weight="extrabold" color={theme.colors.brand}>
+                        ${item.price}
+                      </WardaText>
+                      <View style={[styles.qtyContainer, { backgroundColor: theme.colors.background }]}>
+                        <TouchableOpacity
+                          style={[styles.qtyBtn, { backgroundColor: theme.colors.surface }]}
+                          onPress={() => updateQuantity(item.id, item.quantity - 1)}
+                        >
+                          <Feather name="minus" size={14} color={theme.colors.text} />
+                        </TouchableOpacity>
+                        <WardaText variant="body" weight="bold">
+                          {item.quantity}
+                        </WardaText>
+                        <TouchableOpacity
+                          style={[styles.qtyBtn, { backgroundColor: theme.colors.surface }]}
+                          onPress={() => updateQuantity(item.id, item.quantity + 1)}
+                        >
+                          <Feather name="plus" size={14} color={theme.colors.text} />
+                        </TouchableOpacity>
                       </View>
                     </View>
                   </View>
-
-                  {/* Gift message snippet if present */}
-                  {item.giftMessage && (
-                    <View style={styles.messageBox}>
-                      <Feather name="message-square" size={13} color={RainbowColors.hotPink} />
-                      <Text style={styles.messageText} numberOfLines={1}>
-                        "{item.giftMessage}"
-                      </Text>
-                    </View>
-                  )}
                 </View>
+                {item.giftMessage && (
+                  <View style={[styles.messageBox, { backgroundColor: theme.colors.background }]}>
+                    <Feather name="message-square" size={13} color={theme.colors.brand} />
+                    <WardaText variant="caption" style={{ flex: 1, fontStyle: "italic" }} numberOfLines={1}>
+                      "{item.giftMessage}"
+                    </WardaText>
+                  </View>
+                )}
+              </WardaCard>
+            ))}
+          </View>
+
+          <WardaCard style={styles.promoSection}>
+            <WardaText variant="h3" style={{ marginBottom: 10 }}>
+              Promo Voucher
+            </WardaText>
+            <View style={styles.promoInputRow}>
+              <View style={[styles.inputContainer, { backgroundColor: theme.colors.background }]}>
+                <Feather name="tag" size={18} color={theme.colors.textMuted} />
+                <TextInput
+                  placeholder="Enter promo code"
+                  placeholderTextColor={theme.colors.textPlaceholder}
+                  value={promoInput}
+                  onChangeText={setPromoInput}
+                  autoCapitalize="characters"
+                  style={[styles.promoInput, { color: theme.colors.text }]}
+                />
+              </View>
+              <WardaButton title="Apply" size="sm" onPress={() => handleApplyPromo()} />
+            </View>
+
+            <View style={styles.quickPromos}>
+              {["WARDA20", "WELCOME"].map((code) => (
+                <TouchableOpacity
+                  key={code}
+                  style={[styles.quickChip, { backgroundColor: theme.colors.background }]}
+                  onPress={() => handleApplyPromo(code)}
+                >
+                  <WardaText variant="caption" color={theme.colors.brand}>
+                    {code}
+                  </WardaText>
+                </TouchableOpacity>
               ))}
             </View>
 
-            {/* Voucher Promo Code */}
-            <View style={styles.promoSection}>
-              <Text style={styles.sectionHeader}>Promo Voucher</Text>
-              <View style={styles.promoInputRow}>
-                <View style={styles.inputContainer}>
-                  <Feather name="tag" size={18} color={RainbowColors.stone} />
-                  <TextInput
-                    placeholder="Enter promo code"
-                    placeholderTextColor="#A0A0A0"
-                    value={promoInput}
-                    onChangeText={setPromoInput}
-                    autoCapitalize="characters"
-                    style={styles.promoInput}
-                  />
+            {appliedPromo && (
+              <View style={[styles.appliedPromoBadge, { backgroundColor: theme.colors.successSurface, borderColor: theme.colors.success }]}>
+                <View style={styles.appliedPromoLeft}>
+                  <Feather name="check-circle" size={16} color={theme.colors.success} />
+                  <WardaText variant="caption" color={theme.colors.success}>
+                    Code <WardaText variant="caption" weight="bold">{appliedPromo.code}</WardaText> applied
+                  </WardaText>
                 </View>
-                <TouchableOpacity
-                  style={styles.applyBtn}
-                  onPress={() => handleApplyPromo()}
-                  activeOpacity={0.8}
-                >
-                  <Text style={styles.applyBtnText}>Apply</Text>
+                <TouchableOpacity onPress={removePromo}>
+                  <Feather name="x" size={16} color={theme.colors.textMuted} />
                 </TouchableOpacity>
               </View>
+            )}
+            {promoFeedback && !appliedPromo && (
+              <WardaText variant="caption" color={theme.colors.error} style={{ marginTop: 6 }}>
+                {promoFeedback}
+              </WardaText>
+            )}
+          </WardaCard>
 
-              {/* Quick Promo Chips */}
-              <View style={styles.quickPromos}>
-                <TouchableOpacity
-                  style={styles.quickChip}
-                  onPress={() => handleApplyPromo("WARDA20")}
-                >
-                  <Text style={styles.quickChipText}>✨ WARDA20 (20% OFF)</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.quickChip}
-                  onPress={() => handleApplyPromo("WELCOME")}
-                >
-                  <Text style={styles.quickChipText}>🎁 WELCOME ($15 OFF)</Text>
-                </TouchableOpacity>
-              </View>
-
-              {appliedPromo && (
-                <View style={styles.appliedPromoBadge}>
-                  <View style={styles.appliedPromoLeft}>
-                    <Feather name="check-circle" size={16} color="#10B981" />
-                    <Text style={styles.appliedPromoText}>
-                      Code <Text style={{ fontWeight: "700" }}>{appliedPromo.code}</Text> applied ({appliedPromo.description})
-                    </Text>
-                  </View>
-                  <TouchableOpacity onPress={removePromo}>
-                    <Feather name="x" size={16} color={RainbowColors.stone} />
-                  </TouchableOpacity>
-                </View>
-              )}
-
-              {promoFeedback && !appliedPromo && (
-                <Text style={styles.feedbackError}>{promoFeedback}</Text>
-              )}
+          <WardaCard style={styles.summaryCard}>
+            <WardaText variant="h3" style={{ marginBottom: 14 }}>
+              Price Summary
+            </WardaText>
+            <SummaryRow label="Subtotal" value={`$${subtotal.toFixed(2)}`} theme={theme} />
+            <SummaryRow label="Luxury Gift Packaging" value={`$${wrappingTotal.toFixed(2)}`} theme={theme} />
+            <SummaryRow
+              label="Delivery Fee"
+              value={deliveryFee === 0 ? "FREE" : `$${deliveryFee.toFixed(2)}`}
+              theme={theme}
+            />
+            {discount > 0 && (
+              <SummaryRow
+                label="Promo Discount"
+                value={`-$${discount.toFixed(2)}`}
+                theme={theme}
+                valueColor={theme.colors.success}
+              />
+            )}
+            <View style={[styles.summaryDivider, { backgroundColor: theme.colors.borderSubtle }]} />
+            <View style={styles.summaryRowTotal}>
+              <WardaText variant="body" weight="extrabold">
+                Total Amount
+              </WardaText>
+              <WardaText variant="h2" color={theme.colors.brand}>
+                ${total.toFixed(2)}
+              </WardaText>
             </View>
+          </WardaCard>
 
-            {/* Order Price Breakdown */}
-            <View style={styles.summaryCard}>
-              <Text style={styles.summaryTitle}>Price Summary</Text>
-
-              <View style={styles.summaryRow}>
-                <Text style={styles.summaryLabel}>Subtotal</Text>
-                <Text style={styles.summaryValue}>${subtotal.toFixed(2)}</Text>
-              </View>
-
-              <View style={styles.summaryRow}>
-                <Text style={styles.summaryLabel}>Luxury Gift Packaging</Text>
-                <Text style={styles.summaryValue}>
-                  ${wrappingTotal.toFixed(2)}
-                </Text>
-              </View>
-
-              <View style={styles.summaryRow}>
-                <Text style={styles.summaryLabel}>Delivery Fee</Text>
-                <Text style={styles.summaryValue}>
-                  {deliveryFee === 0 ? "FREE" : `$${deliveryFee.toFixed(2)}`}
-                </Text>
-              </View>
-
-              {discount > 0 && (
-                <View style={styles.summaryRow}>
-                  <Text style={[styles.summaryLabel, { color: "#10B981" }]}>
-                    Promo Discount
-                  </Text>
-                  <Text style={[styles.summaryValue, { color: "#10B981" }]}>
-                    -${discount.toFixed(2)}
-                  </Text>
-                </View>
-              )}
-
-              <View style={styles.summaryDivider} />
-
-              <View style={styles.summaryRowTotal}>
-                <Text style={styles.totalLabel}>Total Amount</Text>
-                <Text style={styles.totalValue}>${total.toFixed(2)}</Text>
-              </View>
-            </View>
-
-            {/* Checkout Action Button */}
-            <TouchableOpacity
-              style={styles.checkoutBtn}
-              activeOpacity={0.9}
-              onPress={() => router.push("/checkout")}
-            >
-              <View>
-                <Text style={styles.checkoutBtnSub}>
-                  {itemsCount} {itemsCount === 1 ? "Item" : "Items"} · Express Delivery
-                </Text>
-                <Text style={styles.checkoutBtnTitle}>Proceed to Checkout</Text>
-              </View>
-              <View style={styles.checkoutBtnRight}>
-                <Text style={styles.checkoutBtnPrice}>${total.toFixed(2)}</Text>
-                <Feather name="arrow-right" size={20} color={RainbowColors.pureWhite} />
-              </View>
-            </TouchableOpacity>
-          </ScrollView>
-        )}
+          <WardaButton
+            title="Proceed to Checkout"
+            subtitle={`${itemsCount} ${itemsCount === 1 ? "Item" : "Items"} · Express Delivery`}
+            iconRight="arrow-right"
+            onPress={() => router.push("/checkout")}
+          />
+        </ScrollView>
       </SafeAreaView>
     </>
+  );
+}
+
+function SummaryRow({
+  label,
+  value,
+  theme,
+  valueColor,
+}: {
+  label: string;
+  value: string;
+  theme: any;
+  valueColor?: string;
+}) {
+  return (
+    <View style={styles.summaryRow}>
+      <WardaText variant="body" color={theme.colors.textMuted}>
+        {label}
+      </WardaText>
+      <WardaText variant="body" weight="bold" color={valueColor || theme.colors.text}>
+        {value}
+      </WardaText>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: RainbowColors.pureWhite,
   },
   header: {
     flexDirection: "row",
@@ -358,88 +308,41 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingVertical: 12,
-    backgroundColor: RainbowColors.pureWhite,
   },
-  backBtn: {
-    width: 42,
-    height: 42,
-    borderRadius: 21,
-    backgroundColor: RainbowColors.pureWhite,
+  emptyContainer: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: RainbowColors.inkBlack,
-    shadowOpacity: 0.05,
-    shadowRadius: 6,
-    elevation: 2,
+    paddingHorizontal: 36,
+    paddingBottom: 60,
   },
-  headerCenter: {
-    alignItems: "center",
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
-  },
-  headerSubtitle: {
-    fontSize: 13,
-    color: RainbowColors.stone,
-    marginTop: 2,
-  },
-  clearBtn: {
-    width: 42,
-    height: 42,
-    borderRadius: 21,
-    backgroundColor: "#FFF0F0",
+  emptyIconCircle: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: 20,
   },
   scrollContent: {
     paddingHorizontal: 20,
-    paddingBottom: 130,
+    paddingBottom: 40,
     paddingTop: 8,
   },
   addressBanner: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    backgroundColor: RainbowColors.pureWhite,
-    borderRadius: RainbowRadii.cards,
-    padding: 14,
     marginBottom: 16,
-    shadowColor: RainbowColors.inkBlack,
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 2,
   },
   addressLeft: {
     flexDirection: "row",
     alignItems: "center",
     flex: 1,
   },
-  addressTitle: {
-    fontSize: 12,
-    color: RainbowColors.stone,
-    fontWeight: "500",
-  },
-  addressText: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: RainbowColors.inkBlack,
-    marginTop: 2,
-  },
   itemsList: {
     gap: 14,
     marginBottom: 20,
   },
-  card: {
-    backgroundColor: RainbowColors.pureWhite,
-    borderRadius: RainbowRadii.cards,
-    padding: 14,
-    shadowColor: RainbowColors.inkBlack,
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 3,
+  itemCard: {
+    marginBottom: 0,
   },
   cardTop: {
     flexDirection: "row",
@@ -448,7 +351,6 @@ const styles = StyleSheet.create({
     width: 90,
     height: 90,
     borderRadius: 16,
-    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -466,19 +368,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "flex-start",
   },
-  itemTitle: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: RainbowColors.inkBlack,
-    flex: 1,
-    marginRight: 8,
-  },
   wrappingBadge: {
     flexDirection: "row",
     alignItems: "center",
     alignSelf: "flex-start",
-    backgroundColor: RainbowColors.cloudSurface,
-    borderRadius: RainbowRadii.pills,
+    borderRadius: 100,
     paddingHorizontal: 8,
     paddingVertical: 3,
     marginTop: 4,
@@ -489,33 +383,16 @@ const styles = StyleSheet.create({
     height: 8,
     borderRadius: 4,
   },
-  wrappingText: {
-    fontSize: 11.5,
-    color: RainbowColors.stone,
-    fontWeight: "600",
-  },
-  recipientTag: {
-    fontSize: 12,
-    color: RainbowColors.tangerine,
-    fontWeight: "600",
-    marginTop: 2,
-  },
   bottomRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginTop: 8,
   },
-  price: {
-    fontSize: 18,
-    fontWeight: "800",
-    color: RainbowColors.tangerine,
-  },
   qtyContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: RainbowColors.cloudSurface,
-    borderRadius: RainbowRadii.pills,
+    borderRadius: 100,
     paddingHorizontal: 6,
     paddingVertical: 3,
     gap: 8,
@@ -523,55 +400,21 @@ const styles = StyleSheet.create({
   qtyBtn: {
     width: 26,
     height: 26,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: 13,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: RainbowColors.inkBlack,
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
-    elevation: 1,
-  },
-  qtyText: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: RainbowColors.inkBlack,
-    minWidth: 16,
-    textAlign: "center",
   },
   messageBox: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: RainbowColors.cloudSurface,
     borderRadius: 12,
     paddingHorizontal: 10,
     paddingVertical: 6,
     marginTop: 10,
     gap: 6,
-    borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
-  },
-  messageText: {
-    fontSize: 12,
-    color: RainbowColors.hotPink,
-    fontStyle: "italic",
-    flex: 1,
   },
   promoSection: {
-    backgroundColor: RainbowColors.pureWhite,
-    borderRadius: RainbowRadii.cards,
-    padding: 16,
     marginBottom: 20,
-    shadowColor: RainbowColors.inkBlack,
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 2,
-  },
-  sectionHeader: {
-    fontSize: 15,
-    fontWeight: "700",
-    color: RainbowColors.inkBlack,
-    marginBottom: 10,
   },
   promoInputRow: {
     flexDirection: "row",
@@ -581,31 +424,15 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: RainbowColors.cloudSurface,
     borderRadius: 14,
     paddingHorizontal: 14,
     height: 48,
-    borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
     gap: 10,
   },
   promoInput: {
     flex: 1,
     fontSize: 14,
     fontWeight: "600",
-    color: RainbowColors.inkBlack,
-  },
-  applyBtn: {
-    backgroundColor: RainbowColors.tangerine,
-    borderRadius: RainbowRadii.pills,
-    paddingHorizontal: 20,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  applyBtnText: {
-    color: RainbowColors.pureWhite,
-    fontSize: 14,
-    fontWeight: "700",
   },
   quickPromos: {
     flexDirection: "row",
@@ -614,29 +441,19 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
   },
   quickChip: {
-    backgroundColor: RainbowColors.cloudSurface,
-    borderRadius: RainbowRadii.pills,
+    borderRadius: 100,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
-  },
-  quickChipText: {
-    fontSize: 11.5,
-    fontWeight: "600",
-    color: RainbowColors.tangerine,
   },
   appliedPromoBadge: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#ECFDF5",
     borderRadius: 12,
     paddingHorizontal: 12,
     paddingVertical: 8,
     marginTop: 10,
     borderWidth: 1,
-    borderColor: "#A7F3D0",
   },
   appliedPromoLeft: {
     flexDirection: "row",
@@ -644,30 +461,8 @@ const styles = StyleSheet.create({
     gap: 6,
     flex: 1,
   },
-  appliedPromoText: {
-    fontSize: 12.5,
-    color: "#065F46",
-  },
-  feedbackError: {
-    color: "#E53935",
-    fontSize: 12,
-    marginTop: 6,
-  },
   summaryCard: {
-    backgroundColor: RainbowColors.pureWhite,
-    borderRadius: RainbowRadii.cards,
-    padding: 18,
     marginBottom: 20,
-    shadowColor: RainbowColors.inkBlack,
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 2,
-  },
-  summaryTitle: {
-    fontSize: 17,
-    fontWeight: "700",
-    color: RainbowColors.inkBlack,
-    marginBottom: 14,
   },
   summaryRow: {
     flexDirection: "row",
@@ -675,115 +470,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
   },
-  summaryLabel: {
-    fontSize: 14,
-    color: RainbowColors.stone,
-  },
-  summaryValue: {
-    fontSize: 14.5,
-    fontWeight: "600",
-    color: RainbowColors.inkBlack,
-  },
   summaryDivider: {
     height: 1,
-    backgroundColor: RainbowColors.cloudSurface,
     marginVertical: 12,
   },
   summaryRowTotal: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-  },
-  totalLabel: {
-    fontSize: 17,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
-  },
-  totalValue: {
-    fontSize: 22,
-    fontWeight: "800",
-    color: RainbowColors.tangerine,
-  },
-  checkoutBtn: {
-    backgroundColor: RainbowColors.tangerine,
-    borderRadius: RainbowRadii.pills,
-    paddingHorizontal: 22,
-    paddingVertical: 16,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.35,
-    shadowRadius: 12,
-    shadowOffset: { width: 0, height: 6 },
-    elevation: 8,
-  },
-  checkoutBtnSub: {
-    color: "rgba(255, 255, 255, 0.8)",
-    fontSize: 12,
-    fontWeight: "500",
-  },
-  checkoutBtnTitle: {
-    color: RainbowColors.pureWhite,
-    fontSize: 17,
-    fontWeight: "800",
-    marginTop: 2,
-  },
-  checkoutBtnRight: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  checkoutBtnPrice: {
-    color: RainbowColors.pureWhite,
-    fontSize: 18,
-    fontWeight: "800",
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 36,
-    paddingBottom: 60,
-  },
-  emptyIconCircle: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: RainbowColors.cloudSurface,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  emptyTitle: {
-    fontSize: 24,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
-    marginBottom: 8,
-  },
-  emptySubtitle: {
-    fontSize: 15,
-    color: RainbowColors.stone,
-    textAlign: "center",
-    lineHeight: 22,
-    marginBottom: 28,
-  },
-  exploreBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: RainbowColors.tangerine,
-    paddingHorizontal: 28,
-    paddingVertical: 15,
-    borderRadius: RainbowRadii.pills,
-    gap: 10,
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    elevation: 5,
-  },
-  exploreBtnText: {
-    color: RainbowColors.pureWhite,
-    fontSize: 16,
-    fontWeight: "700",
   },
 });

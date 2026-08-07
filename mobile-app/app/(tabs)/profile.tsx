@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   Alert,
   Modal,
@@ -11,8 +10,11 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+
+import { useTheme } from "../../context/ThemeContext";
+import { WardaIconButton, WardaText } from "../../components/ui";
 
 import UserCard from "../../components/profile/UserCard";
 import StatsCard from "../../components/profile/StatsCard";
@@ -24,7 +26,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useOrders } from "../../context/OrdersContext";
 import { useReminders } from "../../context/RemindersContext";
 import { useCart } from "../../context/CartContext";
-import { useFavorites } from "@/context/FavoritesContext";
+import { useFavorites } from "../../context/FavoritesContext";
 
 const VOUCHERS = [
   { code: "WARDA20", discount: "20% OFF", desc: "Valid on all rose bouquets & chocolate boxes" },
@@ -35,6 +37,7 @@ const VOUCHERS = [
 
 export default function ProfileScreen() {
   const router = useRouter();
+  const { theme } = useTheme();
   const { user, logout, loginDemoUser } = useAuth();
   const { orders } = useOrders();
   const { favoritesCount } = useFavorites();
@@ -73,31 +76,20 @@ export default function ProfileScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.pureWhite} />
-      <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
-        {/* Header */}
+      <StatusBar barStyle="dark-content" backgroundColor={theme.colors.surface} />
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={["top", "left", "right"]}>
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>My Profile</Text>
-          <TouchableOpacity
-            style={styles.settingsBtn}
-            onPress={() => router.push("/notifications")}
-          >
-            <Feather name="bell" size={20} color={RainbowColors.inkBlack} />
-          </TouchableOpacity>
+          <WardaText variant="h1">My Profile</WardaText>
+          <WardaIconButton icon="bell" onPress={() => router.push("/notifications")} />
         </View>
 
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContent}
-        >
-          {/* User Card */}
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
           <UserCard
             name={user?.name || "Sarah Al-Ghamdi"}
             email={user?.email || "sarah@warda.app"}
             onEditPress={() => router.push("/edit-profile")}
           />
 
-          {/* Stats Bar */}
           <StatsCard
             ordersCount={orders.length}
             favoritesCount={favoritesCount}
@@ -109,14 +101,13 @@ export default function ProfileScreen() {
             onVouchersPress={() => setVouchersModalVisible(true)}
           />
 
-          {/* Activity Section */}
           <MenuSection title="My Activity">
             <MenuItem
               icon="package"
               title="My Orders"
               subtitle="Track active & past gift orders"
               badge={orders.filter((o) => o.status === "on_the_way").length > 0 ? "Active" : undefined}
-              badgeColor="#10B981"
+              badgeVariant="success"
               onPress={() => router.push("/(tabs)/orders")}
             />
             <MenuItem
@@ -124,9 +115,9 @@ export default function ProfileScreen() {
               title="Saved Wishlist"
               subtitle="View your favorite flower arrangements"
               badge={`${favoritesCount}`}
-              badgeColor={RainbowColors.tangerine}
-              iconColor="#EF4444"
-              iconBgColor="#FEF2F2"
+              badgeVariant="error"
+              iconColor={theme.colors.love}
+              iconBgColor={theme.colors.errorSurface}
               onPress={() => router.push("/(tabs)/favorites")}
             />
             <MenuItem
@@ -134,9 +125,9 @@ export default function ProfileScreen() {
               title="Occasion Reminders"
               subtitle="Birthdays, anniversaries & milestones"
               badge={`${reminders.length}`}
-              badgeColor="#3B82F6"
-              iconColor="#3B82F6"
-              iconBgColor="#EFF6FF"
+              badgeVariant="info"
+              iconColor={theme.colors.info}
+              iconBgColor={theme.colors.infoSurface}
               onPress={() => router.push("/reminders")}
             />
             <MenuItem
@@ -144,31 +135,36 @@ export default function ProfileScreen() {
               title="Promo Vouchers"
               subtitle="Special discounts & gift vouchers"
               badge="4 Active"
-              badgeColor="#10B981"
-              iconColor="#10B981"
-              iconBgColor="#ECFDF5"
+              badgeVariant="success"
+              iconColor={theme.colors.success}
+              iconBgColor={theme.colors.successSurface}
               onPress={() => setVouchersModalVisible(true)}
             />
           </MenuSection>
 
-          {/* Preferences Section */}
           <MenuSection title="Preferences & Account">
             <MenuItem
               icon="map-pin"
               title="Delivery Addresses"
               subtitle="Home, Office & Recipient addresses"
+              iconColor={theme.colors.brand}
+              iconBgColor={theme.colors.brandLight}
               onPress={() => router.push("/delivery-address")}
             />
             <MenuItem
               icon="credit-card"
               title="Payment Methods"
               subtitle="Apple Pay, Saved Cards, Mada"
+              iconColor={theme.colors.warning}
+              iconBgColor={theme.colors.warningSurface}
               onPress={() => router.push("/payment")}
             />
             <MenuItem
               icon="globe"
               title="Language & Currency"
               subtitle="English · SAR (Saudi Riyal)"
+              iconColor={theme.colors.info}
+              iconBgColor={theme.colors.infoSurface}
               onPress={() =>
                 Alert.alert(
                   "Language & Currency",
@@ -178,7 +174,6 @@ export default function ProfileScreen() {
             />
           </MenuSection>
 
-          {/* Help & Support */}
           <HelpCard
             onContactSupport={() => router.push("/chat")}
             onFAQPress={() =>
@@ -189,14 +184,13 @@ export default function ProfileScreen() {
             }
           />
 
-          {/* Account Actions */}
           <MenuSection title="Account Actions">
             <MenuItem
               icon="refresh-cw"
               title="Quick Switch Demo Account"
               subtitle="Reset session as VIP customer"
-              iconColor="#8B5CF6"
-              iconBgColor="#F3E8FF"
+              iconColor={theme.colors.info}
+              iconBgColor={theme.colors.infoSurface}
               onPress={async () => {
                 await loginDemoUser();
                 Alert.alert("Demo Account Ready", "Logged in as Sarah (VIP Customer)");
@@ -205,57 +199,92 @@ export default function ProfileScreen() {
             <MenuItem
               icon="log-out"
               title="Sign Out"
-              isDestructive={true}
+              isDestructive
               onPress={handleLogout}
             />
           </MenuSection>
+
+          <WardaText variant="caption" align="center" color={theme.colors.textMuted} style={styles.version}>
+            Warda Luxury Gifts v1.0
+          </WardaText>
         </ScrollView>
 
-        {/* Vouchers Modal */}
         <Modal
           visible={vouchersModalVisible}
           animationType="slide"
-          transparent={true}
+          transparent
           onRequestClose={() => setVouchersModalVisible(false)}
         >
-          <View style={styles.modalOverlay}>
-            <View style={styles.modalContent}>
+          <TouchableOpacity
+            activeOpacity={1}
+            style={styles.modalOverlay}
+            onPress={() => setVouchersModalVisible(false)}
+          >
+            <View
+              style={[
+                styles.modalContent,
+                {
+                  backgroundColor: theme.colors.surface,
+                  borderTopLeftRadius: theme.radii.xl,
+                  borderTopRightRadius: theme.radii.xl,
+                },
+              ]}
+              onStartShouldSetResponder={() => true}
+            >
               <View style={styles.modalHeader}>
                 <View>
-                  <Text style={styles.modalTitle}>Available Vouchers</Text>
-                  <Text style={styles.modalSubtitle}>Tap any voucher to apply to your bag</Text>
+                  <WardaText variant="h2">Available Vouchers</WardaText>
+                  <WardaText variant="caption" color={theme.colors.textMuted}>
+                    Tap any voucher to apply to your bag
+                  </WardaText>
                 </View>
-                <TouchableOpacity
-                  style={styles.modalCloseBtn}
-                  onPress={() => setVouchersModalVisible(false)}
-                >
-                  <Feather name="x" size={20} color={RainbowColors.inkBlack} />
-                </TouchableOpacity>
+                <WardaIconButton icon="x" size="md" onPress={() => setVouchersModalVisible(false)} />
               </View>
 
               <View style={styles.vouchersList}>
                 {VOUCHERS.map((v) => (
                   <TouchableOpacity
                     key={v.code}
-                    style={[
-                      styles.voucherCard,
-                      copiedCode === v.code && styles.voucherCardActive,
-                    ]}
                     activeOpacity={0.85}
                     onPress={() => handleApplyVoucher(v.code)}
+                    style={[
+                      styles.voucherCard,
+                      { backgroundColor: theme.colors.background, borderColor: theme.colors.borderSubtle },
+                      copiedCode === v.code && {
+                        backgroundColor: theme.colors.successSurface,
+                        borderColor: theme.colors.success,
+                      },
+                    ]}
                   >
                     <View style={styles.voucherLeft}>
-                      <View style={styles.voucherBadge}>
-                        <Text style={styles.voucherDiscount}>{v.discount}</Text>
+                      <View style={[styles.voucherBadge, { backgroundColor: theme.colors.brand }]}>
+                        <Text style={[styles.voucherDiscount, { color: theme.colors.textInverse }]}>{v.discount}</Text>
                       </View>
                       <View style={{ flex: 1, marginLeft: 12 }}>
-                        <Text style={styles.voucherCode}>{v.code}</Text>
-                        <Text style={styles.voucherDesc}>{v.desc}</Text>
+                        <WardaText variant="body" weight="bold">
+                          {v.code}
+                        </WardaText>
+                        <WardaText variant="caption" color={theme.colors.textMuted}>
+                          {v.desc}
+                        </WardaText>
                       </View>
                     </View>
 
-                    <View style={styles.voucherApplyBtn}>
-                      <Text style={styles.voucherApplyText}>
+                    <View
+                      style={[
+                        styles.voucherApplyBtn,
+                        {
+                          backgroundColor: copiedCode === v.code ? theme.colors.success : theme.colors.surface,
+                          borderColor: copiedCode === v.code ? theme.colors.success : theme.colors.brand,
+                        },
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          styles.voucherApplyText,
+                          { color: copiedCode === v.code ? theme.colors.textInverse : theme.colors.brand },
+                        ]}
+                      >
                         {copiedCode === v.code ? "Applied!" : "Apply"}
                       </Text>
                     </View>
@@ -263,7 +292,7 @@ export default function ProfileScreen() {
                 ))}
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         </Modal>
       </SafeAreaView>
     </>
@@ -273,7 +302,6 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: RainbowColors.pureWhite,
   },
   header: {
     flexDirection: "row",
@@ -282,38 +310,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 12,
   },
-  headerTitle: {
-    fontSize: 28,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
-    letterSpacing: -0.5,
-  },
-  settingsBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: RainbowColors.pureWhite,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: RainbowColors.inkBlack,
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.05,
-    shadowRadius: 6,
-    elevation: 3,
-  },
   scrollContent: {
-    paddingBottom: 130,
+    paddingBottom: 40,
+  },
+  version: {
+    marginTop: 16,
+    marginBottom: 28,
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    backgroundColor: "rgba(0, 0, 0, 0.45)",
     justifyContent: "flex-end",
   },
   modalContent: {
     width: "100%",
-    backgroundColor: RainbowColors.pureWhite,
-    borderTopLeftRadius: 32,
-    borderTopRightRadius: 32,
     padding: 24,
     paddingBottom: 40,
     maxHeight: "80%",
@@ -324,47 +334,15 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     marginBottom: 20,
   },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
-  },
-  modalSubtitle: {
-    fontSize: 13,
-    color: RainbowColors.stone,
-    marginTop: 3,
-  },
-  version: {
-    textAlign: "center",
-    fontSize: 13,
-    color: RainbowColors.stone,
-    marginTop: 20,
-    marginBottom: 40,
-  },
-  modalCloseBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: RainbowColors.cloudSurface,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   vouchersList: {
-    gap: 12,
+    gap: 10,
   },
   voucherCard: {
-    backgroundColor: RainbowColors.cloudSurface,
     borderRadius: 20,
     padding: 16,
-    marginBottom: 12,
     borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
     flexDirection: "row",
     alignItems: "center",
-  },
-  voucherCardActive: {
-    borderColor: "#10B981",
-    backgroundColor: "#ECFDF5",
   },
   voucherLeft: {
     flexDirection: "row",
@@ -372,38 +350,23 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   voucherBadge: {
-    backgroundColor: RainbowColors.tangerine,
     paddingHorizontal: 10,
     paddingVertical: 6,
-    borderRadius: RainbowRadii.pills,
+    borderRadius: 100,
   },
   voucherDiscount: {
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: "800",
-    color: RainbowColors.pureWhite,
-  },
-  voucherCode: {
-    fontSize: 15,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
-  },
-  voucherDesc: {
-    fontSize: 12.5,
-    color: RainbowColors.stone,
-    lineHeight: 18,
   },
   voucherApplyBtn: {
-    backgroundColor: RainbowColors.pureWhite,
     paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: RainbowRadii.pills,
+    borderRadius: 100,
     borderWidth: 1,
-    borderColor: RainbowColors.tangerine,
     marginLeft: 8,
   },
   voucherApplyText: {
-    color: RainbowColors.tangerine,
-    fontWeight: "700",
     fontSize: 13,
+    fontWeight: "700",
   },
 });

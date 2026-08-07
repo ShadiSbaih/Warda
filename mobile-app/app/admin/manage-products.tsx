@@ -1,21 +1,14 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaIconButton, WardaText } from "@/components/ui";
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Image,
-  ActivityIndicator,
-  Alert,
-} from "react-native";
+import { View, StyleSheet, FlatList, Image, ActivityIndicator, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { RainbowColors } from "../../constants/Colors";
-import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { productsAPI } from "../../services/api";
 
 export default function ManageProductsScreen() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const router = useRouter();
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -64,32 +57,29 @@ export default function ManageProductsScreen() {
     <View style={styles.productCard}>
       <Image source={{ uri: item.image }} style={styles.productImage} />
       <View style={styles.productInfo}>
-        <Text style={styles.productName} numberOfLines={1}>{item.name}</Text>
-        <Text style={styles.productPrice}>SR {item.price}</Text>
-        <Text style={styles.productCategory}>{item.category}</Text>
+        <WardaText style={styles.productName} numberOfLines={1}>{item.name}</WardaText>
+        <WardaText style={styles.productPrice}>SR {item.price}</WardaText>
+        <WardaText style={styles.productCategory}>{item.category}</WardaText>
       </View>
-      <TouchableOpacity
-        style={styles.deleteBtn}
+      <WardaIconButton
+        icon="trash-2"
+        variant="danger"
         onPress={() => handleDelete(item._id, item.name)}
-      >
-        <Feather name="trash-2" size={20} color="#D32F2F" />
-      </TouchableOpacity>
+      />
     </View>
   );
 
   return (
     <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
-          <Feather name="arrow-left" size={22} color={RainbowColors.inkBlack} />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Manage Products</Text>
+        <WardaIconButton icon="arrow-left" onPress={() => router.back()} variant="ghost" />
+        <WardaText style={styles.headerTitle}>Manage Products</WardaText>
         <View style={{ width: 44 }} />
       </View>
 
       {loading ? (
         <View style={styles.center}>
-          <ActivityIndicator size="large" color={RainbowColors.tangerine} />
+          <ActivityIndicator size="large" color={theme.colors.brand} />
         </View>
       ) : (
         <FlatList
@@ -98,25 +88,26 @@ export default function ManageProductsScreen() {
           renderItem={renderItem}
           contentContainerStyle={styles.list}
           ListEmptyComponent={
-            <Text style={styles.emptyText}>No products found.</Text>
+            <WardaText style={styles.emptyText}>No products found.</WardaText>
           }
         />
       )}
 
-      <TouchableOpacity
-        style={styles.fab}
+      <WardaIconButton
+        icon="plus"
+        variant="primary"
+        size="lg"
         onPress={() => router.push("/admin/add-product")}
-      >
-        <Feather name="plus" size={24} color={RainbowColors.pureWhite} />
-      </TouchableOpacity>
+        style={{ position: "absolute", bottom: 30, right: 20 }}
+      />
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: RainbowColors.cloudSurface,
+    backgroundColor: theme.colors.background,
   },
   header: {
     flexDirection: "row",
@@ -124,22 +115,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingVertical: 12,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
     borderBottomWidth: 1,
     borderBottomColor: "rgba(0,0,0,0.05)",
-  },
-  backBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: "rgba(0,0,0,0.04)",
-    justifyContent: "center",
-    alignItems: "center",
   },
   headerTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
   list: {
     padding: 20,
@@ -148,7 +131,7 @@ const styles = StyleSheet.create({
   productCard: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
     padding: 12,
     borderRadius: 16,
     borderWidth: 1,
@@ -167,25 +150,19 @@ const styles = StyleSheet.create({
   productName: {
     fontSize: 15,
     fontWeight: "700",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
     marginBottom: 4,
   },
   productPrice: {
     fontSize: 14,
     fontWeight: "700",
-    color: RainbowColors.tangerine,
+    color: theme.colors.brand,
     marginBottom: 2,
   },
   productCategory: {
     fontSize: 12,
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
     opacity: 0.5,
-  },
-  deleteBtn: {
-    width: 44,
-    height: 44,
-    justifyContent: "center",
-    alignItems: "center",
   },
   center: {
     flex: 1,
@@ -195,23 +172,7 @@ const styles = StyleSheet.create({
   emptyText: {
     textAlign: "center",
     marginTop: 40,
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
     opacity: 0.5,
-  },
-  fab: {
-    position: "absolute",
-    bottom: 30,
-    right: 20,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: RainbowColors.tangerine,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.4,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 6,
   },
 });

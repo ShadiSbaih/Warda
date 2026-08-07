@@ -1,12 +1,15 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, StatusBar, ScrollView, ActivityIndicator } from "react-native";
+import { View, StyleSheet, TouchableOpacity, StatusBar, ScrollView, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { RainbowColors } from "../../constants/Colors";
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { adminAPI } from "../../services/api";
 
 export default function AdminDashboardScreen() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const router = useRouter();
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -30,19 +33,19 @@ export default function AdminDashboardScreen() {
 
   return (
     <>
-      <StatusBar backgroundColor={RainbowColors.pureWhite} barStyle="dark-content" />
+      <StatusBar backgroundColor={theme.colors.surface} barStyle="dark-content" />
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Admin Dashboard</Text>
+          <WardaText style={styles.headerTitle}>Admin Dashboard</WardaText>
         </View>
 
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
           {/* Analytics Section */}
-          <Text style={styles.sectionTitle}>Overview</Text>
+          <WardaText style={styles.sectionTitle}>Overview</WardaText>
           
           {loading ? (
             <View style={styles.loadingBox}>
-              <ActivityIndicator color={RainbowColors.tangerine} />
+              <ActivityIndicator color={theme.colors.brand} />
             </View>
           ) : (
             <View style={styles.statsGrid}>
@@ -50,37 +53,37 @@ export default function AdminDashboardScreen() {
                 <View style={[styles.statIconBox, { backgroundColor: "rgba(16, 185, 129, 0.1)" }]}>
                   <Feather name="dollar-sign" size={20} color="#10B981" />
                 </View>
-                <Text style={styles.statValue}>${stats?.revenue?.toFixed(2) || "0.00"}</Text>
-                <Text style={styles.statLabel}>Total Revenue</Text>
+                <WardaText style={styles.statValue}>${stats?.revenue?.toFixed(2) || "0.00"}</WardaText>
+                <WardaText style={styles.statLabel}>Total Revenue</WardaText>
               </View>
               
               <View style={styles.statCard}>
                 <View style={[styles.statIconBox, { backgroundColor: "rgba(59, 130, 246, 0.1)" }]}>
                   <Feather name="users" size={20} color="#3B82F6" />
                 </View>
-                <Text style={styles.statValue}>{stats?.users || 0}</Text>
-                <Text style={styles.statLabel}>Users</Text>
+                <WardaText style={styles.statValue}>{stats?.users || 0}</WardaText>
+                <WardaText style={styles.statLabel}>Users</WardaText>
               </View>
 
               <View style={styles.statCard}>
                 <View style={[styles.statIconBox, { backgroundColor: "rgba(245, 158, 11, 0.1)" }]}>
                   <Feather name="shopping-bag" size={20} color="#F59E0B" />
                 </View>
-                <Text style={styles.statValue}>{stats?.orders || 0}</Text>
-                <Text style={styles.statLabel}>Orders</Text>
+                <WardaText style={styles.statValue}>{stats?.orders || 0}</WardaText>
+                <WardaText style={styles.statLabel}>Orders</WardaText>
               </View>
 
               <View style={styles.statCard}>
                 <View style={[styles.statIconBox, { backgroundColor: "rgba(139, 92, 246, 0.1)" }]}>
                   <Feather name="box" size={20} color="#8B5CF6" />
                 </View>
-                <Text style={styles.statValue}>{stats?.products || 0}</Text>
-                <Text style={styles.statLabel}>Products</Text>
+                <WardaText style={styles.statValue}>{stats?.products || 0}</WardaText>
+                <WardaText style={styles.statLabel}>Products</WardaText>
               </View>
             </View>
           )}
 
-          <Text style={[styles.sectionTitle, { marginTop: 24 }]}>Management</Text>
+          <WardaText style={[styles.sectionTitle, { marginTop: 24 }]}>Management</WardaText>
           
           <TouchableOpacity 
             style={styles.card}
@@ -88,13 +91,13 @@ export default function AdminDashboardScreen() {
             activeOpacity={0.8}
           >
             <View style={styles.cardIcon}>
-              <Feather name="box" size={24} color={RainbowColors.tangerine} />
+              <Feather name="box" size={24} color={theme.colors.brand} />
             </View>
             <View style={styles.cardTextContainer}>
-              <Text style={styles.cardTitle}>Manage Products</Text>
-              <Text style={styles.cardSubtitle}>Add or remove products from the catalog</Text>
+              <WardaText style={styles.cardTitle}>Manage Products</WardaText>
+              <WardaText style={styles.cardSubtitle}>Add or remove products from the catalog</WardaText>
             </View>
-            <Feather name="chevron-right" size={20} color={RainbowColors.inkBlack} style={{ opacity: 0.3 }} />
+            <Feather name="chevron-right" size={20} color={theme.colors.text} style={{ opacity: 0.3 }} />
           </TouchableOpacity>
 
           <TouchableOpacity 
@@ -106,10 +109,10 @@ export default function AdminDashboardScreen() {
               <Feather name="grid" size={24} color="#8B5CF6" />
             </View>
             <View style={styles.cardTextContainer}>
-              <Text style={styles.cardTitle}>Manage Categories</Text>
-              <Text style={styles.cardSubtitle}>Edit app categories and collections</Text>
+              <WardaText style={styles.cardTitle}>Manage Categories</WardaText>
+              <WardaText style={styles.cardSubtitle}>Edit app categories and collections</WardaText>
             </View>
-            <Feather name="chevron-right" size={20} color={RainbowColors.inkBlack} style={{ opacity: 0.3 }} />
+            <Feather name="chevron-right" size={20} color={theme.colors.text} style={{ opacity: 0.3 }} />
           </TouchableOpacity>
 
           <TouchableOpacity 
@@ -121,10 +124,10 @@ export default function AdminDashboardScreen() {
               <Feather name="users" size={24} color="#3B82F6" />
             </View>
             <View style={styles.cardTextContainer}>
-              <Text style={styles.cardTitle}>Manage Users</Text>
-              <Text style={styles.cardSubtitle}>View and change user roles</Text>
+              <WardaText style={styles.cardTitle}>Manage Users</WardaText>
+              <WardaText style={styles.cardSubtitle}>View and change user roles</WardaText>
             </View>
-            <Feather name="chevron-right" size={20} color={RainbowColors.inkBlack} style={{ opacity: 0.3 }} />
+            <Feather name="chevron-right" size={20} color={theme.colors.text} style={{ opacity: 0.3 }} />
           </TouchableOpacity>
 
           <TouchableOpacity 
@@ -136,10 +139,10 @@ export default function AdminDashboardScreen() {
               <Feather name="shopping-bag" size={24} color="#F59E0B" />
             </View>
             <View style={styles.cardTextContainer}>
-              <Text style={styles.cardTitle}>Manage Orders</Text>
-              <Text style={styles.cardSubtitle}>View all orders and update statuses</Text>
+              <WardaText style={styles.cardTitle}>Manage Orders</WardaText>
+              <WardaText style={styles.cardSubtitle}>View all orders and update statuses</WardaText>
             </View>
-            <Feather name="chevron-right" size={20} color={RainbowColors.inkBlack} style={{ opacity: 0.3 }} />
+            <Feather name="chevron-right" size={20} color={theme.colors.text} style={{ opacity: 0.3 }} />
           </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
@@ -147,22 +150,22 @@ export default function AdminDashboardScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
   },
   header: {
     paddingHorizontal: 20,
     paddingTop: 12,
     paddingBottom: 16,
     borderBottomWidth: 1,
-    borderBottomColor: RainbowColors.cloudSurface,
+    borderBottomColor: theme.colors.borderSubtle,
   },
   headerTitle: {
     fontSize: 24,
     fontWeight: "800",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
     letterSpacing: -0.5,
   },
   content: {
@@ -173,7 +176,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: "800",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
     marginBottom: 4,
   },
   loadingBox: {
@@ -189,12 +192,12 @@ const styles = StyleSheet.create({
   statCard: {
     flex: 1,
     minWidth: "45%",
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
     padding: 16,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
-    shadowColor: RainbowColors.inkBlack,
+    borderColor: theme.colors.borderSubtle,
+    shadowColor: theme.colors.text,
     shadowOpacity: 0.04,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 4 },
@@ -211,23 +214,23 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: 22,
     fontWeight: "800",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
   statLabel: {
     fontSize: 13,
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     fontWeight: "600",
     marginTop: 2,
   },
   card: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
     padding: 16,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
-    shadowColor: RainbowColors.inkBlack,
+    borderColor: theme.colors.borderSubtle,
+    shadowColor: theme.colors.text,
     shadowOpacity: 0.05,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 4 },
@@ -248,12 +251,12 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 17,
     fontWeight: "700",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
     marginBottom: 2,
   },
   cardSubtitle: {
     fontSize: 13,
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
     opacity: 0.6,
   },
 });

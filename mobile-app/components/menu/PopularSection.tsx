@@ -1,14 +1,10 @@
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { useRouter } from "expo-router";
 import { productsAPI } from "../../services/api";
 import MenuCard from "./MenuCard";
+import { useTheme } from "../../context/ThemeContext";
+import { WardaText } from "../ui";
 
 interface Props {
   selectedCategory?: string;
@@ -16,30 +12,39 @@ interface Props {
 
 export default function PopularSection({ selectedCategory = "All" }: Props) {
   const router = useRouter();
-
+  const { theme } = useTheme();
   const [products, setProducts] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    productsAPI.getProducts().then((res) => {
-      if (res.success && res.products) {
-        setProducts(res.products);
-      }
-    }).catch(() => {});
+    setLoading(true);
+    productsAPI
+      .getProducts()
+      .then((res) => {
+        if (res.success && res.products) {
+          setProducts(res.products);
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
-  const filtered = selectedCategory === "All"
-    ? products
-    : products.filter((p) => p.category === selectedCategory);
+  const filtered =
+    selectedCategory === "All"
+      ? products
+      : products.filter((p) => p.category === selectedCategory);
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>
+        <WardaText variant="h2">
           {selectedCategory === "All" ? "All Gifts" : selectedCategory}
-        </Text>
-        <Text style={styles.countText}>
-          {filtered.length} {filtered.length === 1 ? "item" : "items"}
-        </Text>
+        </WardaText>
+        {!loading && (
+          <Text style={[styles.countText, { color: theme.colors.textMuted }]}>
+            {filtered.length} {filtered.length === 1 ? "item" : "items"}
+          </Text>
+        )}
       </View>
 
       <FlatList
@@ -50,6 +55,13 @@ export default function PopularSection({ selectedCategory = "All" }: Props) {
         columnWrapperStyle={styles.row}
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <View style={styles.empty}>
+            <WardaText variant="caption" color={theme.colors.textMuted} align="center">
+              No gifts found in this collection.
+            </WardaText>
+          </View>
+        }
         renderItem={({ item }) => (
           <MenuCard
             item={item}
@@ -72,14 +84,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 14,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
-  },
   countText: {
     fontSize: 13,
-    color: RainbowColors.stone,
     fontWeight: "600",
   },
   list: {
@@ -89,5 +95,9 @@ const styles = StyleSheet.create({
   row: {
     justifyContent: "space-between",
     marginBottom: 6,
+  },
+  empty: {
+    paddingVertical: 40,
+    alignItems: "center",
   },
 });

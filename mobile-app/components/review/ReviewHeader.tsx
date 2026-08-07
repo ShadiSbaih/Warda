@@ -1,15 +1,15 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-    StyleSheet,
-    Text,
-    TouchableOpacity
-} from "react-native";
+
+import { StyleSheet, TouchableOpacity } from "react-native";
 
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
 export default function ReviewHeader() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const router = useRouter();
 
   return (
@@ -21,25 +21,25 @@ export default function ReviewHeader() {
         <Feather
           name="x"
           size={24}
-          color={RainbowColors.inkBlack}
+          color={theme.colors.text}
         />
       </TouchableOpacity>
 
-      <Text style={styles.title}>
+      <WardaText style={styles.title}>
         Your gift is on its way! 🌹
-      </Text>
+      </WardaText>
     </>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   closeButton: {
     width: 48,
     height: 48,
 
     borderRadius: 24,
 
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
 
     justifyContent: "center",
     alignItems: "center",
@@ -66,6 +66,6 @@ const styles = StyleSheet.create({
 
     fontWeight: "700",
 
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
 });

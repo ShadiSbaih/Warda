@@ -1,6 +1,7 @@
+import { useTheme } from "@/context/ThemeContext";
 import { useRouter } from "expo-router";
 import React, { useState, useEffect } from "react";
-import { RainbowColors, RainbowRadii } from "../constants/Colors";
+
 import {
     StatusBar,
     StyleSheet,
@@ -24,6 +25,8 @@ export interface Region {
 }
 
 export default function DeliveryAddressScreen() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
     const router = useRouter();
 
     const [region, setRegion] = useState<Region>({
@@ -98,7 +101,7 @@ export default function DeliveryAddressScreen() {
   return (
     <>
       <StatusBar
-        backgroundColor={RainbowColors.pureWhite}
+        backgroundColor={theme.colors.surface}
         barStyle="dark-content"
       />
 
@@ -124,10 +127,10 @@ export default function DeliveryAddressScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
   },
 
   mapContainer: {
@@ -142,7 +145,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
 
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
 
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
@@ -150,7 +153,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 30,
 
-    shadowColor: RainbowColors.inkBlack,
+    shadowColor: theme.colors.text,
     shadowOpacity: 0.12,
     shadowRadius: 15,
     shadowOffset: {

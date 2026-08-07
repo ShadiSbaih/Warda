@@ -1,11 +1,8 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
+
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 interface Props {
   active: string;
@@ -22,6 +19,8 @@ export default function NotificationTabs({
   active,
   onChange,
 }: Props) {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   return (
     <View style={styles.container}>
       {tabs.map((tab) => (
@@ -34,7 +33,7 @@ export default function NotificationTabs({
           ]}
           onPress={() => onChange(tab)}
         >
-          <Text
+          <WardaText
             style={[
               styles.text,
               active === tab &&
@@ -42,14 +41,14 @@ export default function NotificationTabs({
             ]}
           >
             {tab}
-          </Text>
+          </WardaText>
         </TouchableOpacity>
       ))}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flexDirection: "row",
     marginHorizontal: 20,
@@ -60,8 +59,8 @@ const styles = StyleSheet.create({
   tab: {
     height: 40,
     paddingHorizontal: 18,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: theme.radii.full,
+    backgroundColor: theme.colors.surface,
     justifyContent: "center",
     marginRight: 10,
     shadowColor: "#5a5a7a",
@@ -73,13 +72,13 @@ const styles = StyleSheet.create({
     },
     elevation: 2,
     borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
+    borderColor: theme.colors.borderSubtle,
   },
 
   activeTab: {
-    backgroundColor: RainbowColors.tangerine,
-    borderColor: RainbowColors.tangerine,
-    shadowColor: RainbowColors.tangerine,
+    backgroundColor: theme.colors.brand,
+    borderColor: theme.colors.brand,
+    shadowColor: theme.colors.brand,
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 6,
@@ -87,12 +86,12 @@ const styles = StyleSheet.create({
 
   text: {
     fontSize: 13.5,
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     fontWeight: "600",
   },
 
   activeText: {
-    color: RainbowColors.pureWhite,
+    color: theme.colors.textInverse,
     fontWeight: "700",
   },
 });

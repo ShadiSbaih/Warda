@@ -1,27 +1,25 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import React, { useState } from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-} from "react-native";
+
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { Feather } from "@expo/vector-icons";
 
 export default function RatingCard() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const [rating, setRating] = useState(5);
 
   return (
     <View style={styles.card}>
-      <Text style={styles.title}>
+      <WardaText style={styles.title}>
         How was your gift experience?
-      </Text>
-      <Text style={styles.subtitle}>
+      </WardaText>
+      <WardaText style={styles.subtitle}>
         Rate the flower freshness and delivery quality
-      </Text>
+      </WardaText>
 
       <View style={styles.stars}>
         {[1, 2, 3, 4, 5].map((item) => (
@@ -50,14 +48,14 @@ export default function RatingCard() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   card: {
     marginHorizontal: 20,
     marginTop: 18,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
     borderRadius: 24,
     padding: 20,
-    shadowColor: RainbowColors.tangerine,
+    shadowColor: theme.colors.brand,
     shadowOpacity: 0.15,
     shadowRadius: 20,
     shadowOffset: { width: 0, height: 4 },
@@ -67,12 +65,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "800",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
 
   subtitle: {
     fontSize: 13,
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     marginTop: 4,
   },
 
@@ -89,13 +87,13 @@ const styles = StyleSheet.create({
 
   input: {
     borderWidth: 1.5,
-    borderColor: RainbowColors.cloudSurface,
+    borderColor: theme.colors.borderSubtle,
     borderRadius: 18,
     height: 100,
     padding: 16,
     textAlignVertical: "top",
     fontSize: 14.5,
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
     backgroundColor: "#FCF8FA",
   },
 });

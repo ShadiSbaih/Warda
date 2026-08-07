@@ -1,11 +1,8 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import React, { useState } from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-  StyleSheet,
-  Switch,
-  Text,
-  View,
-} from "react-native";
+
+import { StyleSheet, Switch, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
 interface Props {
@@ -13,6 +10,8 @@ interface Props {
 }
 
 export default function AnonymousToggle({ onToggle }: Props) {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const [isAnonymous, setIsAnonymous] = useState(false);
 
   const handleToggle = (value: boolean) => {
@@ -25,16 +24,16 @@ export default function AnonymousToggle({ onToggle }: Props) {
       {/* Left */}
       <View style={styles.left}>
         <View style={styles.iconWrap}>
-          <Feather name="eye-off" size={18} color={RainbowColors.tangerine} />
+          <Feather name="eye-off" size={18} color={theme.colors.brand} />
         </View>
 
         <View style={styles.textBlock}>
-          <Text style={styles.title}>Anonymous Delivery</Text>
-          <Text style={styles.subtitle}>
+          <WardaText style={styles.title}>Anonymous Delivery</WardaText>
+          <WardaText style={styles.subtitle}>
             {isAnonymous
               ? "The order will arrive without the sender's name"
               : "Your name will be shown to the recipient"}
-          </Text>
+          </WardaText>
         </View>
       </View>
 
@@ -43,23 +42,23 @@ export default function AnonymousToggle({ onToggle }: Props) {
         value={isAnonymous}
         onValueChange={handleToggle}
         trackColor={{ false: "#E0E0E0", true: "#F48FB1" }}
-        thumbColor={isAnonymous ? RainbowColors.tangerine : "#F5F5F5"}
+        thumbColor={isAnonymous ? theme.colors.brand : "#F5F5F5"}
       />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     marginHorizontal: 20,
     marginVertical: 10,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
     borderRadius: 18,
     padding: 16,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    shadowColor: RainbowColors.tangerine,
+    shadowColor: theme.colors.brand,
     shadowOpacity: 0.15,
     shadowRadius: 16,
     shadowOffset: { width: 0, height: 4 },

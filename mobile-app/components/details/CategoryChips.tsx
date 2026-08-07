@@ -1,12 +1,8 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import React, { useState } from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-    FlatList,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
+
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 
 const categories = [
   "Birthday",
@@ -17,6 +13,8 @@ const categories = [
 ];
 
 export default function CategoryChips() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const [selected, setSelected] = useState("Birthday");
 
   return (
@@ -38,14 +36,14 @@ export default function CategoryChips() {
                 active && styles.activeChip,
               ]}
             >
-              <Text
+              <WardaText
                 style={[
                   styles.text,
                   active && styles.activeText,
                 ]}
               >
                 {item}
-              </Text>
+              </WardaText>
             </TouchableOpacity>
           );
         }}
@@ -54,7 +52,7 @@ export default function CategoryChips() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     marginTop: 24,
   },
@@ -75,16 +73,16 @@ const styles = StyleSheet.create({
   },
 
   activeChip: {
-    backgroundColor: RainbowColors.tangerine,
+    backgroundColor: theme.colors.brand,
   },
 
   text: {
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     fontSize: 14,
     fontWeight: "600",
   },
 
   activeText: {
-    color: RainbowColors.pureWhite,
+    color: theme.colors.textInverse,
   },
 });

@@ -1,12 +1,8 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import React, { useState } from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-    Image,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
+
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { Feather } from "@expo/vector-icons";
@@ -23,6 +19,8 @@ interface Props {
 export default function CheckoutProductCard({
   item,
 }: Props) {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const [quantity, setQuantity] = useState(1);
 
   return (
@@ -47,21 +45,21 @@ export default function CheckoutProductCard({
 
       <View style={styles.info}>
         <View style={styles.topRow}>
-          <Text
+          <WardaText
             numberOfLines={1}
             style={styles.title}
           >
             {item.title}
-          </Text>
+          </WardaText>
 
-          <Text style={styles.price}>
+          <WardaText style={styles.price}>
             {item.price}
-          </Text>
+          </WardaText>
         </View>
 
-        <Text style={styles.description}>
+        <WardaText style={styles.description}>
           {item.description}
-        </Text>
+        </WardaText>
 
         {/* Quantity */}
 
@@ -76,13 +74,13 @@ export default function CheckoutProductCard({
               <Feather
                 name="minus"
                 size={18}
-                color={RainbowColors.stone}
+                color={theme.colors.textMuted}
               />
             </TouchableOpacity>
 
-            <Text style={styles.quantity}>
+            <WardaText style={styles.quantity}>
               {quantity}
-            </Text>
+            </WardaText>
 
             <TouchableOpacity
               onPress={() =>
@@ -92,7 +90,7 @@ export default function CheckoutProductCard({
               <Feather
                 name="plus"
                 size={18}
-                color={RainbowColors.stone}
+                color={theme.colors.textMuted}
               />
             </TouchableOpacity>
           </View>
@@ -102,14 +100,14 @@ export default function CheckoutProductCard({
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     overflow: "hidden",
     flexDirection: "row",
 
     padding: 16,
 
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
   },
 
   image: {
@@ -138,7 +136,7 @@ const styles = StyleSheet.create({
 
     fontWeight: "700",
 
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
 
   price: {
@@ -146,7 +144,7 @@ const styles = StyleSheet.create({
 
     fontWeight: "700",
 
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
 
   description: {
@@ -188,6 +186,6 @@ const styles = StyleSheet.create({
 
     fontWeight: "600",
 
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
 });

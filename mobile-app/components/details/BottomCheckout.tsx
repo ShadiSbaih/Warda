@@ -1,12 +1,9 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 interface Props {
   price: number;
@@ -17,6 +14,8 @@ export default function BottomCheckout({
   price,
   onAddToCart,
 }: Props) {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const [quantity, setQuantity] = useState(1);
 
   const decrease = () => {
@@ -43,13 +42,13 @@ export default function BottomCheckout({
           <Ionicons
             name="remove"
             size={22}
-            color={RainbowColors.tangerine}
+            color={theme.colors.brand}
           />
         </TouchableOpacity>
 
-        <Text style={styles.quantity}>
+        <WardaText style={styles.quantity}>
           {quantity}
-        </Text>
+        </WardaText>
 
         <TouchableOpacity
           style={styles.button}
@@ -58,7 +57,7 @@ export default function BottomCheckout({
           <Ionicons
             name="add"
             size={22}
-            color={RainbowColors.tangerine}
+            color={theme.colors.brand}
           />
         </TouchableOpacity>
       </View>
@@ -69,28 +68,28 @@ export default function BottomCheckout({
         style={styles.cartButton}
         onPress={onAddToCart}
       >
-        <Text style={styles.cartText}>
+        <WardaText style={styles.cartText}>
           Add To Cart • ${total.toFixed(2)}
-        </Text>
+        </WardaText>
       </TouchableOpacity>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     position: "absolute",
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
     paddingHorizontal: 20,
     paddingVertical: 16,
     flexDirection: "row",
     alignItems: "center",
     borderTopLeftRadius: 26,
     borderTopRightRadius: 26,
-    shadowColor: RainbowColors.tangerine,
+    shadowColor: theme.colors.brand,
     shadowOpacity: 0.12,
     shadowRadius: 16,
     shadowOffset: {
@@ -103,7 +102,7 @@ const styles = StyleSheet.create({
   quantityContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: RainbowColors.cloudSurface,
+    backgroundColor: theme.colors.background,
     borderRadius: 20,
     paddingHorizontal: 8,
     height: 52,
@@ -113,7 +112,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
     justifyContent: "center",
     alignItems: "center",
     shadowColor: "#000",
@@ -126,7 +125,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     fontSize: 17,
     fontWeight: "800",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
 
   cartButton: {
@@ -134,17 +133,17 @@ const styles = StyleSheet.create({
     marginLeft: 14,
     height: 52,
     borderRadius: 20,
-    backgroundColor: RainbowColors.tangerine,
+    backgroundColor: theme.colors.brand,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: RainbowColors.tangerine,
+    shadowColor: theme.colors.brand,
     shadowOpacity: 0.35,
     shadowRadius: 16,
     elevation: 6,
   },
 
   cartText: {
-    color: RainbowColors.pureWhite,
+    color: theme.colors.textInverse,
     fontSize: 16,
     fontWeight: "700",
   },

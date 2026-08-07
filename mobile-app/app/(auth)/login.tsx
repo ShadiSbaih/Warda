@@ -1,25 +1,27 @@
-import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   ActivityIndicator,
+  ImageBackground,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   TouchableOpacity,
   View,
-  ImageBackground,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { BlurView } from "expo-blur";
 import { Feather } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+
+import { useTheme } from "../../context/ThemeContext";
+import { WardaButton, WardaInput, WardaText } from "../../components/ui";
 import { useAuth } from "../../context/AuthContext";
 
 export default function LoginScreen() {
   const router = useRouter();
+  const { theme } = useTheme();
   const { login, loginDemoUser } = useAuth();
 
   const [email, setEmail] = useState("");
@@ -37,13 +39,10 @@ export default function LoginScreen() {
       setErrorMsg("Please enter your password");
       return;
     }
-
     setErrorMsg(null);
     setLoading(true);
-
     const result = await login(email.trim(), password);
     setLoading(false);
-
     if (result.success) {
       router.replace("/(tabs)/home");
     } else {
@@ -58,6 +57,13 @@ export default function LoginScreen() {
     router.replace("/(tabs)/home");
   };
 
+  const inputBase = {
+    backgroundColor: "rgba(255,255,255,0.6)",
+    borderColor: "rgba(255,255,255,0.5)",
+    borderRadius: 20,
+    color: theme.colors.text,
+  };
+
   return (
     <ImageBackground
       source={require("../../assets/images/auth-bg.png")}
@@ -65,66 +71,60 @@ export default function LoginScreen() {
       resizeMode="cover"
     >
       <SafeAreaView style={styles.safeArea}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : undefined}
-          style={{ flex: 1 }}
-        >
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={{ flex: 1 }}>
           <ScrollView
             contentContainerStyle={styles.scrollContent}
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
           >
             <BlurView intensity={75} tint="light" style={styles.glassCard}>
-              <Text style={styles.title}>Welcome Back</Text>
-              <Text style={styles.subtitle}>
+              <WardaText variant="h1" align="center" style={styles.title}>
+                Welcome Back
+              </WardaText>
+              <WardaText variant="body" align="center" color={theme.colors.text} style={{ opacity: 0.8, marginBottom: 28 }}>
                 Sign in to send gifts to your loved ones.
-              </Text>
+              </WardaText>
 
               {errorMsg && (
-                <View style={styles.errorBox}>
-                  <Text style={styles.errorText}>{errorMsg}</Text>
+                <View style={[styles.errorBox, { backgroundColor: theme.colors.errorSurface, borderColor: "#FFCDD2" }]}>
+                  <WardaText variant="caption" align="center" color={theme.colors.error}>
+                    {errorMsg}
+                  </WardaText>
                 </View>
               )}
 
-              <View style={styles.inputGroup}>
-                <Text style={styles.label}>Email Address</Text>
-                <TextInput
-                  placeholder="example@warda.app"
-                  placeholderTextColor="rgba(0,0,0,0.4)"
-                  value={email}
-                  onChangeText={(text) => {
-                    setEmail(text);
-                    if (errorMsg) setErrorMsg(null);
-                  }}
-                  autoCapitalize="none"
-                  keyboardType="email-address"
-                  style={styles.input}
-                />
-              </View>
+              <WardaInput
+                label="Email Address"
+                placeholder="example@warda.app"
+                value={email}
+                onChangeText={(text) => {
+                  setEmail(text);
+                  if (errorMsg) setErrorMsg(null);
+                }}
+                autoCapitalize="none"
+                keyboardType="email-address"
+                leftIcon="mail"
+                containerStyle={styles.inputGroup}
+                style={[styles.input, inputBase]}
+              />
 
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>Password</Text>
-                <View style={styles.passwordContainer}>
+                <WardaText variant="label" color={theme.colors.text}>Password</WardaText>
+                <View style={[styles.passwordContainer, inputBase]}>
+                  <Feather name="lock" size={18} color={theme.colors.textMuted} style={{ marginLeft: 16 }} />
                   <TextInput
                     placeholder="••••••••"
-                    placeholderTextColor="rgba(0,0,0,0.4)"
+                    placeholderTextColor={theme.colors.textPlaceholder}
                     secureTextEntry={!showPassword}
                     value={password}
                     onChangeText={(text) => {
                       setPassword(text);
                       if (errorMsg) setErrorMsg(null);
                     }}
-                    style={styles.passwordInput}
+                    style={[styles.passwordInput, { color: theme.colors.text }]}
                   />
-                  <TouchableOpacity
-                    style={styles.eyeIcon}
-                    onPress={() => setShowPassword(!showPassword)}
-                  >
-                    <Feather
-                      name={showPassword ? "eye" : "eye-off"}
-                      size={20}
-                      color="rgba(0,0,0,0.6)"
-                    />
+                  <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                    <Feather name={showPassword ? "eye" : "eye-off"} size={20} color={theme.colors.textMuted} />
                   </TouchableOpacity>
                 </View>
               </View>
@@ -133,35 +133,36 @@ export default function LoginScreen() {
                 style={styles.forgotBtn}
                 onPress={() => router.push("/(auth)/forgot-password")}
               >
-                <Text style={styles.forgot}>Forgot Password?</Text>
+                <WardaText variant="caption" weight="bold" color={theme.colors.brand}>
+                  Forgot Password?
+                </WardaText>
               </TouchableOpacity>
 
-              <TouchableOpacity
-                style={[styles.button, loading && styles.buttonDisabled]}
+              <WardaButton
+                title="Sign In"
+                size="lg"
+                loading={loading}
+                disabled={loading}
                 onPress={handleLogin}
-                disabled={loading}
-                activeOpacity={0.85}
-              >
-                {loading ? (
-                  <ActivityIndicator color={RainbowColors.pureWhite} />
-                ) : (
-                  <Text style={styles.buttonText}>Sign In</Text>
-                )}
-              </TouchableOpacity>
+              />
 
-              <TouchableOpacity
-                style={styles.demoBtn}
-                onPress={handleDemoSignIn}
+              <WardaButton
+                title="Quick Sign In as Guest"
+                variant="secondary"
+                size="md"
                 disabled={loading}
-                activeOpacity={0.85}
-              >
-                <Text style={styles.demoBtnText}>Quick Sign In as Guest</Text>
-              </TouchableOpacity>
+                onPress={handleDemoSignIn}
+                style={{ marginTop: 12 }}
+              />
 
               <View style={styles.bottom}>
-                <Text style={styles.bottomPrompt}>Don't have an account?</Text>
+                <WardaText variant="body" color={theme.colors.text} style={{ opacity: 0.8 }}>
+                  Don't have an account?
+                </WardaText>
                 <TouchableOpacity onPress={() => router.push("/(auth)/register")}>
-                  <Text style={styles.signup}>Create Account</Text>
+                  <WardaText variant="body" weight="bold" color={theme.colors.brand}>
+                    Create Account
+                  </WardaText>
                 </TouchableOpacity>
               </View>
             </BlurView>
@@ -175,7 +176,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: "#FFFFFF",
   },
   safeArea: {
     flex: 1,
@@ -195,135 +196,45 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255, 255, 255, 0.85)",
   },
   title: {
-    fontSize: 32,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
-    letterSpacing: -0.5,
-    textAlign: "center",
-  },
-  subtitle: {
-    marginTop: 8,
-    fontSize: 16,
-    color: RainbowColors.inkBlack,
-    opacity: 0.7,
-    marginBottom: 28,
-    lineHeight: 22,
-    textAlign: "center",
+    marginBottom: 8,
   },
   errorBox: {
-    backgroundColor: "rgba(255, 235, 238, 0.9)",
     borderRadius: 12,
     padding: 12,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: "#FFCDD2",
-  },
-  errorText: {
-    color: "#D32F2F",
-    fontSize: 14,
-    fontWeight: "500",
-    textAlign: "center",
   },
   inputGroup: {
     marginBottom: 16,
   },
-  label: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: RainbowColors.inkBlack,
-    marginBottom: 6,
-  },
   input: {
     height: 56,
     borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.5)",
-    borderRadius: 20,
-    paddingHorizontal: 18,
-    fontSize: 15.5,
-    backgroundColor: "rgba(255, 255, 255, 0.6)",
-    color: RainbowColors.inkBlack,
+    paddingHorizontal: 16,
   },
   passwordContainer: {
     flexDirection: "row",
     alignItems: "center",
     height: 56,
     borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.5)",
-    borderRadius: 20,
-    backgroundColor: "rgba(255, 255, 255, 0.6)",
     paddingRight: 16,
+    marginTop: 6,
   },
   passwordInput: {
     flex: 1,
     height: "100%",
-    paddingHorizontal: 18,
-    fontSize: 15.5,
-    color: RainbowColors.inkBlack,
-  },
-  eyeIcon: {
-    padding: 4,
+    paddingHorizontal: 12,
+    fontSize: 15,
   },
   forgotBtn: {
     alignSelf: "flex-end",
-    marginBottom: 24,
+    marginBottom: 22,
     marginTop: 2,
-  },
-  forgot: {
-    color: RainbowColors.tangerine,
-    fontSize: 14,
-    fontWeight: "700",
-  },
-  button: {
-    height: 56,
-    backgroundColor: RainbowColors.tangerine,
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
-  },
-  buttonDisabled: {
-    opacity: 0.7,
-  },
-  buttonText: {
-    color: RainbowColors.pureWhite,
-    fontWeight: "700",
-    fontSize: 17,
-    letterSpacing: 0.3,
-  },
-  demoBtn: {
-    height: 50,
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 12,
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.3)",
-  },
-  demoBtnText: {
-    color: RainbowColors.inkBlack,
-    fontWeight: "600",
-    fontSize: 15,
   },
   bottom: {
     marginTop: 28,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-  },
-  bottomPrompt: {
-    fontSize: 15,
-    color: RainbowColors.inkBlack,
-    opacity: 0.8,
-  },
-  signup: {
-    marginLeft: 6,
-    color: RainbowColors.tangerine,
-    fontWeight: "800",
-    fontSize: 15,
   },
 });

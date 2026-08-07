@@ -1,141 +1,154 @@
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
-export default function TrackingProgress() {
+import { useTheme } from "../../context/ThemeContext";
+import { WardaText } from "../ui";
+
+const STATUS_STEPS: Record<string, number> = {
+  confirmed: 1,
+  preparing: 2,
+  on_the_way: 3,
+  delivered: 4,
+};
+
+interface Props {
+  status?: string;
+  driverLocation?: { latitude: number; longitude: number };
+  destination?: { latitude: number; longitude: number };
+}
+
+export default function TrackingProgress({ status = "confirmed" }: Props) {
+  const { theme } = useTheme();
+  const currentStep = STATUS_STEPS[status] || 1;
+  const heading =
+    status === "delivered"
+      ? "Delivered with love"
+      : status === "on_the_way"
+      ? "Heading your way"
+      : status === "preparing"
+      ? "Preparing your gift"
+      : "Order confirmed";
+
+  const captions: Record<string, string> = {
+    delivered: "Your gift has been delivered. Enjoy the moment!",
+    on_the_way: "Your courier has collected the bouquet and is heading to the destination.",
+    preparing: "Our florists are hand-arranging your gift with care.",
+    confirmed: "We received your order and will begin preparing it shortly.",
+  };
+
   return (
     <>
       <View style={styles.headerRow}>
-        <View>
-          <Text style={styles.heading}>Heading your way</Text>
-          <View style={styles.etaBadge}>
-            <View style={styles.etaDot} />
-            <Text style={styles.etaText}>Arriving in 15 mins</Text>
-          </View>
+        <WardaText variant="h2" color={theme.colors.text}>
+          {heading}
+        </WardaText>
+        <View style={styles.etaBadge}>
+          <View style={[styles.etaDot, { backgroundColor: theme.colors.success }]} />
+          <WardaText variant="caption" weight="bold" color={theme.colors.success}>
+            {status === "delivered" ? "Completed" : status === "on_the_way" ? "Live tracking active" : "In progress"}
+          </WardaText>
         </View>
       </View>
 
       <View style={styles.progress}>
-        {/* Step 1: Placed */}
-        <View style={styles.activeCircle}>
-          <Feather name="gift" size={14} color={RainbowColors.pureWhite} />
-        </View>
-
-        <View style={styles.lineActive} />
-
-        {/* Step 2: Preparing bouquet */}
-        <View style={styles.activeCircle}>
-          <Ionicons name="sparkles" size={13} color={RainbowColors.pureWhite} />
-        </View>
-
-        <View style={styles.lineActive} />
-
-        {/* Step 3: On the way */}
-        <View style={styles.activeCirclePulse}>
-          <MaterialCommunityIcons name="moped" size={16} color={RainbowColors.pureWhite} />
-        </View>
-
-        <View style={styles.lineInactive} />
-
-        {/* Step 4: Delivered */}
-        <View style={styles.inactiveCircle}>
-          <Feather name="home" size={14} color={RainbowColors.stone} />
-        </View>
+        <Step icon="gift" active={currentStep >= 1} theme={theme} />
+        <Line active={currentStep >= 2} theme={theme} />
+        <Step icon="sparkles" ion active={currentStep >= 2} theme={theme} />
+        <Line active={currentStep >= 3} theme={theme} />
+        <Step icon="moped" material active={currentStep >= 3} pulse={status === "on_the_way"} theme={theme} />
+        <Line active={currentStep >= 4} theme={theme} />
+        <Step icon="home" active={currentStep >= 4} theme={theme} />
       </View>
 
-      <Text style={styles.caption}>
-        Your courier has collected the fresh bouquet and is heading to the destination.
-      </Text>
+      <WardaText variant="caption" color={theme.colors.textMuted} style={styles.caption}>
+        {captions[status] || captions.confirmed}
+      </WardaText>
     </>
   );
+}
+
+function Step({
+  icon,
+  active,
+  ion,
+  material,
+  pulse,
+  theme,
+}: {
+  icon: string;
+  active: boolean;
+  ion?: boolean;
+  material?: boolean;
+  pulse?: boolean;
+  theme: any;
+}) {
+  return (
+    <View
+      style={[
+        styles.circle,
+        {
+          backgroundColor: active ? theme.colors.brand : theme.colors.background,
+          borderColor: pulse ? theme.colors.brand : "transparent",
+        },
+        pulse && styles.pulseCircle,
+      ]}
+    >
+      {material ? (
+        <MaterialCommunityIcons name={icon as any} size={16} color={active ? theme.colors.textInverse : theme.colors.textMuted} />
+      ) : ion ? (
+        <Ionicons name={icon as any} size={14} color={active ? theme.colors.textInverse : theme.colors.textMuted} />
+      ) : (
+        <Feather name={icon as any} size={14} color={active ? theme.colors.textInverse : theme.colors.textMuted} />
+      )}
+    </View>
+  );
+}
+
+function Line({ active, theme }: { active: boolean; theme: any }) {
+  return <View style={[styles.line, { backgroundColor: active ? theme.colors.brand : theme.colors.borderSubtle }]} />;
 }
 
 const styles = StyleSheet.create({
   headerRow: {
     marginBottom: 4,
   },
-  heading: {
-    fontSize: 24,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
-  },
   etaBadge: {
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
-    marginTop: 4,
+    marginTop: 6,
   },
   etaDot: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: "#10B981",
-  },
-  etaText: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: "#10B981",
   },
   progress: {
     flexDirection: "row",
     alignItems: "center",
     marginTop: 18,
   },
-  activeCircle: {
-    width: 36,
-    height: 36,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.tangerine,
+  circle: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 5,
   },
-  activeCirclePulse: {
+  pulseCircle: {
     width: 40,
     height: 40,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.tangerine,
-    justifyContent: "center",
-    alignItems: "center",
+    borderRadius: 20,
     borderWidth: 2.5,
-    borderColor: RainbowColors.cloudSurface,
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.45,
-    shadowRadius: 8,
-    elevation: 5,
   },
-  inactiveCircle: {
-    width: 36,
-    height: 36,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.cloudSurface,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  lineActive: {
+  line: {
     flex: 1,
     height: 3,
-    backgroundColor: RainbowColors.tangerine,
-    borderRadius: RainbowRadii.pills,
-  },
-  lineInactive: {
-    flex: 1,
-    height: 3,
-    backgroundColor: RainbowColors.cloudSurface,
-    borderRadius: RainbowRadii.pills,
+    borderRadius: 999,
   },
   caption: {
     marginTop: 14,
-    color: RainbowColors.stone,
-    fontSize: 13.5,
     lineHeight: 20,
   },
 });

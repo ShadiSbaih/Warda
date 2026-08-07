@@ -1,11 +1,8 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-    ActivityIndicator,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-} from "react-native";
+
+import { ActivityIndicator, StyleSheet, TouchableOpacity } from "react-native";
 
 interface Props {
   title: string;
@@ -18,6 +15,8 @@ export default function PrimaryButton({
   onPress,
   loading = false,
 }: Props) {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   return (
     <TouchableOpacity
       style={styles.button}
@@ -26,25 +25,25 @@ export default function PrimaryButton({
       disabled={loading}
     >
       {loading ? (
-        <ActivityIndicator color={RainbowColors.pureWhite} />
+        <ActivityIndicator color={theme.colors.surface} />
       ) : (
-        <Text style={styles.text}>
+        <WardaText style={styles.text}>
           {title}
-        </Text>
+        </WardaText>
       )}
     </TouchableOpacity>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   button: {
     height: 54,
-    backgroundColor: RainbowColors.tangerine,
-    borderRadius: RainbowRadii.buttons,
+    backgroundColor: theme.colors.brand,
+    borderRadius: theme.radii.lg,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 14,
-    shadowColor: RainbowColors.tangerine,
+    shadowColor: theme.colors.brand,
     shadowOpacity: 0.35,
     shadowRadius: 16,
     shadowOffset: { width: 0, height: 4 },
@@ -52,7 +51,7 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    color: RainbowColors.pureWhite,
+    color: theme.colors.textInverse,
     fontSize: 16,
     fontWeight: "700",
   },

@@ -1,12 +1,8 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import React, { useState } from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+
+import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 import DateTimePicker, {
   DateTimePickerAndroid,
   DateTimePickerEvent,
@@ -27,6 +23,8 @@ const quickOptions = [
 type OptionId = typeof quickOptions[number]["id"];
 
 export default function DeliveryScheduler({ onDateChange }: Props) {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const [selectedOption, setSelectedOption] = useState<OptionId>("now");
   const [showPicker, setShowPicker] = useState(false);
   const [customDate, setCustomDate] = useState(new Date());
@@ -96,9 +94,9 @@ export default function DeliveryScheduler({ onDateChange }: Props) {
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.iconWrap}>
-          <Feather name="clock" size={18} color={RainbowColors.tangerine} />
+          <Feather name="clock" size={18} color={theme.colors.brand} />
         </View>
-        <Text style={styles.headerTitle}>Delivery Schedule</Text>
+        <WardaText style={styles.headerTitle}>Delivery Schedule</WardaText>
       </View>
 
       {/* Options */}
@@ -116,16 +114,16 @@ export default function DeliveryScheduler({ onDateChange }: Props) {
             <Feather
               name={opt.icon as any}
               size={16}
-              color={selectedOption === opt.id ? RainbowColors.pureWhite : RainbowColors.stone}
+              color={selectedOption === opt.id ? theme.colors.surface : theme.colors.textMuted}
             />
-            <Text
+            <WardaText
               style={[
                 styles.optionLabel,
                 selectedOption === opt.id && styles.optionLabelActive,
               ]}
             >
               {opt.label}
-            </Text>
+            </WardaText>
           </TouchableOpacity>
         ))}
       </View>
@@ -143,8 +141,8 @@ export default function DeliveryScheduler({ onDateChange }: Props) {
           }}
           activeOpacity={0.8}
         >
-          <Feather name="calendar" size={15} color={RainbowColors.tangerine} />
-          <Text style={styles.dateText}>{formattedDate}</Text>
+          <Feather name="calendar" size={15} color={theme.colors.brand} />
+          <WardaText style={styles.dateText}>{formattedDate}</WardaText>
           <Feather name="edit-2" size={13} color="#C5A8B8" />
         </TouchableOpacity>
       )}
@@ -162,14 +160,14 @@ export default function DeliveryScheduler({ onDateChange }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     marginHorizontal: 20,
     marginVertical: 10,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
     borderRadius: 18,
     padding: 16,
-    shadowColor: RainbowColors.tangerine,
+    shadowColor: theme.colors.brand,
     shadowOpacity: 0.15,
     shadowRadius: 16,
     shadowOffset: { width: 0, height: 4 },
@@ -217,30 +215,30 @@ const styles = StyleSheet.create({
   },
 
   optionBtnActive: {
-    backgroundColor: RainbowColors.tangerine,
-    borderColor: RainbowColors.tangerine,
+    backgroundColor: theme.colors.brand,
+    borderColor: theme.colors.brand,
   },
 
   optionLabel: {
     fontSize: 13,
     fontWeight: "600",
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
   },
 
   optionLabelActive: {
-    color: RainbowColors.pureWhite,
+    color: theme.colors.textInverse,
   },
 
   datePreview: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    backgroundColor: RainbowColors.cloudSurface,
+    backgroundColor: theme.colors.background,
     borderRadius: 12,
     padding: 12,
     marginTop: 12,
     borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
+    borderColor: theme.colors.borderSubtle,
   },
 
   dateText: {

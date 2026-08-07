@@ -1,11 +1,17 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { RainbowColors } from "../../constants/Colors";
+import { StyleSheet, View } from "react-native";
+
+import { useTheme } from "../../context/ThemeContext";
+import { WardaText } from "../ui";
 
 export default function MapSection() {
+  const { theme } = useTheme();
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Map is not supported on the web.</Text>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <WardaText variant="body" color={theme.colors.textMuted}>
+        Map is not supported on the web.
+      </WardaText>
     </View>
   );
 }
@@ -13,12 +19,7 @@ export default function MapSection() {
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "#eef1f4",
     justifyContent: "center",
     alignItems: "center",
-  },
-  text: {
-    color: RainbowColors.stone,
-    fontSize: 14,
   },
 });

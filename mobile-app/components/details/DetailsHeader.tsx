@@ -1,7 +1,8 @@
+import { useTheme } from "@/context/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
+
 import {
     Dimensions,
     Image,
@@ -17,6 +18,8 @@ interface Props {
 }
 
 export default function DetailsHeader({ image }: Props) {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const router = useRouter();
 
   return (
@@ -34,7 +37,7 @@ export default function DetailsHeader({ image }: Props) {
         <Ionicons
           name="arrow-back"
           size={24}
-          color={RainbowColors.inkBlack}
+          color={theme.colors.text}
         />
       </TouchableOpacity>
 
@@ -46,7 +49,7 @@ export default function DetailsHeader({ image }: Props) {
         <Ionicons
           name="heart-outline"
           size={23}
-          color={RainbowColors.inkBlack}
+          color={theme.colors.text}
         />
       </TouchableOpacity>
 
@@ -61,10 +64,10 @@ export default function DetailsHeader({ image }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     height: 290,
-    backgroundColor: RainbowColors.cloudSurface,
+    backgroundColor: theme.colors.background,
     alignItems: "center",
     justifyContent: "flex-end",
   },
@@ -73,7 +76,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: width,
     height: 290,
-    backgroundColor: RainbowColors.cloudSurface,
+    backgroundColor: theme.colors.background,
   },
 
   circleButton: {
@@ -84,12 +87,12 @@ const styles = StyleSheet.create({
     height: 44,
     borderRadius: 22,
 
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
 
     justifyContent: "center",
     alignItems: "center",
 
-    shadowColor: RainbowColors.tangerine,
+    shadowColor: theme.colors.brand,
     shadowOpacity: 0.12,
     shadowRadius: 16,
     shadowOffset: {

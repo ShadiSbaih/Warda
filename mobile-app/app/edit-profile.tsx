@@ -1,24 +1,16 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaButton, WardaIconButton, WardaText } from "@/components/ui";
 import React, { useState } from "react";
-import { RainbowColors, RainbowRadii } from "../constants/Colors";
-import {
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, StatusBar, StyleSheet, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { useAuth } from "../context/AuthContext";
 import { authAPI } from "../services/api";
 
 export default function EditProfileScreen() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const router = useRouter();
   const { user, loginDemoUser } = useAuth(); // or we might need an update method in AuthContext, let's just use API directly
 
@@ -49,13 +41,11 @@ export default function EditProfileScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.pureWhite} />
+      <StatusBar barStyle="dark-content" backgroundColor={theme.colors.surface} />
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         <View style={styles.header}>
-          <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
-            <Feather name="arrow-left" size={20} color={RainbowColors.inkBlack} />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Edit Profile</Text>
+          <WardaIconButton icon="arrow-left" onPress={() => router.back()} />
+          <WardaText style={styles.headerTitle}>Edit Profile</WardaText>
           <View style={{ width: 44 }} />
         </View>
 
@@ -68,7 +58,7 @@ export default function EditProfileScreen() {
             keyboardShouldPersistTaps="handled"
           >
             <View style={styles.formGroup}>
-              <Text style={styles.label}>Full Name</Text>
+              <WardaText style={styles.label}>Full Name</WardaText>
               <TextInput
                 style={styles.input}
                 value={name}
@@ -79,7 +69,7 @@ export default function EditProfileScreen() {
             </View>
 
             <View style={styles.formGroup}>
-              <Text style={styles.label}>Email Address</Text>
+              <WardaText style={styles.label}>Email Address</WardaText>
               <TextInput
                 style={[styles.input, styles.inputDisabled]}
                 value={email}
@@ -87,11 +77,11 @@ export default function EditProfileScreen() {
                 placeholder="sarah@warda.app"
                 placeholderTextColor="#A0A0A0"
               />
-              <Text style={styles.helpText}>Email cannot be changed.</Text>
+              <WardaText style={styles.helpText}>Email cannot be changed.</WardaText>
             </View>
 
             <View style={styles.formGroup}>
-              <Text style={styles.label}>Phone Number</Text>
+              <WardaText style={styles.label}>Phone Number</WardaText>
               <TextInput
                 style={styles.input}
                 value={phone}
@@ -105,25 +95,23 @@ export default function EditProfileScreen() {
         </KeyboardAvoidingView>
 
         <View style={styles.bottomArea}>
-          <TouchableOpacity
-            style={[styles.saveBtn, isLoading && { opacity: 0.7 }]}
-            onPress={handleSave}
+          <WardaButton
+            title="Save Changes"
+            size="lg"
+            loading={isLoading}
             disabled={isLoading}
-          >
-            <Text style={styles.saveBtnText}>
-              {isLoading ? "Saving..." : "Save Changes"}
-            </Text>
-          </TouchableOpacity>
+            onPress={handleSave}
+          />
         </View>
       </SafeAreaView>
     </>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
   },
   header: {
     flexDirection: "row",
@@ -132,22 +120,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 12,
   },
-  backBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.pureWhite,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: RainbowColors.inkBlack,
-    shadowOpacity: 0.05,
-    shadowRadius: 6,
-    elevation: 2,
-  },
   headerTitle: {
     fontSize: 18,
     fontWeight: "700",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
   content: {
     padding: 24,
@@ -158,47 +134,31 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 13.5,
     fontWeight: "700",
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     marginBottom: 8,
   },
   input: {
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
     borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
-    borderRadius: RainbowRadii.cards,
+    borderColor: theme.colors.borderSubtle,
+    borderRadius: theme.radii.xl,
     paddingHorizontal: 16,
     paddingVertical: 14,
     fontSize: 15,
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
   inputDisabled: {
-    backgroundColor: RainbowColors.cloudSurface,
-    color: RainbowColors.stone,
+    backgroundColor: theme.colors.background,
+    color: theme.colors.textMuted,
   },
   helpText: {
     fontSize: 11.5,
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     marginTop: 6,
     marginLeft: 4,
   },
   bottomArea: {
     padding: 24,
     paddingBottom: 40,
-  },
-  saveBtn: {
-    backgroundColor: RainbowColors.tangerine,
-    height: 56,
-    borderRadius: RainbowRadii.pills,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.35,
-    shadowRadius: 10,
-    elevation: 6,
-  },
-  saveBtnText: {
-    color: RainbowColors.pureWhite,
-    fontSize: 16,
-    fontWeight: "700",
   },
 });

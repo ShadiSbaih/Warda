@@ -1,31 +1,22 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaIconButton, WardaText } from "@/components/ui";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
 
-import { Feather } from "@expo/vector-icons";
+import { StyleSheet, View } from "react-native";
 
 export default function ProfileHeader() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Profile</Text>
+      <WardaText style={styles.title}>Profile</WardaText>
 
-      <TouchableOpacity style={styles.settings}>
-        <Feather
-          name="settings"
-          size={22}
-          color={RainbowColors.inkBlack}
-        />
-      </TouchableOpacity>
+      <WardaIconButton icon="settings" />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     marginTop: 10,
     marginHorizontal: 20,
@@ -40,28 +31,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: "700",
-    color: RainbowColors.inkBlack,
-  },
-
-  settings: {
-    width: 48,
-    height: 48,
-
-    borderRadius: 24,
-
-    backgroundColor: RainbowColors.pureWhite,
-
-    justifyContent: "center",
-    alignItems: "center",
-
-    shadowColor: "#000",
-    shadowOpacity: 0.15,
-    shadowRadius: 16,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-
-    elevation: 5,
+    color: theme.colors.text,
   },
 });

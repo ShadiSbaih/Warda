@@ -1,6 +1,8 @@
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+
+import { useTheme } from "../../context/ThemeContext";
+import { WardaText } from "../ui";
 
 interface MenuSectionProps {
   title?: string;
@@ -8,10 +10,18 @@ interface MenuSectionProps {
 }
 
 export default function MenuSection({ title, children }: MenuSectionProps) {
+  const { theme } = useTheme();
+
   return (
     <View style={styles.container}>
-      {title && <Text style={styles.sectionTitle}>{title}</Text>}
-      <View style={styles.card}>{children}</View>
+      {title && (
+        <WardaText variant="label" color={theme.colors.textMuted} style={styles.sectionTitle}>
+          {title}
+        </WardaText>
+      )}
+      <View style={[styles.card, { backgroundColor: theme.colors.surface, borderRadius: theme.radii.xl, ...theme.shadows.md }]}>
+        {children}
+      </View>
     </View>
   );
 }
@@ -19,25 +29,15 @@ export default function MenuSection({ title, children }: MenuSectionProps) {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
-    marginTop: 18,
+    marginTop: 20,
   },
   sectionTitle: {
-    fontSize: 13,
-    fontWeight: "700",
-    color: "#8E8E93",
-    textTransform: "uppercase",
-    letterSpacing: 0.8,
     marginBottom: 8,
     marginLeft: 4,
+    textTransform: "uppercase",
+    letterSpacing: 0.8,
   },
   card: {
-    backgroundColor: RainbowColors.pureWhite,
-    borderRadius: 22,
     overflow: "hidden",
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.13,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 2,
   },
 });

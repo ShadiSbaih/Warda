@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   FlatList,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { Product } from "../../data/productsData";
 import { productsAPI } from "../../services/api";
 import GiftCard from "./GiftCard";
+import { useTheme } from "../../context/ThemeContext";
+import { WardaText } from "../ui";
 
 interface Props {
   selectedCategoryName?: string | null;
@@ -18,46 +17,65 @@ interface Props {
 
 export default function PopularSection({ selectedCategoryName }: Props) {
   const router = useRouter();
-  const [products, setProducts] = useState<Product[]>([]);
+  const { theme } = useTheme();
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    productsAPI.getProducts().then((res) => {
-      if (res.success && res.products) {
-        setProducts(res.products);
-      }
-    }).catch(() => {});
+    setLoading(true);
+    productsAPI
+      .getProducts()
+      .then((res) => {
+        if (res.success && res.products) {
+          setProducts(res.products);
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
-  const displayedGifts = selectedCategoryName && selectedCategoryName !== "All"
-    ? products.filter((p) => p.category === selectedCategoryName)
-    : products;
+  const displayedGifts =
+    selectedCategoryName && selectedCategoryName !== "All"
+      ? products.filter((p) => p.category === selectedCategoryName)
+      : products;
 
   return (
     <View style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.title}>
+        <WardaText variant="h2">
           {selectedCategoryName && selectedCategoryName !== "All"
             ? selectedCategoryName
             : "Popular Gifts"}
-        </Text>
+        </WardaText>
 
-        <TouchableOpacity onPress={() => router.push("/(tabs)/menu")}>
-          <Text style={styles.seeAll}>See All</Text>
-        </TouchableOpacity>
+        {!loading && (
+          <TouchableOpacity onPress={() => router.push("/(tabs)/menu")}>
+            <WardaText variant="body" weight="bold" color={theme.colors.brand}>
+              See All
+            </WardaText>
+          </TouchableOpacity>
+        )}
       </View>
 
-      {/* Cards */}
       <FlatList
         data={displayedGifts}
-        keyExtractor={(item) => (item as any)._id?.toString() || item.id.toString()}
+        keyExtractor={(item) => (item._id || item.id).toString()}
         numColumns={2}
         scrollEnabled={false}
         columnWrapperStyle={styles.row}
+        ListEmptyComponent={
+          <View style={styles.empty}>
+            <WardaText variant="caption" align="center" color={theme.colors.textMuted}>
+              No gifts found for this category.
+            </WardaText>
+          </View>
+        }
         renderItem={({ item }) => (
           <GiftCard
             item={item}
-            onPress={() => router.push(`/details/${(item as any)._id || item.id}` as any)}
+            onPress={() =>
+              router.push(`/details/${item._id || item.id}` as any)
+            }
           />
         )}
       />
@@ -77,18 +95,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 18,
   },
-  title: {
-    fontSize: 22,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
-  },
-  seeAll: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: RainbowColors.tangerine,
-  },
   row: {
     justifyContent: "space-between",
     marginBottom: 6,
+  },
+  empty: {
+    paddingVertical: 40,
+    alignItems: "center",
   },
 });

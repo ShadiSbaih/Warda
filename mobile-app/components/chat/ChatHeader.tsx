@@ -1,47 +1,30 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaIconButton, WardaText } from "@/components/ui";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
 
-import { Feather } from "@expo/vector-icons";
+import { StyleSheet, View } from "react-native";
+
 import { useRouter } from "expo-router";
 
 export default function ChatHeader() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const router = useRouter();
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.iconButton}
-        onPress={() => router.back()}
-      >
-        <Feather
-          name="arrow-left"
-          size={22}
-          color={RainbowColors.inkBlack}
-        />
-      </TouchableOpacity>
+      <WardaIconButton icon="arrow-left" onPress={() => router.back()} />
 
-      <Text style={styles.title}>
+      <WardaText style={styles.title}>
         Ahmad
-      </Text>
+      </WardaText>
 
-      <TouchableOpacity style={styles.iconButton}>
-        <Feather
-          name="phone"
-          size={22}
-          color={RainbowColors.inkBlack}
-        />
-      </TouchableOpacity>
+      <WardaIconButton icon="phone" />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     marginTop: 10,
     marginHorizontal: 20,
@@ -53,37 +36,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  iconButton: {
-    width: 48,
-    height: 48,
-
-    borderRadius: 24,
-
-    backgroundColor: RainbowColors.pureWhite,
-
-    justifyContent: "center",
-
-    alignItems: "center",
-
-    shadowColor: "#000",
-
-    shadowOpacity: 0.15,
-
-    shadowRadius: 16,
-
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-
-    elevation: 5,
-  },
-
   title: {
     fontSize: 22,
 
     fontWeight: "700",
 
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
 });

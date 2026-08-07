@@ -91,9 +91,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const rawPrice = typeof product.price === "string" 
       ? parseFloat(product.price.replace("$", "")) 
       : (product.price || 50);
+
+    const productId = (product._id?.toString?.() || product.id)?.toString();
+    const title = product.name || product.title || "Luxury Gift";
     
     const wrappingColor = options.wrappingColor || (product.wrappingColors ? product.wrappingColors[0] : "#E53935");
-    const cartItemId = `${product.id}-${wrappingColor}-${options.recipientName || "default"}`;
+    const cartItemId = `${productId}-${wrappingColor}-${options.recipientName || "default"}`;
 
     const existingIndex = items.findIndex((i) => i.id === cartItemId);
     let updated: CartItem[];
@@ -104,8 +107,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } else {
       const newItem: CartItem = {
         id: cartItemId,
-        productId: product.id,
-        title: product.name || product.title || "Luxury Gift",
+        productId,
+        title,
         price: rawPrice,
         image: product.image || require("../assets/gifts/red-roses.png"),
         quantity,

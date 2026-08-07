@@ -1,12 +1,8 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import React, { useState } from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Feather } from "@expo/vector-icons";
 
@@ -15,6 +11,8 @@ interface Props {
 }
 
 export default function CustomPhotoUpload({ onPhotoSelected }: Props) {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const [photoUri, setPhotoUri] = useState<string | null>(null);
 
   const handlePickImage = async () => {
@@ -48,11 +46,11 @@ export default function CustomPhotoUpload({ onPhotoSelected }: Props) {
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.iconWrap}>
-          <Feather name="image" size={18} color={RainbowColors.tangerine} />
+          <Feather name="image" size={18} color={theme.colors.brand} />
         </View>
         <View style={styles.headerText}>
-          <Text style={styles.title}>Custom Photo for the Gift</Text>
-          <Text style={styles.subtitle}>Add a personal touch</Text>
+          <WardaText style={styles.title}>Custom Photo for the Gift</WardaText>
+          <WardaText style={styles.subtitle}>Add a personal touch</WardaText>
         </View>
       </View>
 
@@ -66,7 +64,7 @@ export default function CustomPhotoUpload({ onPhotoSelected }: Props) {
             onPress={handleRemove}
             activeOpacity={0.8}
           >
-            <Feather name="x" size={14} color={RainbowColors.pureWhite} />
+            <Feather name="x" size={14} color={theme.colors.surface} />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -74,8 +72,8 @@ export default function CustomPhotoUpload({ onPhotoSelected }: Props) {
             onPress={handlePickImage}
             activeOpacity={0.8}
           >
-            <Feather name="edit-2" size={14} color={RainbowColors.tangerine} />
-            <Text style={styles.changeBtnText}>Change Photo</Text>
+            <Feather name="edit-2" size={14} color={theme.colors.brand} />
+            <WardaText style={styles.changeBtnText}>Change Photo</WardaText>
           </TouchableOpacity>
         </View>
       ) : (
@@ -85,24 +83,24 @@ export default function CustomPhotoUpload({ onPhotoSelected }: Props) {
           activeOpacity={0.8}
         >
           <View style={styles.uploadIcon}>
-            <Feather name="upload-cloud" size={28} color={RainbowColors.tangerine} />
+            <Feather name="upload-cloud" size={28} color={theme.colors.brand} />
           </View>
-          <Text style={styles.uploadText}>Tap to pick a photo</Text>
-          <Text style={styles.uploadHint}>JPG, PNG — up to 5MB</Text>
+          <WardaText style={styles.uploadText}>Tap to pick a photo</WardaText>
+          <WardaText style={styles.uploadHint}>JPG, PNG — up to 5MB</WardaText>
         </TouchableOpacity>
       )}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     marginHorizontal: 20,
     marginVertical: 10,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
     borderRadius: 18,
     padding: 16,
-    shadowColor: RainbowColors.tangerine,
+    shadowColor: theme.colors.brand,
     shadowOpacity: 0.15,
     shadowRadius: 16,
     shadowOffset: { width: 0, height: 4 },
@@ -144,11 +142,11 @@ const styles = StyleSheet.create({
   uploadArea: {
     borderWidth: 2,
     borderStyle: "dashed",
-    borderColor: RainbowColors.cloudSurface,
+    borderColor: theme.colors.borderSubtle,
     borderRadius: 14,
     paddingVertical: 28,
     alignItems: "center",
-    backgroundColor: RainbowColors.cloudSurface,
+    backgroundColor: theme.colors.background,
   },
 
   uploadIcon: {
@@ -164,7 +162,7 @@ const styles = StyleSheet.create({
   uploadText: {
     fontSize: 15,
     fontWeight: "600",
-    color: RainbowColors.tangerine,
+    color: theme.colors.brand,
   },
 
   uploadHint: {
@@ -190,7 +188,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 10,
     right: 10,
-    backgroundColor: RainbowColors.tangerine,
+    backgroundColor: theme.colors.brand,
     borderRadius: 12,
     width: 24,
     height: 24,
@@ -208,6 +206,6 @@ const styles = StyleSheet.create({
   changeBtnText: {
     fontSize: 14,
     fontWeight: "600",
-    color: RainbowColors.tangerine,
+    color: theme.colors.brand,
   },
 });

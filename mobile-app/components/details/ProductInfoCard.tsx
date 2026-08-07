@@ -1,11 +1,9 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-    StyleSheet,
-    Text,
-    View,
-} from "react-native";
+
+import { StyleSheet, View } from "react-native";
 
 interface Props {
   title: string;
@@ -24,14 +22,16 @@ export default function ProductInfoCard({
   time,
   description,
 }: Props) {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   return (
     <View style={styles.container}>
       {/* Top Row */}
 
       <View style={styles.topRow}>
-        <Text style={styles.title}>{title}</Text>
+        <WardaText style={styles.title}>{title}</WardaText>
 
-        <Text style={styles.price}>{price}</Text>
+        <WardaText style={styles.price}>{price}</WardaText>
       </View>
 
       {/* Rating */}
@@ -41,62 +41,62 @@ export default function ProductInfoCard({
           <FontAwesome
             name="star"
             size={15}
-            color={RainbowColors.tangerine}
+            color={theme.colors.brand}
           />
 
-          <Text style={styles.rating}>{rating}</Text>
+          <WardaText style={styles.rating}>{rating}</WardaText>
 
-          <Text style={styles.gray}>
+          <WardaText style={styles.gray}>
             ({reviews} reviews)
-          </Text>
+          </WardaText>
         </View>
 
         <View style={styles.item}>
           <Ionicons
             name="time"
             size={15}
-            color={RainbowColors.tangerine}
+            color={theme.colors.brand}
           />
 
-          <Text style={styles.time}>{time}</Text>
+          <WardaText style={styles.time}>{time}</WardaText>
         </View>
       </View>
 
       {/* Description */}
 
-      <Text style={styles.description}>
+      <WardaText style={styles.description}>
         {description}
-      </Text>
+      </WardaText>
 
       {/* Tags */}
 
       <View style={styles.tags}>
         <View style={styles.tag}>
-          <Text style={styles.tagText}>Romantic</Text>
+          <WardaText style={styles.tagText}>Romantic</WardaText>
         </View>
 
         <View style={styles.tag}>
-          <Text style={styles.tagText}>Luxury</Text>
+          <WardaText style={styles.tagText}>Luxury</WardaText>
         </View>
 
         <View style={styles.tag}>
-          <Text style={styles.tagText}>Perfect Gift</Text>
+          <WardaText style={styles.tagText}>Perfect Gift</WardaText>
         </View>
 
         <View style={styles.tag}>
-          <Text style={styles.tagText}>Natural Rose</Text>
+          <WardaText style={styles.tagText}>Natural Rose</WardaText>
         </View>
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     marginHorizontal: 20,
     marginTop: -45,
 
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
 
     borderRadius: 24,
 
@@ -122,13 +122,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "700",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
 
   price: {
     fontSize: 20,
     fontWeight: "700",
-    color: RainbowColors.tangerine,
+    color: theme.colors.brand,
   },
 
   ratingRow: {
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
 
   gray: {
     marginLeft: 4,
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     fontSize: 14,
   },
 
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     fontWeight: "600",
     fontSize: 15,
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
 
   description: {
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
   },
 
   tagText: {
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     fontSize: 13,
     fontWeight: "500",
   },

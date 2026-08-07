@@ -1,21 +1,12 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaIconButton, WardaText } from "@/components/ui";
 import React, { useState, useRef, useEffect } from "react";
-import { RainbowColors, RainbowRadii } from "../constants/Colors";
+
 import { io, Socket } from "socket.io-client";
 import { chatAPI, API_BASE_URL } from "../services/api";
-import {
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, KeyboardAvoidingView, Platform, ScrollView, StatusBar, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
 export interface Message {
@@ -49,6 +40,8 @@ const QUICK_REPLIES = [
 ];
 
 export default function ChatScreen() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const router = useRouter();
   const { orderId } = useLocalSearchParams();
   const [messages, setMessages] = useState<Message[]>([]);
@@ -150,34 +143,24 @@ export default function ChatScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.pureWhite} />
+      <StatusBar barStyle="dark-content" backgroundColor={theme.colors.surface} />
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         {/* Header */}
         <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.backBtn}
-            onPress={() => router.back()}
-          >
-            <Feather name="arrow-left" size={20} color={RainbowColors.inkBlack} />
-          </TouchableOpacity>
+          <WardaIconButton icon="arrow-left" onPress={() => router.back()} />
 
           <View style={styles.headerProfile}>
             <View style={styles.avatarBox}>
-              <Text style={styles.avatarText}>T</Text>
+              <WardaText style={styles.avatarText}>T</WardaText>
               <View style={styles.onlineDot} />
             </View>
             <View style={{ marginLeft: 10 }}>
-              <Text style={styles.headerName}>Tariq Al-Harbi</Text>
-              <Text style={styles.headerStatus}>Express Gift Courier · Active</Text>
+              <WardaText style={styles.headerName}>Tariq Al-Harbi</WardaText>
+              <WardaText style={styles.headerStatus}>Express Gift Courier · Active</WardaText>
             </View>
           </View>
 
-          <TouchableOpacity
-            style={styles.callBtn}
-            onPress={() => router.push("/live-tracking")}
-          >
-            <Feather name="navigation" size={18} color={RainbowColors.tangerine} />
-          </TouchableOpacity>
+          <WardaIconButton icon="navigation" variant="secondary" onPress={() => router.push("/live-tracking")} />
         </View>
 
         <KeyboardAvoidingView
@@ -193,7 +176,7 @@ export default function ChatScreen() {
           >
             {/* Timestamp pill */}
             <View style={styles.datePill}>
-              <Text style={styles.datePillText}>Today</Text>
+              <WardaText style={styles.datePillText}>Today</WardaText>
             </View>
 
             {messages.map((msg) => {
@@ -212,22 +195,22 @@ export default function ChatScreen() {
                       isMe ? styles.bubbleMe : styles.bubbleOther,
                     ]}
                   >
-                    <Text
+                    <WardaText
                       style={[
                         styles.messageText,
                         isMe ? styles.messageTextMe : styles.messageTextOther,
                       ]}
                     >
                       {msg.text}
-                    </Text>
-                    <Text
+                    </WardaText>
+                    <WardaText
                       style={[
                         styles.messageTime,
                         isMe ? styles.messageTimeMe : styles.messageTimeOther,
                       ]}
                     >
                       {msg.time}
-                    </Text>
+                    </WardaText>
                   </View>
                 </View>
               );
@@ -235,7 +218,7 @@ export default function ChatScreen() {
 
             {isTyping && (
               <View style={styles.typingIndicator}>
-                <Text style={styles.typingText}>Tariq is typing...</Text>
+                <WardaText style={styles.typingText}>Tariq is typing...</WardaText>
               </View>
             )}
           </ScrollView>
@@ -254,7 +237,7 @@ export default function ChatScreen() {
                   activeOpacity={0.8}
                   onPress={() => sendMessage(reply)}
                 >
-                  <Text style={styles.quickChipText}>{reply}</Text>
+                  <WardaText style={styles.quickChipText}>{reply}</WardaText>
                 </TouchableOpacity>
               ))}
             </ScrollView>
@@ -271,21 +254,11 @@ export default function ChatScreen() {
               onSubmitEditing={() => sendMessage()}
             />
 
-            <TouchableOpacity
-              style={[
-                styles.sendBtn,
-                !inputText.trim() && { backgroundColor: RainbowColors.cloudSurface },
-              ]}
-              disabled={!inputText.trim()}
-              activeOpacity={0.85}
-              onPress={() => sendMessage()}
-            >
-              <Ionicons
-                name="send"
-                size={18}
-                color={inputText.trim() ? RainbowColors.pureWhite : RainbowColors.stone}
-              />
-            </TouchableOpacity>
+            <WardaIconButton
+              icon="send"
+              variant={inputText.trim() ? "primary" : "default"}
+              onPress={inputText.trim() ? () => sendMessage() : undefined}
+            />
           </View>
         </KeyboardAvoidingView>
       </SafeAreaView>
@@ -293,10 +266,10 @@ export default function ChatScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
   },
   header: {
     flexDirection: "row",
@@ -305,16 +278,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: RainbowColors.cloudSurface,
-    backgroundColor: RainbowColors.pureWhite,
-  },
-  backBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.cloudSurface,
-    justifyContent: "center",
-    alignItems: "center",
+    borderBottomColor: theme.colors.borderSubtle,
+    backgroundColor: theme.colors.surface,
   },
   headerProfile: {
     flexDirection: "row",
@@ -325,18 +290,18 @@ const styles = StyleSheet.create({
   avatarBox: {
     width: 42,
     height: 42,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.cloudSurface,
+    borderRadius: theme.radii.full,
+    backgroundColor: theme.colors.background,
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
     borderWidth: 1.5,
-    borderColor: RainbowColors.cloudSurface,
+    borderColor: theme.colors.borderSubtle,
   },
   avatarText: {
     fontSize: 18,
     fontWeight: "800",
-    color: RainbowColors.tangerine,
+    color: theme.colors.brand,
   },
   onlineDot: {
     width: 10,
@@ -347,25 +312,17 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     borderWidth: 2,
-    borderColor: RainbowColors.pureWhite,
+    borderColor: theme.colors.surface,
   },
   headerName: {
     fontSize: 15,
     fontWeight: "700",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
   headerStatus: {
     fontSize: 11.5,
     color: "#10B981",
     fontWeight: "600",
-  },
-  callBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.cloudSurface,
-    justifyContent: "center",
-    alignItems: "center",
   },
   chatScroll: {
     flex: 1,
@@ -377,15 +334,15 @@ const styles = StyleSheet.create({
   },
   datePill: {
     alignSelf: "center",
-    backgroundColor: RainbowColors.cloudSurface,
+    backgroundColor: theme.colors.background,
     paddingHorizontal: 12,
     paddingVertical: 4,
-    borderRadius: RainbowRadii.pills,
+    borderRadius: theme.radii.full,
     marginBottom: 16,
   },
   datePillText: {
     fontSize: 11,
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     fontWeight: "600",
   },
   messageWrapper: {
@@ -405,13 +362,13 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   bubbleMe: {
-    backgroundColor: RainbowColors.tangerine,
+    backgroundColor: theme.colors.brand,
     borderBottomRightRadius: 4,
   },
   bubbleOther: {
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
     borderBottomLeftRadius: 4,
-    shadowColor: RainbowColors.inkBlack,
+    shadowColor: theme.colors.text,
     shadowOpacity: 0.05,
     shadowRadius: 6,
     elevation: 2,
@@ -421,10 +378,10 @@ const styles = StyleSheet.create({
     lineHeight: 21,
   },
   messageTextMe: {
-    color: RainbowColors.pureWhite,
+    color: theme.colors.textInverse,
   },
   messageTextOther: {
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
   messageTime: {
     fontSize: 10.5,
@@ -435,42 +392,42 @@ const styles = StyleSheet.create({
     color: "rgba(255, 255, 255, 0.75)",
   },
   messageTimeOther: {
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
   },
   typingIndicator: {
     paddingHorizontal: 14,
     paddingVertical: 6,
-    backgroundColor: RainbowColors.cloudSurface,
+    backgroundColor: theme.colors.background,
     borderRadius: 12,
     alignSelf: "flex-start",
     marginTop: 6,
   },
   typingText: {
     fontSize: 12,
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     fontStyle: "italic",
   },
   quickRepliesContainer: {
     paddingVertical: 8,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
     borderTopWidth: 1,
-    borderTopColor: RainbowColors.cloudSurface,
+    borderTopColor: theme.colors.borderSubtle,
   },
   quickRepliesList: {
     paddingHorizontal: 16,
     gap: 8,
   },
   quickChip: {
-    backgroundColor: RainbowColors.cloudSurface,
+    backgroundColor: theme.colors.background,
     paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: RainbowRadii.pills,
+    borderRadius: theme.radii.full,
     borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
+    borderColor: theme.colors.borderSubtle,
   },
   quickChipText: {
     fontSize: 12.5,
-    color: RainbowColors.tangerine,
+    color: theme.colors.brand,
     fontWeight: "600",
   },
   inputContainer: {
@@ -478,24 +435,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 10,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
     gap: 10,
   },
   input: {
     flex: 1,
-    backgroundColor: RainbowColors.cloudSurface,
-    borderRadius: RainbowRadii.pills,
+    backgroundColor: theme.colors.background,
+    borderRadius: theme.radii.full,
     paddingHorizontal: 18,
     paddingVertical: 10,
     fontSize: 14.5,
-    color: RainbowColors.inkBlack,
-  },
-  sendBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.tangerine,
-    justifyContent: "center",
-    alignItems: "center",
+    color: theme.colors.text,
   },
 });

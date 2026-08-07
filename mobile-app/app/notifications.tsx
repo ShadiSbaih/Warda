@@ -1,5 +1,6 @@
+import { useTheme } from "@/context/ThemeContext";
 import React, { useMemo, useState } from "react";
-import { RainbowColors, RainbowRadii } from "../constants/Colors";
+
 import {
     ScrollView,
     StatusBar,
@@ -14,6 +15,8 @@ import NotificationTabs from "../components/notification/NotificationTabs";
 import { notifications } from "../data/notifications";
 
 export default function NotificationsScreen() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const [activeTab, setActiveTab] =
     useState("All");
 
@@ -32,7 +35,7 @@ export default function NotificationsScreen() {
   return (
     <>
       <StatusBar
-        backgroundColor={RainbowColors.cloudSurface}
+        backgroundColor={theme.colors.background}
         barStyle="dark-content"
       />
 
@@ -67,10 +70,10 @@ export default function NotificationsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: RainbowColors.cloudSurface,
+    backgroundColor: theme.colors.background,
   },
 
   content: {

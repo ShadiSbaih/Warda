@@ -1,16 +1,14 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
 export default function MapCard() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const router = useRouter();
 
   return (
@@ -26,7 +24,7 @@ export default function MapCard() {
       <View style={styles.pinContainer}>
         <View style={styles.pinGlow} />
         <View style={styles.pin}>
-          <Ionicons name="location-sharp" size={24} color={RainbowColors.pureWhite} />
+          <Ionicons name="location-sharp" size={24} color={theme.colors.surface} />
         </View>
       </View>
 
@@ -36,14 +34,14 @@ export default function MapCard() {
         activeOpacity={0.88}
         onPress={() => router.push("/delivery-address")}
       >
-        <Feather name="edit-2" size={13} color={RainbowColors.tangerine} />
-        <Text style={styles.editText}>Change Pin</Text>
+        <Feather name="edit-2" size={13} color={theme.colors.brand} />
+        <WardaText style={styles.editText}>Change Pin</WardaText>
       </TouchableOpacity>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     marginTop: 18,
     marginHorizontal: 20,
@@ -51,7 +49,7 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     overflow: "hidden",
     backgroundColor: "#F7F4F6",
-    shadowColor: RainbowColors.tangerine,
+    shadowColor: theme.colors.brand,
     shadowOpacity: 0.1,
     shadowRadius: 20,
     shadowOffset: {
@@ -84,16 +82,16 @@ const styles = StyleSheet.create({
     width: 46,
     height: 46,
     borderRadius: 23,
-    backgroundColor: RainbowColors.tangerine,
+    backgroundColor: theme.colors.brand,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: RainbowColors.tangerine,
+    shadowColor: theme.colors.brand,
     shadowOpacity: 0.45,
     shadowRadius: 16,
     shadowOffset: { width: 0, height: 4 },
     elevation: 8,
     borderWidth: 2.5,
-    borderColor: RainbowColors.pureWhite,
+    borderColor: theme.colors.surface,
   },
   editButton: {
     position: "absolute",
@@ -105,7 +103,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
     shadowColor: "#000",
     shadowOpacity: 0.12,
     shadowRadius: 8,
@@ -115,6 +113,6 @@ const styles = StyleSheet.create({
   editText: {
     fontSize: 13,
     fontWeight: "700",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
 });

@@ -1,11 +1,7 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 import {
@@ -21,7 +17,9 @@ interface Props {
 export default function BottomTabs({
   active = "home",
 }: Props) {
-  const activeColor = RainbowColors.tangerine;
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
+  const activeColor = theme.colors.brand;
   const inactiveColor = "#8E8E93";
 
   return (
@@ -44,7 +42,7 @@ export default function BottomTabs({
         <TouchableOpacity style={styles.item}>
           {active === "home" && (
             <LinearGradient
-              colors={[RainbowColors.tangerine, "rgba(255,138,0,0)"]}
+              colors={[theme.colors.brand, "rgba(255,138,0,0)"]}
               style={styles.activeGlow}
               start={{ x: 0.5, y: 0 }}
               end={{ x: 0.5, y: 1 }}
@@ -57,16 +55,16 @@ export default function BottomTabs({
               color={active === "home" ? activeColor : inactiveColor}
             />
           </View>
-          <Text style={[styles.label, { color: active === "home" ? activeColor : inactiveColor }]}>
+          <WardaText style={[styles.label, { color: active === "home" ? activeColor : inactiveColor }]}>
             Home
-          </Text>
+          </WardaText>
         </TouchableOpacity>
 
         {/* Menu */}
         <TouchableOpacity style={styles.item}>
           {active === "menu" && (
             <LinearGradient
-              colors={[RainbowColors.tangerine, "rgba(255,138,0,0)"]}
+              colors={[theme.colors.brand, "rgba(255,138,0,0)"]}
               style={styles.activeGlow}
               start={{ x: 0.5, y: 0 }}
               end={{ x: 0.5, y: 1 }}
@@ -79,16 +77,16 @@ export default function BottomTabs({
               color={active === "menu" ? activeColor : inactiveColor}
             />
           </View>
-          <Text style={[styles.label, { color: active === "menu" ? activeColor : inactiveColor }]}>
+          <WardaText style={[styles.label, { color: active === "menu" ? activeColor : inactiveColor }]}>
             Menu
-          </Text>
+          </WardaText>
         </TouchableOpacity>
 
         {/* Orders */}
         <TouchableOpacity style={styles.item}>
           {active === "orders" && (
             <LinearGradient
-              colors={[RainbowColors.tangerine, "rgba(255,138,0,0)"]}
+              colors={[theme.colors.brand, "rgba(255,138,0,0)"]}
               style={styles.activeGlow}
               start={{ x: 0.5, y: 0 }}
               end={{ x: 0.5, y: 1 }}
@@ -101,16 +99,16 @@ export default function BottomTabs({
               color={active === "orders" ? activeColor : inactiveColor}
             />
           </View>
-          <Text style={[styles.label, { color: active === "orders" ? activeColor : inactiveColor }]}>
+          <WardaText style={[styles.label, { color: active === "orders" ? activeColor : inactiveColor }]}>
             Orders
-          </Text>
+          </WardaText>
         </TouchableOpacity>
 
         {/* Profile */}
         <TouchableOpacity style={styles.item}>
           {active === "profile" && (
             <LinearGradient
-              colors={[RainbowColors.tangerine, "rgba(255,138,0,0)"]}
+              colors={[theme.colors.brand, "rgba(255,138,0,0)"]}
               style={styles.activeGlow}
               start={{ x: 0.5, y: 0 }}
               end={{ x: 0.5, y: 1 }}
@@ -123,16 +121,16 @@ export default function BottomTabs({
               color={active === "profile" ? activeColor : inactiveColor}
             />
           </View>
-          <Text style={[styles.label, { color: active === "profile" ? activeColor : inactiveColor }]}>
+          <WardaText style={[styles.label, { color: active === "profile" ? activeColor : inactiveColor }]}>
             Profile
-          </Text>
+          </WardaText>
         </TouchableOpacity>
       </LinearGradient>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   shadowWrapper: {
     // Outer drop shadow that lifts the nav bar as a 3D panel
     shadowColor: "#5a5a7a",

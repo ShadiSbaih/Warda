@@ -1,82 +1,50 @@
 import React, { useState } from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
 import {
   Alert,
   Image,
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+
+import { useTheme } from "../../context/ThemeContext";
+import { WardaBadge, WardaButton, WardaCard, WardaIconButton, WardaText } from "../../components/ui";
 import { Order, useOrders } from "../../context/OrdersContext";
 import { useCart } from "../../context/CartContext";
 
 const STATUS_CONFIG: Record<
   Order["status"],
-  { label: string; bg: string; text: string; icon: keyof typeof Feather.glyphMap }
+  { label: string; variant: "info" | "warning" | "success" | "brand" | "error"; icon: keyof typeof Feather.glyphMap }
 > = {
-  confirmed: {
-    label: "Order Confirmed",
-    bg: "#EFF6FF",
-    text: "#2563EB",
-    icon: "check-circle",
-  },
-  preparing: {
-    label: "Arranging Bouquet",
-    bg: "#FFFBEB",
-    text: "#D97706",
-    icon: "package",
-  },
-  on_the_way: {
-    label: "Out for Delivery",
-    bg: "#ECFDF5",
-    text: "#059669",
-    icon: "truck",
-  },
-  delivered: {
-    label: "Delivered",
-    bg: "#F3E8FF",
-    text: "#7C3AED",
-    icon: "gift",
-  },
-  cancelled: {
-    label: "Cancelled",
-    bg: "#FEF2F2",
-    text: "#DC2626",
-    icon: "x-circle",
-  },
+  confirmed: { label: "Order Confirmed", variant: "info", icon: "check-circle" },
+  preparing: { label: "Arranging Bouquet", variant: "warning", icon: "package" },
+  on_the_way: { label: "Out for Delivery", variant: "success", icon: "truck" },
+  delivered: { label: "Delivered", variant: "brand", icon: "gift" },
+  cancelled: { label: "Cancelled", variant: "error", icon: "x-circle" },
 };
 
 export default function OrdersScreen() {
   const router = useRouter();
+  const { theme } = useTheme();
   const { orders, cancelOrder } = useOrders();
   const { addToCart } = useCart();
   const [activeTab, setActiveTab] = useState<"active" | "history">("active");
 
-  const activeOrders = orders.filter(
-    (o) => o.status === "on_the_way" || o.status === "preparing" || o.status === "confirmed"
-  );
-  const pastOrders = orders.filter(
-    (o) => o.status === "delivered" || o.status === "cancelled"
-  );
-
+  const activeOrders = orders.filter((o) => o.status === "on_the_way" || o.status === "preparing" || o.status === "confirmed");
+  const pastOrders = orders.filter((o) => o.status === "delivered" || o.status === "cancelled");
   const displayedOrders = activeTab === "active" ? activeOrders : pastOrders;
 
   const handleReorder = (order: Order) => {
     order.items.forEach((item) => {
       addToCart(
-        { id: item.productId, name: item.title, price: item.price, image: item.image },
+        { id: item.product, name: item.title, price: item.unitPrice, image: item.image },
         item.quantity,
-        {
-          wrappingColor: item.wrappingColor,
-          wrappingName: item.wrappingName,
-          giftMessage: item.giftMessage,
-        }
+        { wrappingColor: item.wrappingColor, wrappingName: item.wrappingName, giftMessage: item.giftMessage }
       );
     });
     Alert.alert(
@@ -95,277 +63,56 @@ export default function OrdersScreen() {
       "Are you sure you want to cancel this order? A full refund will be processed immediately.",
       [
         { text: "No", style: "cancel" },
-        {
-          text: "Yes, Cancel",
-          style: "destructive",
-          onPress: () => cancelOrder(orderId),
-        },
+        { text: "Yes, Cancel", style: "destructive", onPress: () => cancelOrder(orderId) },
       ]
     );
   };
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.pureWhite} />
-      <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
-        {/* Header */}
+      <StatusBar barStyle="dark-content" backgroundColor={theme.colors.surface} />
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]} edges={["top", "left", "right"]}>
         <View style={styles.header}>
           <View>
-            <Text style={styles.headerTitle}>My Gift Orders</Text>
-            <Text style={styles.headerSub}>Live tracking & delivery receipts</Text>
+            <WardaText variant="h1">My Gift Orders</WardaText>
+            <WardaText variant="caption" color={theme.colors.textMuted}>
+              Live tracking & delivery receipts
+            </WardaText>
           </View>
-
-          <TouchableOpacity
-            style={styles.notifBtn}
-            onPress={() => router.push("/notifications")}
-          >
-            <Feather name="bell" size={20} color={RainbowColors.inkBlack} />
-          </TouchableOpacity>
+          <WardaIconButton icon="bell" onPress={() => router.push("/notifications")} />
         </View>
 
-        {/* Tab Switcher */}
-        <View style={styles.tabBar}>
-          <TouchableOpacity
-            style={[styles.tabBtn, activeTab === "active" && styles.tabBtnActive]}
-            onPress={() => setActiveTab("active")}
-          >
-            <Text
-              style={[
-                styles.tabText,
-                activeTab === "active" && styles.tabTextActive,
-              ]}
-            >
-              Active Orders ({activeOrders.length})
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.tabBtn, activeTab === "history" && styles.tabBtnActive]}
-            onPress={() => setActiveTab("history")}
-          >
-            <Text
-              style={[
-                styles.tabText,
-                activeTab === "history" && styles.tabTextActive,
-              ]}
-            >
-              Order History ({pastOrders.length})
-            </Text>
-          </TouchableOpacity>
+        <View style={[styles.tabBar, { backgroundColor: theme.colors.background }]}>
+          <TabButton active={activeTab === "active"} label={`Active Orders (${activeOrders.length})`} onPress={() => setActiveTab("active")} />
+          <TabButton active={activeTab === "history"} label={`Order History (${pastOrders.length})`} onPress={() => setActiveTab("history")} />
         </View>
 
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContent}
-        >
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
           {displayedOrders.length === 0 ? (
             <View style={styles.emptyState}>
-              <View style={styles.emptyIconCircle}>
+              <View style={[styles.emptyIconCircle, { backgroundColor: theme.colors.brandLight }]}>
                 <Ionicons
                   name={activeTab === "active" ? "gift-outline" : "file-tray-outline"}
                   size={42}
-                  color={RainbowColors.tangerine}
+                  color={theme.colors.brand}
                 />
               </View>
-              <Text style={styles.emptyTitle}>
-                {activeTab === "active"
-                  ? "No active gift deliveries"
-                  : "No past orders yet"}
-              </Text>
-              <Text style={styles.emptyDesc}>
+              <WardaText variant="h2" style={{ marginBottom: 6 }}>
+                {activeTab === "active" ? "No active gift deliveries" : "No past orders yet"}
+              </WardaText>
+              <WardaText variant="body" align="center" color={theme.colors.textMuted} style={{ marginBottom: 24, paddingHorizontal: 24 }}>
                 {activeTab === "active"
                   ? "Surprise someone special today with a luxury flower arrangement."
                   : "Your completed orders and receipts will appear here."}
-              </Text>
-              <TouchableOpacity
-                style={styles.browseBtn}
-                activeOpacity={0.9}
-                onPress={() => router.push("/(tabs)/menu")}
-              >
-                <Text style={styles.browseBtnText}>Explore Gift Catalog</Text>
-                <Feather name="arrow-right" size={16} color={RainbowColors.pureWhite} />
-              </TouchableOpacity>
+              </WardaText>
+              <WardaButton title="Explore Gift Catalog" iconRight="arrow-right" onPress={() => router.push("/(tabs)/menu")} />
             </View>
           ) : (
-            displayedOrders.map((order) => {
-              const statusCfg = STATUS_CONFIG[order.status];
-              return (
-                <View key={order.id} style={styles.orderCard}>
-                  {/* Top Bar: ID + Status Pill */}
-                  <View style={styles.cardHeader}>
-                    <View>
-                      <Text style={styles.orderId}>
-                        Order #{order.id.slice(-6).toUpperCase()}
-                      </Text>
-                      <Text style={styles.orderDate}>
-                        {new Date(order.createdAt).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </Text>
-                    </View>
-
-                    <View
-                      style={[
-                        styles.statusPill,
-                        { backgroundColor: statusCfg.bg },
-                      ]}
-                    >
-                      <Feather
-                        name={statusCfg.icon}
-                        size={12}
-                        color={statusCfg.text}
-                      />
-                      <Text
-                        style={[styles.statusText, { color: statusCfg.text }]}
-                      >
-                        {statusCfg.label}
-                      </Text>
-                    </View>
-                  </View>
-
-                  {/* ETA Banner for active orders */}
-                  {order.status === "on_the_way" && (
-                    <View style={styles.etaBanner}>
-                      <View style={styles.etaLeft}>
-                        <MaterialCommunityIcons
-                          name="moped"
-                          size={20}
-                          color="#059669"
-                        />
-                        <Text style={styles.etaText}>
-                          Driver Tariq is on the way · ~18 mins away
-                        </Text>
-                      </View>
-                      <TouchableOpacity
-                        onPress={() =>
-                          router.push({
-                            pathname: "/live-tracking",
-                            params: { orderId: order.id },
-                          })
-                        }
-                      >
-                        <Text style={styles.etaLink}>Live Map</Text>
-                      </TouchableOpacity>
-                    </View>
-                  )}
-
-                  {/* Items Preview */}
-                  <View style={styles.itemsList}>
-                    {order.items.map((item, idx) => (
-                      <View key={idx} style={styles.itemRow}>
-                        <Image
-                          source={item.image}
-                          style={styles.itemImage}
-                          resizeMode="contain"
-                        />
-                        <View style={{ flex: 1, marginLeft: 10 }}>
-                          <Text numberOfLines={1} style={styles.itemName}>
-                            {item.title}
-                          </Text>
-                          <Text style={styles.itemMeta}>
-                            Qty: {item.quantity}{" "}
-                            {item.wrappingName ? `• ${item.wrappingName}` : ""}
-                          </Text>
-                        </View>
-                        <Text style={styles.itemPrice}>
-                          ${(item.price * item.quantity).toFixed(2)}
-                        </Text>
-                      </View>
-                    ))}
-                  </View>
-
-                  {/* Destination Info */}
-                  <View style={styles.destRow}>
-                    <Ionicons name="location-outline" size={15} color={RainbowColors.stone} />
-                    <Text numberOfLines={1} style={styles.destText}>
-                      {order.address}
-                    </Text>
-                  </View>
-
-                  {/* Footer: Price & Actions */}
-                  <View style={styles.cardFooter}>
-                    <View>
-                      <Text style={styles.totalLabel}>Total Paid</Text>
-                      <Text style={styles.totalPrice}>${order.total.toFixed(2)}</Text>
-                    </View>
-
-                    <View style={styles.actionsRow}>
-                      {order.status === "on_the_way" || order.status === "preparing" ? (
-                        <>
-                          <TouchableOpacity
-                            style={styles.trackBtn}
-                            activeOpacity={0.88}
-                            onPress={() =>
-                              router.push({
-                                pathname: "/live-tracking",
-                                params: { orderId: order.id },
-                              })
-                            }
-                          >
-                            <Feather name="navigation" size={14} color={RainbowColors.pureWhite} />
-                            <Text style={styles.trackBtnText}>Track GPS</Text>
-                          </TouchableOpacity>
-
-                          <TouchableOpacity
-                            style={styles.chatBtn}
-                            activeOpacity={0.88}
-                            onPress={() =>
-                              router.push({
-                                pathname: "/chat",
-                                params: { orderId: order.id },
-                              })
-                            }
-                          >
-                            <Ionicons
-                              name="chatbubble-ellipses-outline"
-                              size={16}
-                              color={RainbowColors.inkBlack}
-                            />
-                          </TouchableOpacity>
-                        </>
-                      ) : order.status === "delivered" ? (
-                        <>
-                          <TouchableOpacity
-                            style={styles.reorderBtn}
-                            activeOpacity={0.88}
-                            onPress={() => handleReorder(order)}
-                          >
-                            <Feather name="repeat" size={14} color={RainbowColors.tangerine} />
-                            <Text style={styles.reorderText}>Re-order</Text>
-                          </TouchableOpacity>
-
-                          <TouchableOpacity
-                            style={styles.reviewBtn}
-                            activeOpacity={0.88}
-                            onPress={() =>
-                              router.push({
-                                pathname: "/review",
-                                params: { orderId: order.id },
-                              })
-                            }
-                          >
-                            <Feather name="star" size={14} color={RainbowColors.pureWhite} />
-                            <Text style={styles.reviewBtnText}>Review</Text>
-                          </TouchableOpacity>
-                        </>
-                      ) : (
-                        <TouchableOpacity
-                          style={styles.reorderBtn}
-                          activeOpacity={0.88}
-                          onPress={() => handleReorder(order)}
-                        >
-                          <Feather name="repeat" size={14} color={RainbowColors.tangerine} />
-                          <Text style={styles.reorderText}>Re-order</Text>
-                        </TouchableOpacity>
-                      )}
-                    </View>
-                  </View>
-                </View>
-              );
-            })
+            <View style={styles.list}>
+              {displayedOrders.map((order) => (
+                <OrderCard key={order.id} order={order} theme={theme} router={router} onReorder={handleReorder} onCancel={handleCancel} />
+              ))}
+            </View>
           )}
         </ScrollView>
       </SafeAreaView>
@@ -373,10 +120,164 @@ export default function OrdersScreen() {
   );
 }
 
+function TabButton({ active, label, onPress }: { active: boolean; label: string; onPress: () => void }) {
+  const { theme } = useTheme();
+  return (
+    <TouchableOpacity
+      activeOpacity={0.85}
+      onPress={onPress}
+      style={[
+        styles.tabBtn,
+        { backgroundColor: active ? theme.colors.brand : "transparent" },
+      ]}
+    >
+      <WardaText variant="caption" weight={active ? "bold" : "semibold"} color={active ? theme.colors.textInverse : theme.colors.textMuted}>
+        {label}
+      </WardaText>
+    </TouchableOpacity>
+  );
+}
+
+function OrderCard({
+  order,
+  theme,
+  router,
+  onReorder,
+  onCancel,
+}: {
+  order: Order;
+  theme: any;
+  router: any;
+  onReorder: (o: Order) => void;
+  onCancel: (id: string) => void;
+}) {
+  const statusCfg = STATUS_CONFIG[order.status];
+
+  return (
+    <WardaCard radius="xl" padding="md" shadow="md" style={styles.orderCard}>
+      <View style={styles.cardHeader}>
+        <View>
+          <WardaText variant="body" weight="extrabold">
+            Order #{order.id.slice(-6).toUpperCase()}
+          </WardaText>
+          <WardaText variant="caption" color={theme.colors.textMuted}>
+            {new Date(order.createdAt).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </WardaText>
+        </View>
+        <WardaBadge
+          text={statusCfg.label}
+          variant={statusCfg.variant}
+          icon={statusCfg.icon as any}
+        />
+      </View>
+
+      {order.status === "on_the_way" && (
+        <View style={[styles.etaBanner, { backgroundColor: theme.colors.successSurface }]}>
+          <View style={styles.etaLeft}>
+            <MaterialCommunityIcons name="moped" size={20} color={theme.colors.success} />
+            <WardaText variant="caption" color={theme.colors.success}>
+              Driver Tariq is on the way · ~18 mins away
+            </WardaText>
+          </View>
+          <TouchableOpacity onPress={() => router.push({ pathname: "/live-tracking", params: { orderId: order.id } })}>
+            <WardaText variant="caption" weight="bold" color={theme.colors.success}>
+              Live Map
+            </WardaText>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      <View style={[styles.itemsList, { borderColor: theme.colors.borderSubtle }]}>
+        {order.items.map((item, idx) => (
+          <View key={idx} style={styles.itemRow}>
+            <Image
+              source={
+                typeof item.image === "string" && item.image
+                  ? { uri: item.image }
+                  : (item.image as any) || require("../../assets/gifts/red-roses.png")
+              }
+              style={styles.itemImage}
+              resizeMode="contain"
+            />
+            <View style={{ flex: 1, marginLeft: 10 }}>
+              <WardaText variant="body" weight="semibold" numberOfLines={1}>
+                {item.title}
+              </WardaText>
+              <WardaText variant="caption" color={theme.colors.textMuted}>
+                Qty: {item.quantity} {item.wrappingName ? `• ${item.wrappingName}` : ""}
+              </WardaText>
+            </View>
+            <WardaText variant="body" weight="bold" color={theme.colors.brand}>
+              ${(item.unitPrice * item.quantity).toFixed(2)}
+            </WardaText>
+          </View>
+        ))}
+      </View>
+
+      <View style={styles.destRow}>
+        <Ionicons name="location-outline" size={15} color={theme.colors.textMuted} />
+        <WardaText variant="caption" color={theme.colors.textMuted} numberOfLines={1} style={{ flex: 1, marginLeft: 4 }}>
+          {order.address}
+        </WardaText>
+      </View>
+
+      <View style={styles.cardFooter}>
+        <View>
+          <WardaText variant="caption" color={theme.colors.textMuted}>
+            Total Paid
+          </WardaText>
+          <WardaText variant="h2" color={theme.colors.brand}>
+            ${order.total.toFixed(2)}
+          </WardaText>
+        </View>
+
+        <View style={styles.actionsRow}>
+          {order.status === "on_the_way" || order.status === "preparing" ? (
+            <>
+              <WardaButton
+                title="Track GPS"
+                icon="navigation"
+                size="sm"
+                onPress={() => router.push({ pathname: "/live-tracking", params: { orderId: order.id } })}
+              />
+              <WardaIconButton icon="message-circle" onPress={() => router.push({ pathname: "/chat", params: { orderId: order.id } })} />
+            </>
+          ) : order.status === "delivered" ? (
+            <>
+              <WardaButton
+                title="Re-order"
+                variant="outline"
+                icon="repeat"
+                size="sm"
+                onPress={() => onReorder(order)}
+              />
+              <WardaButton title="Review" icon="star" size="sm" onPress={() => router.push({ pathname: "/review", params: { orderId: order.id } })} />
+            </>
+          ) : (
+            <WardaButton title="Re-order" variant="outline" icon="repeat" size="sm" onPress={() => onReorder(order)} />
+          )}
+        </View>
+      </View>
+
+      {(order.status === "confirmed" || order.status === "preparing") && (
+        <TouchableOpacity activeOpacity={0.75} onPress={() => onCancel(order.id)} style={[styles.cancelLink, { borderTopColor: theme.colors.borderSubtle }]}>
+          <WardaText variant="caption" weight="bold" color={theme.colors.error}>
+            Cancel Order
+          </WardaText>
+        </TouchableOpacity>
+      )}
+    </WardaCard>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: RainbowColors.pureWhite,
   },
   header: {
     flexDirection: "row",
@@ -385,32 +286,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 12,
   },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
-  },
-  headerSub: {
-    fontSize: 13,
-    color: RainbowColors.stone,
-    marginTop: 2,
-  },
-  notifBtn: {
-    width: 42,
-    height: 42,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.pureWhite,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: RainbowColors.inkBlack,
-    shadowOpacity: 0.05,
-    shadowRadius: 6,
-    elevation: 2,
-  },
   tabBar: {
     flexDirection: "row",
-    backgroundColor: RainbowColors.cloudSurface,
-    borderRadius: RainbowRadii.cards,
+    borderRadius: 999,
     marginHorizontal: 20,
     marginTop: 8,
     marginBottom: 14,
@@ -418,151 +296,61 @@ const styles = StyleSheet.create({
   },
   tabBtn: {
     flex: 1,
-    paddingVertical: 10,
-    borderRadius: 12,
     alignItems: "center",
-  },
-  tabBtnActive: {
-    backgroundColor: RainbowColors.pureWhite,
-    shadowColor: RainbowColors.inkBlack,
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  tabText: {
-    fontSize: 13.5,
-    fontWeight: "600",
-    color: RainbowColors.stone,
-  },
-  tabTextActive: {
-    color: RainbowColors.tangerine,
-    fontWeight: "800",
+    justifyContent: "center",
+    paddingVertical: 8,
+    borderRadius: 999,
   },
   scrollContent: {
     paddingHorizontal: 20,
-    paddingBottom: 130,
-    gap: 16,
+    paddingBottom: 40,
   },
   emptyState: {
+    marginTop: 80,
     alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 60,
-    backgroundColor: RainbowColors.pureWhite,
-    borderRadius: RainbowRadii.cards,
     paddingHorizontal: 24,
-    marginTop: 10,
   },
   emptyIconCircle: {
-    width: 80,
-    height: 80,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.cloudSurface,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 16,
+    marginBottom: 22,
   },
-  emptyTitle: {
-    fontSize: 18,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
-    marginBottom: 6,
-  },
-  emptyDesc: {
-    fontSize: 13.5,
-    color: RainbowColors.stone,
-    textAlign: "center",
-    lineHeight: 20,
-    marginBottom: 20,
-  },
-  browseBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: RainbowColors.tangerine,
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: RainbowRadii.pills,
-    gap: 8,
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  browseBtnText: {
-    color: RainbowColors.pureWhite,
-    fontSize: 14,
-    fontWeight: "700",
+  list: {
+    gap: 16,
   },
   orderCard: {
-    backgroundColor: RainbowColors.pureWhite,
-    borderRadius: RainbowRadii.cards,
-    padding: 16,
-    shadowColor: RainbowColors.inkBlack,
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 3,
+    overflow: "hidden",
   },
   cardHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    borderBottomWidth: 1,
-    borderBottomColor: RainbowColors.cloudSurface,
-    paddingBottom: 12,
-  },
-  orderId: {
-    fontSize: 15,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
-  },
-  orderDate: {
-    fontSize: 12,
-    color: RainbowColors.stone,
-    marginTop: 2,
-  },
-  statusPill: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 12,
-    gap: 5,
-  },
-  statusText: {
-    fontSize: 11.5,
-    fontWeight: "700",
+    marginBottom: 12,
   },
   etaBanner: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#ECFDF5",
+    justifyContent: "space-between",
+    borderRadius: 14,
     paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 12,
-    marginTop: 10,
+    paddingVertical: 10,
+    marginBottom: 14,
   },
   etaLeft: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 6,
+    gap: 8,
     flex: 1,
-  },
-  etaText: {
-    fontSize: 12,
-    fontWeight: "600",
-    color: "#059669",
-    flex: 1,
-  },
-  etaLink: {
-    fontSize: 12,
-    fontWeight: "700",
-    color: "#059669",
-    textDecorationLine: "underline",
   },
   itemsList: {
-    paddingVertical: 10,
-    gap: 10,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    paddingVertical: 14,
+    marginBottom: 12,
+    gap: 12,
   },
   itemRow: {
     flexDirection: "row",
@@ -572,114 +360,27 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 10,
-    backgroundColor: RainbowColors.cloudSurface,
-  },
-  itemName: {
-    fontSize: 13.5,
-    fontWeight: "700",
-    color: RainbowColors.inkBlack,
-  },
-  itemMeta: {
-    fontSize: 11.5,
-    color: RainbowColors.stone,
-    marginTop: 2,
-  },
-  itemPrice: {
-    fontSize: 13.5,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
+    backgroundColor: "transparent",
   },
   destRow: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: RainbowColors.cloudSurface,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: RainbowRadii.cards,
-    gap: 6,
-    marginBottom: 12,
-  },
-  destText: {
-    fontSize: 12,
-    color: RainbowColors.stone,
-    flex: 1,
+    marginBottom: 14,
   },
   cardFooter: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderTopWidth: 1,
-    borderTopColor: RainbowColors.cloudSurface,
-    paddingTop: 12,
-  },
-  totalLabel: {
-    fontSize: 11,
-    color: RainbowColors.stone,
-  },
-  totalPrice: {
-    fontSize: 18,
-    fontWeight: "900",
-    color: RainbowColors.tangerine,
   },
   actionsRow: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
   },
-  trackBtn: {
-    flexDirection: "row",
+  cancelLink: {
     alignItems: "center",
-    backgroundColor: RainbowColors.tangerine,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: RainbowRadii.pills,
-    gap: 6,
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.25,
-    shadowRadius: 6,
-    elevation: 3,
-  },
-  trackBtnText: {
-    color: RainbowColors.pureWhite,
-    fontSize: 12.5,
-    fontWeight: "700",
-  },
-  chatBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.cloudSurface,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  reorderBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: RainbowColors.cloudSurface,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: RainbowRadii.pills,
-    borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
-    gap: 6,
-  },
-  reorderText: {
-    color: RainbowColors.tangerine,
-    fontSize: 12.5,
-    fontWeight: "700",
-  },
-  reviewBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#FFA726",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: RainbowRadii.pills,
-    gap: 6,
-  },
-  reviewBtnText: {
-    color: RainbowColors.pureWhite,
-    fontSize: 12.5,
-    fontWeight: "700",
+    marginTop: 14,
+    paddingTop: 12,
+    borderTopWidth: 1,
   },
 });

@@ -1,13 +1,9 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-    Image,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
+
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 interface Props {
@@ -25,6 +21,8 @@ interface Props {
 export default function RelatedProductCard({
   item,
 }: Props) {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   return (
     <TouchableOpacity
       activeOpacity={0.9}
@@ -50,8 +48,8 @@ export default function RelatedProductCard({
           size={18}
           color={
             item.favorite
-              ? RainbowColors.tangerine
-              : RainbowColors.stone
+              ? theme.colors.brand
+              : theme.colors.textMuted
           }
         />
       </TouchableOpacity>
@@ -59,12 +57,12 @@ export default function RelatedProductCard({
       {/* Content */}
 
       <View style={styles.content}>
-        <Text
+        <WardaText
           numberOfLines={1}
           style={styles.title}
         >
           {item.title}
-        </Text>
+        </WardaText>
 
         <View style={styles.infoRow}>
           <View style={styles.ratingRow}>
@@ -74,35 +72,35 @@ export default function RelatedProductCard({
               color="#FFB800"
             />
 
-            <Text style={styles.rating}>
+            <WardaText style={styles.rating}>
               {item.rating}
-            </Text>
+            </WardaText>
           </View>
 
           <View style={styles.timeRow}>
             <Ionicons
               name="time-outline"
               size={13}
-              color={RainbowColors.stone}
+              color={theme.colors.textMuted}
             />
 
-            <Text style={styles.time}>
+            <WardaText style={styles.time}>
               {item.time}
-            </Text>
+            </WardaText>
           </View>
         </View>
 
-        <Text style={styles.price}>
+        <WardaText style={styles.price}>
           {item.price}
-        </Text>
+        </WardaText>
       </View>
     </TouchableOpacity>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   card: {
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
 
     borderRadius: 22,
 
@@ -138,7 +136,7 @@ const styles = StyleSheet.create({
 
     borderRadius: 18,
 
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
 
     justifyContent: "center",
     alignItems: "center",
@@ -153,7 +151,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "700",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
 
   infoRow: {
@@ -170,7 +168,7 @@ const styles = StyleSheet.create({
 
   rating: {
     marginLeft: 4,
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     fontWeight: "600",
   },
 
@@ -181,7 +179,7 @@ const styles = StyleSheet.create({
 
   time: {
     marginLeft: 4,
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     fontSize: 13,
   },
 
@@ -191,6 +189,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "700",
 
-    color: RainbowColors.tangerine,
+    color: theme.colors.brand,
   },
 });

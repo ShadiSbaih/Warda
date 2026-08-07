@@ -1,5 +1,6 @@
+import { useTheme } from "@/context/ThemeContext";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
+
 import {
     StyleSheet,
     TextInput,
@@ -10,6 +11,8 @@ import {
 import { Feather } from "@expo/vector-icons";
 
 export default function ChatInput() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   return (
     <View style={styles.container}>
       <TextInput
@@ -22,14 +25,14 @@ export default function ChatInput() {
         <Feather
           name="send"
           size={22}
-          color={RainbowColors.tangerine}
+          color={theme.colors.brand}
         />
       </TouchableOpacity>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     position: "absolute",
     left: 20,
@@ -42,15 +45,15 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     height: 50,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
     borderRadius: 25,
     paddingHorizontal: 18,
     fontSize: 15,
     marginRight: 10,
     borderWidth: 1.5,
-    borderColor: RainbowColors.cloudSurface,
-    color: RainbowColors.inkBlack,
-    shadowColor: RainbowColors.tangerine,
+    borderColor: theme.colors.borderSubtle,
+    color: theme.colors.text,
+    shadowColor: theme.colors.brand,
     shadowOpacity: 0.13,
     shadowRadius: 8,
     elevation: 5,
@@ -60,10 +63,10 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: RainbowColors.tangerine,
+    backgroundColor: theme.colors.brand,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: RainbowColors.tangerine,
+    shadowColor: theme.colors.brand,
     shadowOpacity: 0.35,
     shadowRadius: 8,
     shadowOffset: {

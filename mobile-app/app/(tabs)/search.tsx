@@ -1,16 +1,8 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaIconButton, WardaText } from "@/components/ui";
 import React, { useMemo, useState, useEffect } from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-  Dimensions,
-  FlatList,
-  Image,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+
+import { Dimensions, FlatList, Image, StatusBar, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -31,6 +23,8 @@ const POPULAR_TAGS = [
 ];
 
 export default function SearchScreen() {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const router = useRouter();
   const { isFavorite, toggleFavorite } = useFavorites();
   const { addToCart } = useCart();
@@ -82,19 +76,14 @@ export default function SearchScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor={RainbowColors.pureWhite} />
+      <StatusBar barStyle="dark-content" backgroundColor={theme.colors.surface} />
       <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         {/* Header Search Bar */}
         <View style={styles.searchHeader}>
-          <TouchableOpacity
-            style={styles.backBtn}
-            onPress={() => router.back()}
-          >
-            <Feather name="arrow-left" size={20} color={RainbowColors.inkBlack} />
-          </TouchableOpacity>
+          <WardaIconButton icon="arrow-left" onPress={() => router.back()} />
 
           <View style={styles.searchBar}>
-            <Feather name="search" size={20} color={RainbowColors.stone} />
+            <Feather name="search" size={20} color={theme.colors.textMuted} />
             <TextInput
               placeholder="Search flowers, chocolates, gifts..."
               placeholderTextColor="#A0A0A0"
@@ -105,7 +94,7 @@ export default function SearchScreen() {
             />
             {query.length > 0 && (
               <TouchableOpacity onPress={() => setQuery("")}>
-                <Feather name="x-circle" size={18} color={RainbowColors.stone} />
+                <Feather name="x-circle" size={18} color={theme.colors.textMuted} />
               </TouchableOpacity>
             )}
           </View>
@@ -115,7 +104,7 @@ export default function SearchScreen() {
         {toast && (
           <View style={styles.toast}>
             <Ionicons name="checkmark-circle" size={18} color="#10B981" />
-            <Text style={styles.toastText}>{toast}</Text>
+            <WardaText style={styles.toastText}>{toast}</WardaText>
           </View>
         )}
 
@@ -141,7 +130,7 @@ export default function SearchScreen() {
                   }
                 }}
               >
-                <Text
+                <WardaText
                   style={[
                     styles.tagChipText,
                     (query === item || (item === "Under $100" && maxPrice === 100)) &&
@@ -149,7 +138,7 @@ export default function SearchScreen() {
                   ]}
                 >
                   {item}
-                </Text>
+                </WardaText>
               </TouchableOpacity>
             )}
           />
@@ -157,9 +146,9 @@ export default function SearchScreen() {
 
         {/* Results Bar */}
         <View style={styles.sortBar}>
-          <Text style={styles.resultsCount}>
+          <WardaText style={styles.resultsCount}>
             {results.length} {results.length === 1 ? "gift found" : "gifts found"}
-          </Text>
+          </WardaText>
 
           {/* Quick Sort Filter Buttons */}
           <View style={styles.sortGroup}>
@@ -170,14 +159,14 @@ export default function SearchScreen() {
               ]}
               onPress={() => setSelectedSort("popular")}
             >
-              <Text
+              <WardaText
                 style={[
                   styles.sortBtnText,
                   selectedSort === "popular" && styles.activeSortBtnText,
                 ]}
               >
                 Popular
-              </Text>
+              </WardaText>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -187,14 +176,14 @@ export default function SearchScreen() {
               ]}
               onPress={() => setSelectedSort("low")}
             >
-              <Text
+              <WardaText
                 style={[
                   styles.sortBtnText,
                   selectedSort === "low" && styles.activeSortBtnText,
                 ]}
               >
                 Price ↓
-              </Text>
+              </WardaText>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -204,14 +193,14 @@ export default function SearchScreen() {
               ]}
               onPress={() => setSelectedSort("rating")}
             >
-              <Text
+              <WardaText
                 style={[
                   styles.sortBtnText,
                   selectedSort === "rating" && styles.activeSortBtnText,
                 ]}
               >
                 Rating ★
-              </Text>
+              </WardaText>
             </TouchableOpacity>
           </View>
         </View>
@@ -220,10 +209,10 @@ export default function SearchScreen() {
         {results.length === 0 ? (
           <View style={styles.emptyContainer}>
             <Feather name="search" size={56} color="#F48FB1" />
-            <Text style={styles.emptyTitle}>No Gifts Found</Text>
-            <Text style={styles.emptySubtitle}>
+            <WardaText style={styles.emptyTitle}>No Gifts Found</WardaText>
+            <WardaText style={styles.emptySubtitle}>
               We couldn't find anything matching "{query}". Try checking your spelling or search for popular categories like Roses or Chocolate.
-            </Text>
+            </WardaText>
           </View>
         ) : (
           <FlatList
@@ -255,35 +244,34 @@ export default function SearchScreen() {
                       <Ionicons
                         name={fav ? "heart" : "heart-outline"}
                         size={18}
-                        color={fav ? RainbowColors.tangerine : RainbowColors.stone}
+                        color={fav ? theme.colors.brand : theme.colors.textMuted}
                       />
                     </TouchableOpacity>
                   </View>
 
                   {/* Title */}
-                  <Text numberOfLines={1} style={styles.cardTitle}>
+                  <WardaText numberOfLines={1} style={styles.cardTitle}>
                     {item.name}
-                  </Text>
+                  </WardaText>
 
                   {/* Meta */}
                   <View style={styles.metaRow}>
                     <View style={styles.ratingBadge}>
                       <Ionicons name="star" size={12} color="#FFA726" />
-                      <Text style={styles.ratingText}>{item.rating}</Text>
+                      <WardaText style={styles.ratingText}>{item.rating}</WardaText>
                     </View>
-                    <Text style={styles.timeText}>{item.time}</Text>
+                    <WardaText style={styles.timeText}>{item.time}</WardaText>
                   </View>
 
                   {/* Price & Add */}
                   <View style={styles.priceRow}>
-                    <Text style={styles.price}>${item.price}</Text>
-                    <TouchableOpacity
-                      style={styles.addBtn}
-                      activeOpacity={0.85}
+                    <WardaText style={styles.price}>${item.price}</WardaText>
+                    <WardaIconButton
+                      icon="plus"
+                      variant="primary"
+                      size="sm"
                       onPress={() => handleQuickAdd(item)}
-                    >
-                      <Feather name="plus" size={16} color={RainbowColors.pureWhite} />
-                    </TouchableOpacity>
+                    />
                   </View>
                 </TouchableOpacity>
               );
@@ -295,10 +283,10 @@ export default function SearchScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
   },
   searchHeader: {
     flexDirection: "row",
@@ -307,28 +295,16 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     gap: 12,
   },
-  backBtn: {
-    width: 44,
-    height: 44,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.pureWhite,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: RainbowColors.inkBlack,
-    shadowOpacity: 0.05,
-    shadowRadius: 6,
-    elevation: 2,
-  },
   searchBar: {
     flex: 1,
     height: 48,
-    backgroundColor: RainbowColors.pureWhite,
-    borderRadius: RainbowRadii.pills,
+    backgroundColor: theme.colors.surface,
+    borderRadius: theme.radii.full,
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 16,
     gap: 10,
-    shadowColor: RainbowColors.inkBlack,
+    shadowColor: theme.colors.text,
     shadowOpacity: 0.05,
     shadowRadius: 8,
     elevation: 3,
@@ -336,14 +312,14 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 14.5,
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
     fontWeight: "500",
   },
   toast: {
     flexDirection: "row",
     alignItems: "center",
     alignSelf: "center",
-    backgroundColor: RainbowColors.inkBlack,
+    backgroundColor: theme.colors.text,
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 20,
@@ -356,7 +332,7 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   toastText: {
-    color: RainbowColors.pureWhite,
+    color: theme.colors.textInverse,
     fontSize: 13,
     fontWeight: "600",
   },
@@ -370,22 +346,22 @@ const styles = StyleSheet.create({
   tagChip: {
     paddingHorizontal: 14,
     paddingVertical: 7,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: theme.radii.full,
+    backgroundColor: theme.colors.surface,
     borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
+    borderColor: theme.colors.borderSubtle,
   },
   activeTagChip: {
-    backgroundColor: RainbowColors.tangerine,
-    borderColor: RainbowColors.tangerine,
+    backgroundColor: theme.colors.brand,
+    borderColor: theme.colors.brand,
   },
   tagChipText: {
     fontSize: 12.5,
     fontWeight: "600",
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
   },
   activeTagChipText: {
-    color: RainbowColors.pureWhite,
+    color: theme.colors.textInverse,
   },
   sortBar: {
     flexDirection: "row",
@@ -398,7 +374,7 @@ const styles = StyleSheet.create({
   resultsCount: {
     fontSize: 13.5,
     fontWeight: "700",
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
   },
   sortGroup: {
     flexDirection: "row",
@@ -407,21 +383,21 @@ const styles = StyleSheet.create({
   sortBtn: {
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: theme.radii.full,
+    backgroundColor: theme.colors.surface,
   },
   activeSortBtn: {
-    backgroundColor: RainbowColors.cloudSurface,
+    backgroundColor: theme.colors.background,
     borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
+    borderColor: theme.colors.borderSubtle,
   },
   sortBtnText: {
     fontSize: 12,
     fontWeight: "600",
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
   },
   activeSortBtnText: {
-    color: RainbowColors.tangerine,
+    color: theme.colors.brand,
     fontWeight: "700",
   },
   listContent: {
@@ -435,10 +411,10 @@ const styles = StyleSheet.create({
   },
   card: {
     width: CARD_WIDTH,
-    backgroundColor: RainbowColors.pureWhite,
-    borderRadius: RainbowRadii.cards,
+    backgroundColor: theme.colors.surface,
+    borderRadius: theme.radii.xl,
     padding: 10,
-    shadowColor: RainbowColors.inkBlack,
+    shadowColor: theme.colors.text,
     shadowOpacity: 0.05,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 4 },
@@ -448,7 +424,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 130,
     borderRadius: 16, // inner radius
-    backgroundColor: RainbowColors.cloudSurface,
+    backgroundColor: theme.colors.background,
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
@@ -463,11 +439,11 @@ const styles = StyleSheet.create({
     right: 8,
     width: 32,
     height: 32,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.pureWhite,
+    borderRadius: theme.radii.full,
+    backgroundColor: theme.colors.surface,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: RainbowColors.inkBlack,
+    shadowColor: theme.colors.text,
     shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 2,
@@ -475,7 +451,7 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 14.5,
     fontWeight: "700",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
     marginTop: 10,
     marginBottom: 4,
   },
@@ -497,7 +473,7 @@ const styles = StyleSheet.create({
   },
   timeText: {
     fontSize: 11.5,
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
   },
   priceRow: {
     flexDirection: "row",
@@ -507,19 +483,7 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 17,
     fontWeight: "800",
-    color: RainbowColors.tangerine,
-  },
-  addBtn: {
-    width: 30,
-    height: 30,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.tangerine,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 2,
+    color: theme.colors.brand,
   },
   emptyContainer: {
     flex: 1,
@@ -531,13 +495,13 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 22,
     fontWeight: "800",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
     marginTop: 16,
     marginBottom: 8,
   },
   emptySubtitle: {
     fontSize: 14.5,
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     textAlign: "center",
     lineHeight: 22,
   },

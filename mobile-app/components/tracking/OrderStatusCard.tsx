@@ -1,39 +1,43 @@
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 
+import { useTheme } from "../../context/ThemeContext";
+import { WardaBadge, WardaText } from "../ui";
+
 export default function OrderStatusCard() {
+  const { theme } = useTheme();
+
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, { backgroundColor: theme.colors.surface }, theme.shadows.md]}>
+      <LinearGradient
+        colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.0)"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 0.55 }}
+        style={StyleSheet.absoluteFillObject}
+        pointerEvents="none"
+      />
       <View style={styles.topRow}>
         <View style={styles.left}>
-          <View style={styles.logoBadge}>
-            <Ionicons name="sparkles" size={18} color={RainbowColors.tangerine} />
+          <View style={[styles.logoBadge, { backgroundColor: theme.colors.brandLight }]}>
+            <Ionicons name="sparkles" size={18} color={theme.colors.brand} />
           </View>
-
-          <Text style={styles.store}>Warda Luxury Gifts</Text>
+          <WardaText variant="body" weight="bold">
+            Warda Luxury Gifts
+          </WardaText>
         </View>
-
-        <View style={styles.badge}>
-          <Text style={styles.badgeText}>Preparing Order</Text>
-        </View>
+        <WardaBadge text="Preparing Order" variant="warning" />
       </View>
 
-      <Text style={styles.label}>Estimated arrival</Text>
+      <WardaText variant="caption" color={theme.colors.textMuted} style={{ marginTop: 18 }}>
+        Estimated arrival
+      </WardaText>
+      <WardaText variant="h1" color={theme.colors.text}>
+        30-45 mins
+      </WardaText>
 
-      <Text style={styles.time}>30-45 mins</Text>
-
-      <Image
-        source={require("../../assets/gifts/custom-hamper.png")}
-        style={styles.gift}
-      />
+      <Image source={require("../../assets/gifts/custom-hamper.png")} style={styles.gift} />
     </View>
   );
 }
@@ -42,14 +46,8 @@ const styles = StyleSheet.create({
   card: {
     marginHorizontal: 20,
     marginTop: 20,
-    backgroundColor: RainbowColors.pureWhite,
     borderRadius: 24,
     padding: 20,
-    shadowColor: RainbowColors.tangerine,
-    shadowOpacity: 0.15,
-    shadowRadius: 20,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 6,
     position: "relative",
   },
   topRow: {
@@ -65,40 +63,9 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: RainbowColors.cloudSurface,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 10,
-    borderWidth: 1,
-    borderColor: RainbowColors.cloudSurface,
-  },
-  store: {
-    fontSize: 16,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
-  },
-  badge: {
-    backgroundColor: RainbowColors.cloudSurface,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 14,
-  },
-  badgeText: {
-    color: RainbowColors.tangerine,
-    fontSize: 12,
-    fontWeight: "700",
-  },
-  label: {
-    marginTop: 18,
-    color: RainbowColors.stone,
-    fontSize: 13,
-    fontWeight: "500",
-  },
-  time: {
-    marginTop: 4,
-    fontSize: 28,
-    fontWeight: "800",
-    color: RainbowColors.inkBlack,
   },
   gift: {
     position: "absolute",

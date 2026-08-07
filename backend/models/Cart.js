@@ -12,6 +12,31 @@ const cartItemSchema = new mongoose.Schema(
       type: Number,
       default: 1,
     },
+
+    wrappingColor: {
+      type: String,
+      default: "",
+    },
+
+    wrappingName: {
+      type: String,
+      default: "",
+    },
+
+    giftMessage: {
+      type: String,
+      default: "",
+    },
+
+    recipientName: {
+      type: String,
+      default: "",
+    },
+
+    isAnonymous: {
+      type: Boolean,
+      default: false,
+    },
   },
   { _id: false }
 );

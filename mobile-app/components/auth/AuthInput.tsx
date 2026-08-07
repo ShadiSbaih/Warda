@@ -1,12 +1,7 @@
+import { WardaInput } from "@/components/ui";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-    KeyboardTypeOptions,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
-} from "react-native";
+
+import { KeyboardTypeOptions } from "react-native";
 
 interface Props {
   label: string;
@@ -24,43 +19,13 @@ export default function AuthInput({
   keyboardType = "default",
 }: Props) {
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>
-        {label}
-      </Text>
-
-      <TextInput
-        placeholder={placeholder}
-        value={value}
-        onChangeText={onChangeText}
-        keyboardType={keyboardType}
-        placeholderTextColor="#9CA3AF"
-        style={styles.input}
-      />
-    </View>
+    <WardaInput
+      label={label}
+      placeholder={placeholder}
+      value={value}
+      onChangeText={onChangeText}
+      keyboardType={keyboardType}
+      containerStyle={{ marginBottom: 18 }}
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 18,
-  },
-
-  label: {
-    marginBottom: 8,
-    fontSize: 14,
-    fontWeight: "700",
-    color: RainbowColors.inkBlack,
-  },
-
-  input: {
-    height: 52,
-    borderWidth: 1.5,
-    borderColor: RainbowColors.cloudSurface,
-    borderRadius: 24, // Rainbow input pill/card hybrid radius
-    paddingHorizontal: 16,
-    backgroundColor: RainbowColors.pureWhite,
-    fontSize: 15,
-    color: RainbowColors.inkBlack,
-  },
-});

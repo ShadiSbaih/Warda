@@ -1,12 +1,8 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import React, { useState } from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+
+import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
 const COLORS = [
@@ -29,6 +25,8 @@ export default function WrappingColorPicker({
   availableColors,
   onColorSelect,
 }: Props) {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   const colors = availableColors
     ? COLORS.filter((c) => availableColors.includes(c.hex))
     : COLORS;
@@ -45,9 +43,9 @@ export default function WrappingColorPicker({
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.iconWrap}>
-          <Feather name="gift" size={18} color={RainbowColors.tangerine} />
+          <Feather name="gift" size={18} color={theme.colors.brand} />
         </View>
-        <Text style={styles.headerTitle}>Wrapping Color</Text>
+        <WardaText style={styles.headerTitle}>Wrapping Color</WardaText>
 
         {selected !== "" && (
           <View style={[styles.selectedDot, { backgroundColor: selected }]} />
@@ -82,12 +80,12 @@ export default function WrappingColorPicker({
                   color={
                     color.hex === "#F5F5F5" || color.hex === "#FFD700"
                       ? "#333"
-                      : RainbowColors.pureWhite
+                      : theme.colors.surface
                   }
                 />
               )}
             </View>
-            <Text style={styles.colorLabel}>{color.label}</Text>
+            <WardaText style={styles.colorLabel}>{color.label}</WardaText>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -95,14 +93,14 @@ export default function WrappingColorPicker({
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   container: {
     marginHorizontal: 20,
     marginVertical: 10,
-    backgroundColor: RainbowColors.pureWhite,
+    backgroundColor: theme.colors.surface,
     borderRadius: 18,
     padding: 16,
-    shadowColor: RainbowColors.tangerine,
+    shadowColor: theme.colors.brand,
     shadowOpacity: 0.15,
     shadowRadius: 16,
     shadowOffset: { width: 0, height: 4 },
@@ -137,7 +135,7 @@ const styles = StyleSheet.create({
     height: 16,
     borderRadius: 8,
     borderWidth: 2,
-    borderColor: RainbowColors.tangerine,
+    borderColor: theme.colors.brand,
   },
 
   colorRow: {
@@ -165,13 +163,13 @@ const styles = StyleSheet.create({
 
   colorCircleActive: {
     borderWidth: 2.5,
-    borderColor: RainbowColors.tangerine,
+    borderColor: theme.colors.brand,
     transform: [{ scale: 1.1 }],
   },
 
   colorLabel: {
     fontSize: 11,
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     fontWeight: "500",
   },
 });

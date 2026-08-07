@@ -1,11 +1,8 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaCard, WardaText } from "@/components/ui";
 import React from "react";
-import { RainbowColors, RainbowRadii } from "../../constants/Colors";
-import {
-    StyleSheet,
-    Text,
-    View,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+
+import { StyleSheet, View } from "react-native";
 
 import { Feather } from "@expo/vector-icons";
 
@@ -22,52 +19,41 @@ export default function NotificationCard({
   message,
   time,
 }: Props) {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   return (
-    <View style={styles.card}>
+    <WardaCard style={styles.card}>
       <View style={styles.left}>
         <View style={styles.iconCircle}>
           <Feather
             name={icon}
             size={20}
-            color={RainbowColors.tangerine}
+            color={theme.colors.brand}
           />
         </View>
 
         <View style={styles.content}>
-          <Text style={styles.title}>
+          <WardaText style={styles.title}>
             {title}
-          </Text>
+          </WardaText>
 
-          <Text style={styles.message}>
+          <WardaText style={styles.message}>
             {message}
-          </Text>
+          </WardaText>
         </View>
       </View>
 
-      <Text style={styles.time}>
+      <WardaText style={styles.time}>
         {time}
-      </Text>
-    </View>
+      </WardaText>
+    </WardaCard>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   card: {
     marginHorizontal: 20,
     marginBottom: 14,
-    backgroundColor: RainbowColors.pureWhite,
-    borderRadius: RainbowRadii.cards,
-    padding: 16,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    shadowColor: "#5a5a7a",
-    shadowOpacity: 0.15,
-    shadowRadius: 18,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    elevation: 5,
   },
 
   left: {
@@ -78,8 +64,8 @@ const styles = StyleSheet.create({
   iconCircle: {
     width: 44,
     height: 44,
-    borderRadius: RainbowRadii.pills,
-    backgroundColor: RainbowColors.cloudSurface,
+    borderRadius: theme.radii.full,
+    backgroundColor: theme.colors.background,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 14,
@@ -93,19 +79,19 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "800",
-    color: RainbowColors.inkBlack,
+    color: theme.colors.text,
   },
 
   message: {
     marginTop: 4,
     fontSize: 13.5,
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     lineHeight: 19,
   },
 
   time: {
     fontSize: 12,
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     marginLeft: 6,
   },
 });

@@ -1,6 +1,7 @@
+import { useTheme } from "@/context/ThemeContext";
+import { WardaText } from "@/components/ui";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { RainbowColors } from "../../constants/Colors";
+import { StyleSheet, View } from "react-native";
 
 interface Props {
   region: any;
@@ -8,16 +9,18 @@ interface Props {
 }
 
 export default function AddressMap({ region, onRegionChangeComplete }: Props) {
+  const { theme } = useTheme();
+  const styles = createStyles(theme);
   return (
     <View style={styles.mapContainer}>
-      <Text style={styles.text}>Interactive map not supported on the web.</Text>
-      <Text style={styles.text}>Latitude: {region.latitude}</Text>
-      <Text style={styles.text}>Longitude: {region.longitude}</Text>
+      <WardaText style={styles.text}>Interactive map not supported on the web.</WardaText>
+      <WardaText style={styles.text}>Latitude: {region.latitude}</WardaText>
+      <WardaText style={styles.text}>Longitude: {region.longitude}</WardaText>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: any) => StyleSheet.create({
   mapContainer: {
     flex: 1,
     marginTop: 10,
@@ -26,7 +29,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
-    color: RainbowColors.stone,
+    color: theme.colors.textMuted,
     fontSize: 14,
     marginBottom: 4,
   },
