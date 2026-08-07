@@ -1,36 +1,49 @@
-import { useTheme } from "@/context/ThemeContext";
-import { WardaText } from "@/components/ui";
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import { Feather } from "@expo/vector-icons";
+import { useTheme } from "../../context/ThemeContext";
+import { WardaText } from "../ui";
+import LocationPin from "./LocationPin";
 
-interface Props {
-  region: any;
-  onRegionChangeComplete: (region: any) => void;
+export interface Region {
+  latitude: number;
+  longitude: number;
+  latitudeDelta: number;
+  longitudeDelta: number;
 }
 
-export default function AddressMap({ region, onRegionChangeComplete }: Props) {
+interface Props {
+  region: Region;
+  onRegionChangeComplete: (region: Region) => void;
+}
+
+export default function AddressMap({ region }: Props) {
   const { theme } = useTheme();
-  const styles = createStyles(theme);
+
   return (
-    <View style={styles.mapContainer}>
-      <WardaText style={styles.text}>Interactive map not supported on the web.</WardaText>
-      <WardaText style={styles.text}>Latitude: {region.latitude}</WardaText>
-      <WardaText style={styles.text}>Longitude: {region.longitude}</WardaText>
+    <View style={[styles.mapContainer, { backgroundColor: theme.colors.background }]}>
+      <Feather name="map" size={48} color={theme.colors.textMuted} />
+      <WardaText variant="body" color={theme.colors.textMuted} style={styles.text}>
+        Interactive map selector is available on mobile apps.
+      </WardaText>
+      <WardaText variant="caption" color={theme.colors.textMuted}>
+        Location: {region.latitude.toFixed(4)}, {region.longitude.toFixed(4)}
+      </WardaText>
+      <LocationPin />
     </View>
   );
 }
 
-const createStyles = (theme: any) => StyleSheet.create({
+const styles = StyleSheet.create({
   mapContainer: {
     flex: 1,
     marginTop: 10,
-    backgroundColor: "#eef1f4",
     justifyContent: "center",
     alignItems: "center",
+    gap: 8,
   },
   text: {
-    color: theme.colors.textMuted,
-    fontSize: 14,
-    marginBottom: 4,
+    textAlign: "center",
+    paddingHorizontal: 20,
   },
 });

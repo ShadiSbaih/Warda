@@ -113,6 +113,15 @@ const normalizeOrder = (raw: any): Order => ({
     raw.deliveryAddress?.address || raw.address || "King Fahd Road, Al Olaya, Riyadh",
   deliveryTimeSlot: raw.deliverySlot || "Express Now",
   paymentMethod: raw.paymentMethod || "Cash on Delivery",
+  subtotal: Number(raw.subtotal || 0),
+  total: Number(raw.total || 0),
+  items: Array.isArray(raw.items)
+    ? raw.items.map((item: any) => ({
+        ...item,
+        quantity: Number(item.quantity || 1),
+        unitPrice: Number(item.unitPrice ?? item.price ?? 0),
+      }))
+    : [],
 });
 
 export const OrdersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

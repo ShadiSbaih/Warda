@@ -177,15 +177,23 @@ function OrderCard({
       </View>
 
       {order.status === "on_the_way" && (
-        <View style={[styles.etaBanner, { backgroundColor: theme.colors.successSurface }]}>
-          <View style={styles.etaLeft}>
-            <MaterialCommunityIcons name="moped" size={20} color={theme.colors.success} />
-            <WardaText variant="caption" color={theme.colors.success}>
-              Driver Tariq is on the way · ~18 mins away
+        <View style={[styles.etaBanner, { backgroundColor: theme.colors.successSurface, borderColor: theme.colors.success + "30" }]}>
+          <MaterialCommunityIcons name="moped" size={22} color={theme.colors.success} />
+          <View style={styles.etaTextGroup}>
+            <WardaText variant="caption" weight="bold" color={theme.colors.success} numberOfLines={1}>
+              Driver Tariq is on the way
+            </WardaText>
+            <WardaText variant="caption" color={theme.colors.success} numberOfLines={1} style={{ opacity: 0.85 }}>
+              ~18 mins away
             </WardaText>
           </View>
-          <TouchableOpacity onPress={() => router.push({ pathname: "/live-tracking", params: { orderId: order.id } })}>
-            <WardaText variant="caption" weight="bold" color={theme.colors.success}>
+          <TouchableOpacity
+            activeOpacity={0.85}
+            style={[styles.liveMapBtn, { backgroundColor: theme.colors.success }]}
+            onPress={() => router.push({ pathname: "/live-tracking", params: { orderId: order.id } })}
+          >
+            <Feather name="navigation" size={12} color="#FFF" />
+            <WardaText variant="caption" weight="bold" color="#FFF">
               Live Map
             </WardaText>
           </TouchableOpacity>
@@ -193,30 +201,36 @@ function OrderCard({
       )}
 
       <View style={[styles.itemsList, { borderColor: theme.colors.borderSubtle }]}>
-        {order.items.map((item, idx) => (
-          <View key={idx} style={styles.itemRow}>
-            <Image
-              source={
-                typeof item.image === "string" && item.image
-                  ? { uri: item.image }
-                  : (item.image as any) || require("../../assets/gifts/red-roses.png")
-              }
-              style={styles.itemImage}
-              resizeMode="contain"
-            />
-            <View style={{ flex: 1, marginLeft: 10 }}>
-              <WardaText variant="body" weight="semibold" numberOfLines={1}>
-                {item.title}
-              </WardaText>
-              <WardaText variant="caption" color={theme.colors.textMuted}>
-                Qty: {item.quantity} {item.wrappingName ? `• ${item.wrappingName}` : ""}
+        {order.items.map((item, idx) => {
+          const unitPrice = Number(item.unitPrice ?? (item as any).price ?? 0);
+          const quantity = Number(item.quantity || 1);
+          const itemTotal = isNaN(unitPrice) ? 0 : unitPrice * quantity;
+
+          return (
+            <View key={idx} style={styles.itemRow}>
+              <Image
+                source={
+                  typeof item.image === "string" && item.image
+                    ? { uri: item.image }
+                    : (item.image as any) || require("../../assets/gifts/red-roses.png")
+                }
+                style={styles.itemImage}
+                resizeMode="contain"
+              />
+              <View style={{ flex: 1, marginLeft: 10 }}>
+                <WardaText variant="body" weight="semibold" numberOfLines={1}>
+                  {item.title}
+                </WardaText>
+                <WardaText variant="caption" color={theme.colors.textMuted}>
+                  Qty: {quantity} {item.wrappingName ? `• ${item.wrappingName}` : ""}
+                </WardaText>
+              </View>
+              <WardaText variant="body" weight="bold" color={theme.colors.brand}>
+                ${itemTotal.toFixed(2)}
               </WardaText>
             </View>
-            <WardaText variant="body" weight="bold" color={theme.colors.brand}>
-              ${(item.unitPrice * item.quantity).toFixed(2)}
-            </WardaText>
-          </View>
-        ))}
+          );
+        })}
       </View>
 
       <View style={styles.destRow}>
@@ -232,7 +246,7 @@ function OrderCard({
             Total Paid
           </WardaText>
           <WardaText variant="h2" color={theme.colors.brand}>
-            ${order.total.toFixed(2)}
+            ${(Number(order.total) || 0).toFixed(2)}
           </WardaText>
         </View>
 
@@ -334,16 +348,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    borderRadius: 14,
+    borderRadius: 16,
     paddingHorizontal: 12,
     paddingVertical: 10,
     marginBottom: 14,
+    borderWidth: 1,
   },
-  etaLeft: {
+  etaTextGroup: {
+    flex: 1,
+    marginLeft: 8,
+    marginRight: 6,
+  },
+  liveMapBtn: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-    flex: 1,
+    gap: 5,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
   },
   itemsList: {
     borderTopWidth: 1,

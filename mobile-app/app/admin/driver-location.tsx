@@ -1,21 +1,13 @@
 import { useTheme } from "@/context/ThemeContext";
 import { WardaButton, WardaIconButton, WardaText } from "@/components/ui";
 import React, { useState } from "react";
-import { Alert, Platform, StyleSheet, TextInput, View } from "react-native";
+import { Alert,  StyleSheet, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Feather } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { trackingAPI } from "../../services/api";
+import DriverLocationMap from "@/components/admin/DriverLocationMap";
 
 const Riyadh = { lat: 24.7136, lng: 46.6753 };
-
-let MapView: any;
-let Marker: any;
-if (Platform.OS !== "web") {
-  const Maps = require("react-native-maps");
-  MapView = Maps.default;
-  Marker = Maps.Marker;
-}
 
 export default function DriverLocationScreen() {
   const { theme } = useTheme();
@@ -71,28 +63,12 @@ export default function DriverLocationScreen() {
         <View style={{ width: 44 }} />
       </View>
 
-      {Platform.OS === "web" ? (
-        <View style={styles.webFallback}>
-          <Feather name="map" size={48} color={theme.colors.textMuted} />
-          <WardaText style={styles.webTitle}>Web Map Placeholder</WardaText>
-          <WardaText style={styles.webSub}>Enter coordinates manually below.</WardaText>
-        </View>
-      ) : (
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: Riyadh.lat,
-            longitude: Riyadh.lng,
-            latitudeDelta: 0.05,
-            longitudeDelta: 0.05,
-          }}
-          onPress={handleMapPress}
-        >
-          <Marker
-            coordinate={{ latitude: parseFloat(lat) || Riyadh.lat, longitude: parseFloat(lng) || Riyadh.lng }}
-          />
-        </MapView>
-      )}
+      <DriverLocationMap
+        lat={lat}
+        lng={lng}
+        onMapPress={handleMapPress}
+        defaultRegion={Riyadh}
+      />
 
       <View style={styles.panel}>
         <WardaText style={styles.panelTitle}>Driver Coordinates</WardaText>
