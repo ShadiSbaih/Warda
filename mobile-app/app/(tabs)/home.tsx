@@ -46,33 +46,29 @@ export default function HomeScreen() {
           <TouchableOpacity
             activeOpacity={0.92}
             onPress={() => router.push("/(tabs)/menu")}
+            style={styles.bannerWrapper}
           >
-            <LinearGradient
-              colors={theme.colors.gradientBrand}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.banner}
-            >
+            <View style={[styles.banner, { backgroundColor: theme.colors.brandLight }]}>
               <View style={styles.bannerContent}>
-                <WardaCard padding="sm" shadow="none" radius="md">
-                  <WardaText variant="label" color={theme.colors.brand}>
-                    Special Offer
+                <View style={styles.tagRow}>
+                  <WardaText variant="caption" weight="bold" color={theme.colors.brand} style={[styles.tagText, { textDecorationLine: "underline" }]}>
+                    SPECIAL OFFER
                   </WardaText>
-                </WardaCard>
-                <WardaText variant="h2" style={styles.bannerTitle}>
+                </View>
+
+                <WardaText variant="h2" weight="bold" color={theme.colors.text} style={styles.bannerTitle}>
                   Send Fresh Roses Today
                 </WardaText>
-                <WardaText variant="body" color={theme.colors.textMuted}>
-                  Get 20% off with promo code{" "}
-                  <WardaText variant="body" weight="extrabold" color={theme.colors.text}>
-                    WARDA20
-                  </WardaText>
+
+                <WardaText variant="caption" color={theme.colors.textMuted} style={styles.bannerSub}>
+                  Get 20% off · Code <WardaText variant="caption" weight="extrabold" color={theme.colors.text}>WARDA20</WardaText>
                 </WardaText>
-                <View style={[styles.bannerBtn, { backgroundColor: theme.colors.surface }]}>
-                  <WardaText variant="body" weight="bold" color={theme.colors.brand}>
+
+                <View style={styles.minimalBtn}>
+                  <WardaText variant="caption" weight="bold" color={theme.colors.brand}>
                     Shop Collection
                   </WardaText>
-                  <Feather name="arrow-right" size={14} color={theme.colors.brand} />
+                  <Feather name="arrow-right" size={13} color={theme.colors.brand} />
                 </View>
               </View>
 
@@ -81,7 +77,7 @@ export default function HomeScreen() {
                 style={styles.bannerImage}
                 resizeMode="contain"
               />
-            </LinearGradient>
+            </View>
           </TouchableOpacity>
 
           <PopularSection selectedCategoryName={selectedCategory} />
@@ -102,36 +98,54 @@ const styles = StyleSheet.create({
     marginTop: 18,
     marginBottom: 10,
   },
-  banner: {
+  bannerWrapper: {
     marginHorizontal: 20,
-    marginTop: 18,
-    borderRadius: 24,
-    padding: 20,
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  banner: {
+    borderRadius: 20,
+    padding: 18,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    overflow: "hidden",
   },
   bannerContent: {
     flex: 1,
     paddingRight: 10,
-    gap: 6,
+    justifyContent: "center",
   },
-  bannerTitle: {
-    lineHeight: 28,
-  },
-  bannerBtn: {
-    alignSelf: "flex-start",
+  tagRow: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderRadius: 16,
     gap: 6,
-    marginTop: 6,
+    marginBottom: 6,
+  },
+  tagDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+  },
+  tagText: {
+    letterSpacing: 0.8,
+    fontSize: 11,
+  },
+  bannerTitle: {
+    fontSize: 18,
+    lineHeight: 24,
+    marginBottom: 4,
+  },
+  bannerSub: {
+    fontSize: 13,
+    marginBottom: 12,
+  },
+  minimalBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
   },
   bannerImage: {
-    width: 105,
-    height: 105,
+    width: 95,
+    height: 95,
   },
 });

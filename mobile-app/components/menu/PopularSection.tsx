@@ -6,6 +6,8 @@ import MenuCard from "./MenuCard";
 import { useTheme } from "../../context/ThemeContext";
 import { WardaText } from "../ui";
 
+import { ALL_PRODUCTS } from "../../data/productsData";
+
 interface Props {
   selectedCategory?: string;
 }
@@ -13,7 +15,7 @@ interface Props {
 export default function PopularSection({ selectedCategory = "All" }: Props) {
   const router = useRouter();
   const { theme } = useTheme();
-  const [products, setProducts] = React.useState<any[]>([]);
+  const [products, setProducts] = React.useState<any[]>(ALL_PRODUCTS);
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
@@ -21,18 +23,24 @@ export default function PopularSection({ selectedCategory = "All" }: Props) {
     productsAPI
       .getProducts()
       .then((res) => {
-        if (res.success && res.products) {
+        if (res.success && Array.isArray(res.products) && res.products.length > 0) {
           setProducts(res.products);
+        } else {
+          setProducts(ALL_PRODUCTS);
         }
       })
-      .catch(() => {})
+      .catch(() => setProducts(ALL_PRODUCTS))
       .finally(() => setLoading(false));
   }, []);
 
   const filtered =
-    selectedCategory === "All"
+    selectedCategory === "All" || selectedCategory === "All Gifts"
       ? products
-      : products.filter((p) => p.category === selectedCategory);
+      : products.filter(
+          (p) =>
+            p.category === selectedCategory ||
+            p.category?.toLowerCase() === selectedCategory.toLowerCase()
+        );
 
   return (
     <View style={styles.container}>

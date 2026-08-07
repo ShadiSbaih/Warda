@@ -22,12 +22,12 @@ export default function MenuScreen() {
         >
           <MenuHeader />
 
+          <OfferBanner />
+
           <MenuCategories
             selectedCategory={selectedCategory}
             onSelectCategory={setSelectedCategory}
           />
-
-          <OfferBanner />
 
           <PopularSection selectedCategory={selectedCategory} />
         </ScrollView>
