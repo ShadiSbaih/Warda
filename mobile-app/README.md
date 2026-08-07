@@ -1,50 +1,57 @@
-# 🌹 Warda — Gifts & Flowers Delivery App
+# 🌹 Warda — Mobile Client Application
 
-Warda is a mobile app for sending beautiful gifts and flower bouquets to your loved ones. Built with [Expo](https://expo.dev) and React Native.
+[![Expo SDK](https://img.shields.io/badge/Expo-v54.0-000000.svg?logo=expo&logoColor=white)](https://expo.dev/)
+[![React Native](https://img.shields.io/badge/React%20Native-0.81-61DAFB.svg?logo=react&logoColor=black)](https://reactnative.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-v5.9-3178C6.svg?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
-## Features
+The mobile client application for **Warda (وردة)**, built with [Expo SDK 54](https://expo.dev), [React Native 0.81](https://reactnative.dev), and TypeScript.
 
-- 🌸 Browse rose bouquets, chocolate boxes, graduation & birthday gifts
-- 💌 Add a personal gift message with card style selection
-- 📅 Schedule delivery for a specific date and time
-- 🕵️ Anonymous delivery option
-- 🎨 Choose wrapping color
-- 📸 Upload a custom photo for the gift
-- 🔔 Occasion reminders (birthdays, anniversaries, graduations)
-- 📦 Real-time order tracking
-- ⭐ Review and rate deliveries
+> 📌 **For full stack documentation, backend setup, environment details, and architecture overview, please refer to the [Root README](../README.md).**
 
-## Getting Started
+---
 
-1. Install dependencies:
+## 📱 Features
 
+- 🌸 **Floral & Gift Catalogue**: Explore rose bouquets, customized gift hampers, chocolates, and celebration packages.
+- 💌 **Personalized Card Engine**: Add custom gift cards with choice of font styles and personal notes.
+- 🎨 **Wrapping Options**: Choose ribbon styles, wrapping paper colors, and photo attachments.
+- 📅 **Scheduled & Anonymous Delivery**: Choose specific delivery windows or send anonymous gifts.
+- 🔔 **Occasion Reminders**: Automated notifications for upcoming birthdays, anniversaries, and graduations.
+- 📍 **Real-Time Delivery Tracking**: Live order location updates powered by Socket.io and React Native Maps.
+- 💬 **Live In-App Support**: Real-time chat with support agents.
+
+---
+
+## 🚀 Quick Start
+
+1. **Install Dependencies**:
    ```bash
    npm install
    ```
 
-2. Copy environment variables:
-
+2. **Configure Environment Variables**:
    ```bash
    cp .env.example .env
    ```
+   Set `EXPO_PUBLIC_API_URL` to your backend server URL (e.g. `http://localhost:5000/api`).
 
-3. Start the app:
-
+3. **Start Development Server**:
    ```bash
-   npx expo start
+   npm run start
    ```
 
-Open in:
-- Android emulator
-- iOS simulator
-- [Expo Go](https://expo.dev/go)
+---
 
-## Tech Stack
+## 🛠️ Available Scripts
 
-- **Framework**: Expo / React Native
-- **Routing**: Expo Router (file-based)
-- **State**: React hooks
-- **Forms**: React Hook Form + Zod
-- **Icons**: Expo Vector Icons (Feather)
-- **Maps**: Expo Location
-- **Media**: Expo Image Picker
+- `npm run start`: Launch Metro bundler server via Expo.
+- `npm run android`: Open application in Android emulator / connected device.
+- `npm run ios`: Open application in iOS simulator.
+- `npm run web`: Serve web bundle preview.
+- `npm run lint`: Run ESLint checks.
+
+---
+
+## 📄 License
+
+Licensed under the [MIT License](../README.md#-license).
