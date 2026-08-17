@@ -17,9 +17,12 @@ function AuthRedirect() {
 
     const rootSegment = segments[0];
     const isAuthRoute = rootSegment === "(auth)";
-    const isTabRoute = rootSegment === "(tabs)";
+    const isPublicRoute =
+      rootSegment === "(auth)" ||
+      rootSegment === "onboarding" ||
+      rootSegment === "splash";
 
-    if (!isAuthenticated && isTabRoute) {
+    if (!isAuthenticated && !isPublicRoute) {
       router.replace("/(auth)/login");
     } else if (isAuthenticated && isAuthRoute) {
       router.replace("/(tabs)/home");
