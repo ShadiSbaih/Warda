@@ -8,6 +8,18 @@ import { WardaText } from "../ui";
 
 const BRAND_RGBA = "rgba(230, 103, 103, 0.25)";
 
+const MAP_STYLE = [
+  { elementType: "geometry", stylers: [{ color: "#f4f5f7" }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#7c8794" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#f4f5f7" }] },
+  { featureType: "poi", stylers: [{ visibility: "off" }] },
+  { featureType: "transit", stylers: [{ visibility: "off" }] },
+  { featureType: "road", elementType: "geometry", stylers: [{ color: "#ffffff" }] },
+  { featureType: "road", elementType: "geometry.stroke", stylers: [{ color: "#e4e8ed" }] },
+  { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#e9edf2" }] },
+  { featureType: "water", elementType: "geometry", stylers: [{ color: "#dcecf4" }] },
+];
+
 export default function MapSection({
   driverLocation,
   destination,
@@ -20,47 +32,55 @@ export default function MapSection({
   const { theme } = useTheme();
   const driver = driverLocation || { latitude: 24.7136, longitude: 46.6753 };
   const dest = destination || { latitude: 24.71, longitude: 46.68 };
+  const isInTransit = status === "on_the_way";
+  const isDelivered = status === "delivered";
+  const center = {
+    latitude: (driver.latitude + dest.latitude) / 2,
+    longitude: (driver.longitude + dest.longitude) / 2,
+  };
+  const latitudeDelta = Math.max(Math.abs(driver.latitude - dest.latitude) * 2.8, 0.035);
+  const longitudeDelta = Math.max(Math.abs(driver.longitude - dest.longitude) * 2.8, 0.035);
 
   return (
     <View style={styles.container}>
       <MapView
         style={styles.map}
+        customMapStyle={MAP_STYLE}
+        mapType="standard"
         region={{
-          latitude: driver.latitude,
-          longitude: driver.longitude,
-          latitudeDelta: 0.05,
-          longitudeDelta: 0.05,
+          ...center,
+          latitudeDelta,
+          longitudeDelta,
         }}
+        showsCompass={false}
+        showsScale={false}
+        showsBuildings={false}
+        showsTraffic={false}
+        toolbarEnabled={false}
+        moveOnMarkerPress={false}
       >
-        <Polyline coordinates={[driver, dest]} strokeColor={theme.colors.brand} strokeWidth={4} />
+        <Polyline
+          coordinates={[driver, dest]}
+          strokeColor={isDelivered ? theme.colors.success : isInTransit ? theme.colors.brand : "#B9C1CA"}
+          strokeWidth={isInTransit ? 4 : 3}
+          lineDashPattern={isInTransit || isDelivered ? undefined : [8, 8]}
+        />
 
-        <Marker coordinate={driver}>
-          <View style={styles.courierMarker}>
-            <View style={[styles.courierPulse, { backgroundColor: BRAND_RGBA }]} />
-            <View style={[styles.courierIconBox, { backgroundColor: theme.colors.brand, borderColor: theme.colors.surface }]}>
-              <MaterialCommunityIcons name="moped" size={22} color={theme.colors.textInverse} />
-            </View>
-            <View style={[styles.courierPill, { backgroundColor: theme.colors.text }]}>
-              <View style={[styles.activeDot, { backgroundColor: theme.colors.success }]} />
-              <WardaText variant="caption" color={theme.colors.textInverse}>
-                Live
-              </WardaText>
-            </View>
-          </View>
-        </Marker>
+        {!isDelivered && (
+          <Marker
+            coordinate={driver}
+            pinColor={isInTransit ? theme.colors.brand : "#9AA4AE"}
+            title={isInTransit ? "Courier" : "Warda"}
+            description={isInTransit ? "Live location" : "Preparing your gift"}
+          />
+        )}
 
-        <Marker coordinate={dest}>
-          <View style={styles.destinationMarker}>
-            <View style={[styles.destinationPill, { backgroundColor: theme.colors.surface, borderColor: theme.colors.borderSubtle }]}>
-              <WardaText variant="caption" weight="bold" color={theme.colors.text}>
-                Delivery Address
-              </WardaText>
-            </View>
-            <View style={styles.destinationIconBox}>
-              <Ionicons name="location-sharp" size={26} color={theme.colors.brand} />
-            </View>
-          </View>
-        </Marker>
+        <Marker
+          coordinate={dest}
+          pinColor={isDelivered ? theme.colors.success : theme.colors.brand}
+          title={isDelivered ? "Delivered" : "Drop-off"}
+          description="Delivery destination"
+        />
       </MapView>
 
       {status && (
@@ -96,21 +116,23 @@ const styles = StyleSheet.create({
   },
   courierMarker: {
     alignItems: "center",
+    width: 76,
+    minHeight: 76,
   },
   courierPulse: {
     position: "absolute",
     top: -6,
-    width: 58,
-    height: 58,
-    borderRadius: 29,
+    width: 62,
+    height: 62,
+    borderRadius: 31,
   },
   courierIconBox: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 3,
+    borderWidth: 2,
   },
   courierPill: {
     flexDirection: "row",
@@ -120,6 +142,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 16,
+    borderWidth: 1,
   },
   activeDot: {
     width: 6,
@@ -128,8 +151,12 @@ const styles = StyleSheet.create({
   },
   destinationMarker: {
     alignItems: "center",
+    width: 82,
+    minHeight: 64,
   },
   destinationPill: {
+    minWidth: 64,
+    alignItems: "center",
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 16,

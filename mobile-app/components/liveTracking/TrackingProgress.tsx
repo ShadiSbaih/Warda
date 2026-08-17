@@ -52,9 +52,9 @@ export default function TrackingProgress({ status = "confirmed" }: Props) {
       </View>
 
       <View style={styles.progress}>
-        <Step icon="gift" active={currentStep >= 1} theme={theme} />
+        <Step icon="check" active={currentStep >= 1} theme={theme} />
         <Line active={currentStep >= 2} theme={theme} />
-        <Step icon="sparkles" ion active={currentStep >= 2} theme={theme} />
+        <Step icon="package" active={currentStep >= 2} theme={theme} />
         <Line active={currentStep >= 3} theme={theme} />
         <Step icon="moped" material active={currentStep >= 3} pulse={status === "on_the_way"} theme={theme} />
         <Line active={currentStep >= 4} theme={theme} />

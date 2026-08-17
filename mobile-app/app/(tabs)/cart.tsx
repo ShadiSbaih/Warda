@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   ActivityIndicator,
   Alert,
-  Image,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -17,6 +16,7 @@ import { useRouter } from "expo-router";
 import { useTheme } from "../../context/ThemeContext";
 import { useCart } from "../../context/CartContext";
 import { WardaButton, WardaCard, WardaIconButton, WardaText } from "../../components/ui";
+import CatalogImage from "../../components/catalog/CatalogImage";
 
 export default function CartScreen() {
   const router = useRouter();
@@ -122,8 +122,8 @@ export default function CartScreen() {
               <WardaCard key={item.id} padding="md" radius="lg" shadow="md" style={styles.itemCard}>
                 <View style={styles.cardTop}>
                   <View style={[styles.imageBox, { backgroundColor: theme.colors.background }]}>
-                    <Image
-                      source={typeof item.image === "string" ? { uri: item.image } : item.image}
+                    <CatalogImage
+                      item={item}
                       style={styles.productImage}
                       resizeMode="contain"
                     />
@@ -267,13 +267,21 @@ export default function CartScreen() {
             </View>
           </WardaCard>
 
-          <WardaButton
+          <WardaButton style={{ display: "none" }}
             title="Proceed to Checkout"
             subtitle={`${itemsCount} ${itemsCount === 1 ? "Item" : "Items"} · Express Delivery`}
             iconRight="arrow-right"
             onPress={() => router.push("/checkout")}
           />
         </ScrollView>
+        <View style={[styles.checkoutBar, { backgroundColor: theme.colors.surface }]}>
+          <WardaButton
+            title="Proceed to Checkout"
+            subtitle={`${itemsCount} ${itemsCount === 1 ? "Item" : "Items"} · Express Delivery`}
+            iconRight="arrow-right"
+            onPress={() => router.push("/checkout")}
+          />
+        </View>
       </SafeAreaView>
     </>
   );
@@ -340,8 +348,16 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: 20,
-    paddingBottom: 40,
+    paddingBottom: 150,
     paddingTop: 8,
+  },
+  checkoutBar: {
+    position: "absolute",
+    left: 20,
+    right: 20,
+    bottom: 96,
+    paddingVertical: 8,
+    zIndex: 20,
   },
   addressBanner: {
     flexDirection: "row",

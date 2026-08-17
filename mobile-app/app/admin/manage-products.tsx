@@ -1,10 +1,11 @@
 import { useTheme } from "@/context/ThemeContext";
 import { WardaIconButton, WardaText } from "@/components/ui";
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList, Image, ActivityIndicator, Alert } from "react-native";
+import { View, StyleSheet, FlatList, ActivityIndicator, Alert, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { productsAPI } from "../../services/api";
+import CatalogImage from "../../components/catalog/CatalogImage";
 
 export default function ManageProductsScreen() {
   const { theme } = useTheme();
@@ -12,6 +13,7 @@ export default function ManageProductsScreen() {
   const router = useRouter();
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState<string | null>(null);
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -32,45 +34,56 @@ export default function ManageProductsScreen() {
   }, []);
 
   const handleDelete = (id: string, name: string) => {
-    Alert.alert(
-      "Delete Product",
-      `Are you sure you want to delete "${name}"?`,
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Delete",
-          style: "destructive",
-          onPress: async () => {
-            const res = await productsAPI.deleteProduct(id);
-            if (res.success) {
-              setProducts((prev) => prev.filter((p) => p._id !== id));
-            } else {
-              Alert.alert("Error", res.message || "Could not delete product");
-            }
-          },
-        },
-      ]
-    );
+    const removeProduct = async () => {
+      setDeleting(id);
+      try {
+        const res = await productsAPI.deleteProduct(id);
+        if (res.success) {
+          setProducts((prev) => prev.filter((p) => p._id !== id));
+        } else {
+          Alert.alert("Delete failed", res.message || "Could not delete product");
+        }
+      } catch (error: any) {
+        Alert.alert("Delete failed", error?.message || "Could not delete product");
+      } finally {
+        setDeleting(null);
+      }
+    };
+
+    if (Platform.OS === "web") {
+      if (typeof window !== "undefined" && window.confirm(`Delete "${name}"?`)) removeProduct();
+      return;
+    }
+
+    Alert.alert("Delete Product", `Are you sure you want to delete "${name}"?`, [
+      { text: "Cancel", style: "cancel" },
+      { text: "Delete", style: "destructive", onPress: removeProduct },
+    ]);
   };
 
   const renderItem = ({ item }: { item: any }) => (
     <View style={styles.productCard}>
-      <Image source={{ uri: item.image }} style={styles.productImage} />
+      <CatalogImage item={item} style={styles.productImage} resizeMode="contain" />
       <View style={styles.productInfo}>
         <WardaText style={styles.productName} numberOfLines={1}>{item.name}</WardaText>
         <WardaText style={styles.productPrice}>SR {item.price}</WardaText>
         <WardaText style={styles.productCategory}>{item.category}</WardaText>
       </View>
-      <WardaIconButton
-        icon="edit-2"
-        variant="secondary"
-        onPress={() => router.push({ pathname: "/admin/add-product", params: { productId: item._id } } as any)}
-      />
-      <WardaIconButton
-        icon="trash-2"
-        variant="danger"
-        onPress={() => handleDelete(item._id, item.name)}
-      />
+      <View style={styles.actions}>
+        <WardaIconButton
+          icon="edit-2"
+          variant="primary"
+          size="sm"
+          onPress={() => router.push({ pathname: "/admin/add-product", params: { productId: item._id } } as any)}
+        />
+        <WardaIconButton
+          icon="trash-2"
+          variant="danger"
+          size="sm"
+          style={deleting === item._id ? { opacity: 0.45 } : undefined}
+          onPress={() => handleDelete(item._id, item.name)}
+        />
+      </View>
     </View>
   );
 
@@ -79,7 +92,12 @@ export default function ManageProductsScreen() {
       <View style={styles.header}>
         <WardaIconButton icon="arrow-left" onPress={() => router.back()} variant="ghost" />
         <WardaText style={styles.headerTitle}>Manage Products</WardaText>
-        <View style={{ width: 44 }} />
+        <WardaIconButton
+          icon="plus"
+          variant="primary"
+          size="sm"
+          onPress={() => router.push("/admin/add-product")}
+        />
       </View>
 
       {loading ? (
@@ -98,13 +116,6 @@ export default function ManageProductsScreen() {
         />
       )}
 
-      <WardaIconButton
-        icon="plus"
-        variant="primary"
-        size="lg"
-        onPress={() => router.push("/admin/add-product")}
-        style={{ position: "absolute", bottom: 30, right: 20 }}
-      />
     </SafeAreaView>
   );
 }
@@ -151,6 +162,12 @@ const createStyles = (theme: any) => StyleSheet.create({
   productInfo: {
     flex: 1,
     marginLeft: 12,
+  },
+  actions: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginLeft: 8,
   },
   productName: {
     fontSize: 15,
