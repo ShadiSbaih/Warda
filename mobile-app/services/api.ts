@@ -156,6 +156,13 @@ export const productsAPI = {
     });
   },
 
+  async updateProduct(id: string, productData: any) {
+    return request(`/products/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(productData),
+    });
+  },
+
   async deleteProduct(id: string | number) {
     return request(`/products/${id}`, { method: "DELETE" });
   },
@@ -175,6 +182,12 @@ export const adminAPI = {
   },
   async getUsers() {
     return request("/users", { method: "GET" });
+  },
+  async createUser(data: { name: string; email: string; phone?: string; password: string; role: string }) {
+    return request("/users", { method: "POST", body: JSON.stringify(data) });
+  },
+  async updateUser(id: string, data: { name?: string; email?: string; phone?: string; role?: string }) {
+    return request(`/users/${id}`, { method: "PUT", body: JSON.stringify(data) });
   },
   async updateUserRole(id: string, role: string) {
     return request(`/users/${id}/role`, { 
@@ -207,6 +220,12 @@ export const adminAPI = {
     return request("/categories", {
       method: "POST",
       body: JSON.stringify(data)
+    });
+  },
+  async updateCategory(id: string, data: { name: string, image: string }) {
+    return request(`/categories/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
     });
   },
   async deleteCategory(id: string) {

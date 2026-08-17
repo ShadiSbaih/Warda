@@ -1,10 +1,11 @@
 import { useTheme } from "@/context/ThemeContext";
 import { WardaButton, WardaIconButton, WardaText } from "@/components/ui";
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList, ActivityIndicator, Alert, TextInput, Image, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import { View, StyleSheet, FlatList, ActivityIndicator, Alert, TextInput, KeyboardAvoidingView, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { adminAPI } from "../../services/api";
+import CatalogImage from "../../components/catalog/CatalogImage";
 
 export default function ManageCategoriesScreen() {
   const { theme } = useTheme();
@@ -17,6 +18,7 @@ export default function ManageCategoriesScreen() {
   const [isAdding, setIsAdding] = useState(false);
   const [newName, setNewName] = useState("");
   const [newImage, setNewImage] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -44,14 +46,20 @@ export default function ManageCategoriesScreen() {
     
     setSubmitting(true);
     try {
-      const res = await adminAPI.createCategory({ name: newName, image: newImage });
+      const payload = { name: newName.trim(), image: newImage.trim() };
+      const res = editingId
+        ? await adminAPI.updateCategory(editingId, payload)
+        : await adminAPI.createCategory(payload);
       if (res.success) {
-        setCategories([...categories, res.category]);
+        setCategories(editingId
+          ? categories.map((item) => item._id === editingId ? res.category : item)
+          : [...categories, res.category]);
         setIsAdding(false);
         setNewName("");
         setNewImage("");
+        setEditingId(null);
       } else {
-        Alert.alert("Error", res.message || "Failed to create category");
+        Alert.alert("Error", res.message || (editingId ? "Failed to update category" : "Failed to create category"));
       }
     } catch (e) {
       console.log(e);
@@ -89,7 +97,12 @@ export default function ManageCategoriesScreen() {
         <WardaIconButton
           icon={isAdding ? "x" : "plus"}
           variant="secondary"
-          onPress={() => setIsAdding(!isAdding)}
+          onPress={() => {
+            setIsAdding(!isAdding);
+            setEditingId(null);
+            setNewName("");
+            setNewImage("");
+          }}
         />
       </View>
 
@@ -99,7 +112,7 @@ export default function ManageCategoriesScreen() {
       >
         {isAdding && (
           <View style={styles.addForm}>
-            <WardaText style={styles.formTitle}>New Category</WardaText>
+            <WardaText style={styles.formTitle}>{editingId ? "Edit Category" : "New Category"}</WardaText>
             
             <View style={styles.inputGroup}>
               <WardaText style={styles.label}>Name</WardaText>
@@ -123,7 +136,7 @@ export default function ManageCategoriesScreen() {
             </View>
 
             <WardaButton
-              title="Create Category"
+              title={editingId ? "Update Category" : "Create Category"}
               size="md"
               loading={submitting}
               disabled={submitting}
@@ -143,12 +156,23 @@ export default function ManageCategoriesScreen() {
             contentContainerStyle={styles.list}
             renderItem={({ item }) => (
               <View style={styles.card}>
-                <Image source={{ uri: item.image }} style={styles.cardImage} />
+                <CatalogImage item={item} type="category" style={styles.cardImage} resizeMode="cover" />
                 <View style={styles.cardInfo}>
                   <WardaText style={styles.name}>{item.name}</WardaText>
                 </View>
                 
                 <View style={styles.actions}>
+                  <WardaIconButton
+                    icon="edit-2"
+                    variant="secondary"
+                    size="sm"
+                    onPress={() => {
+                      setEditingId(item._id);
+                      setNewName(item.name || "");
+                      setNewImage(item.image || "");
+                      setIsAdding(true);
+                    }}
+                  />
                   <WardaIconButton
                     icon="trash-2"
                     variant="danger"

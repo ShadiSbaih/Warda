@@ -23,6 +23,20 @@ exports.createCategory = async (req, res) => {
   }
 };
 
+exports.updateCategory = async (req, res) => {
+  try {
+    const category = await Category.findByIdAndUpdate(
+      req.params.id,
+      { name: req.body.name, image: req.body.image },
+      { new: true, runValidators: true }
+    );
+    if (!category) return res.status(404).json({ success: false, message: "Category not found" });
+    res.json({ success: true, category });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.code === 11000 ? "Category name already exists" : error.message });
+  }
+};
+
 exports.deleteCategory = async (req, res) => {
   try {
     const category = await Category.findById(req.params.id);

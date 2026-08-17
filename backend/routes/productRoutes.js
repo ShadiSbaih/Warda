@@ -8,6 +8,7 @@ const {
   getCategoryProducts,
   getProduct,
   createProduct,
+  updateProduct,
   deleteProduct,
 } = require("../controllers/productController");
 
@@ -16,6 +17,7 @@ const admin = require("../middleware/admin");
 
 router.get("/", getProducts);
 router.post("/", protect, admin, createProduct);
+router.put("/:id", protect, admin, updateProduct);
 
 router.get(
   "/shop/:shopId",

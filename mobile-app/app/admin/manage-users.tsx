@@ -1,7 +1,7 @@
 import { useTheme } from "@/context/ThemeContext";
-import { WardaAvatar, WardaBadge, WardaIconButton, WardaText } from "@/components/ui";
+import { WardaAvatar, WardaBadge, WardaButton, WardaIconButton, WardaText } from "@/components/ui";
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList, ActivityIndicator, Alert } from "react-native";
+import { View, StyleSheet, FlatList, ActivityIndicator, Alert, TextInput, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { adminAPI } from "../../services/api";
@@ -13,6 +13,9 @@ export default function ManageUsersScreen() {
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
+  const [formOpen, setFormOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [form, setForm] = useState({ name: "", email: "", phone: "", password: "", role: "user" });
 
   useEffect(() => {
     fetchUsers();
@@ -42,6 +45,31 @@ export default function ManageUsersScreen() {
         { text: "Cancel", style: "cancel" },
       ]
     );
+  };
+
+  const openUserForm = (user?: any) => {
+    setEditingId(user?._id || null);
+    setForm({ name: user?.name || "", email: user?.email || "", phone: user?.phone || "", password: "", role: user?.role || "user" });
+    setFormOpen(true);
+  };
+
+  const saveUser = async () => {
+    if (!form.name.trim() || !form.email.trim() || (!editingId && !form.password.trim())) {
+      Alert.alert("Missing details", editingId ? "Name and email are required." : "Name, email, and password are required.");
+      return;
+    }
+    setUpdating(editingId || "new");
+    const response = editingId
+      ? await adminAPI.updateUser(editingId, { name: form.name.trim(), email: form.email.trim(), phone: form.phone.trim(), role: form.role })
+      : await adminAPI.createUser({ ...form, name: form.name.trim(), email: form.email.trim(), phone: form.phone.trim() });
+    if (response.success) {
+      setUsers((current) => editingId
+        ? current.map((item) => item._id === editingId ? response.user : item)
+        : [response.user, ...current]);
+      setFormOpen(false);
+      setForm({ name: "", email: "", phone: "", password: "", role: "user" });
+    } else Alert.alert("Error", response.message || "Could not save user");
+    setUpdating(null);
   };
 
   const updateRole = async (id: string, role: string) => {
@@ -86,8 +114,20 @@ export default function ManageUsersScreen() {
       <View style={styles.header}>
         <WardaIconButton icon="arrow-left" onPress={() => router.back()} variant="ghost" />
         <WardaText style={styles.headerTitle}>Manage Users</WardaText>
-        <View style={{ width: 44 }} />
+        <WardaIconButton icon={formOpen ? "x" : "plus"} variant="secondary" onPress={() => formOpen ? setFormOpen(false) : openUserForm()} />
       </View>
+
+      {formOpen && <View style={styles.form}>
+        <WardaText style={styles.formTitle}>{editingId ? "Edit User" : "Add User"}</WardaText>
+        {(["name", "email", "phone"] as const).map((field) => (
+          <TextInput key={field} style={styles.input} placeholder={field[0].toUpperCase() + field.slice(1)} value={form[field]} onChangeText={(value) => setForm((current) => ({ ...current, [field]: value }))} keyboardType={field === "email" ? "email-address" : "default"} autoCapitalize={field === "email" ? "none" : "words"} />
+        ))}
+        {!editingId && <TextInput style={styles.input} placeholder="Temporary password" value={form.password} onChangeText={(value) => setForm((current) => ({ ...current, password: value }))} secureTextEntry />}
+        <View style={styles.roleRow}>
+          {["user", "delivery", "admin"].map((role) => <TouchableOpacity key={role} onPress={() => setForm((current) => ({ ...current, role }))} style={[styles.roleChip, form.role === role && { backgroundColor: theme.colors.brand }]}><WardaText color={form.role === role ? theme.colors.textInverse : theme.colors.text}>{role}</WardaText></TouchableOpacity>)}
+        </View>
+        <WardaButton title={editingId ? "Update User" : "Create User"} size="md" loading={updating !== null} disabled={updating !== null} onPress={saveUser} />
+      </View>}
 
       {loading ? (
         <View style={styles.center}>
@@ -118,7 +158,7 @@ export default function ManageUsersScreen() {
                   icon="edit-2"
                   variant="secondary"
                   size="sm"
-                  onPress={() => handleRoleChange(item)}
+                  onPress={() => openUserForm(item)}
                 />
                 <WardaIconButton
                   icon="trash-2"
@@ -199,4 +239,9 @@ const createStyles = (theme: any) => StyleSheet.create({
     flexDirection: "row",
     gap: 8,
   },
+  form: { padding: 16, gap: 10, borderBottomWidth: 1, borderBottomColor: theme.colors.borderSubtle, backgroundColor: theme.colors.background },
+  formTitle: { fontSize: 16, fontWeight: "800", color: theme.colors.text },
+  input: { height: 44, borderWidth: 1, borderColor: theme.colors.borderSubtle, borderRadius: 12, paddingHorizontal: 12, color: theme.colors.text, backgroundColor: theme.colors.surface },
+  roleRow: { flexDirection: "row", gap: 8, marginBottom: 4 },
+  roleChip: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 16, backgroundColor: theme.colors.surface, borderWidth: 1, borderColor: theme.colors.borderSubtle },
 });

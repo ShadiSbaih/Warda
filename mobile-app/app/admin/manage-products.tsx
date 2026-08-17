@@ -62,6 +62,11 @@ export default function ManageProductsScreen() {
         <WardaText style={styles.productCategory}>{item.category}</WardaText>
       </View>
       <WardaIconButton
+        icon="edit-2"
+        variant="secondary"
+        onPress={() => router.push({ pathname: "/admin/add-product", params: { productId: item._id } } as any)}
+      />
+      <WardaIconButton
         icon="trash-2"
         variant="danger"
         onPress={() => handleDelete(item._id, item.name)}

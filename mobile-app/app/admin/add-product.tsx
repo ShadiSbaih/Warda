@@ -3,33 +3,48 @@ import { WardaButton, WardaIconButton, WardaText } from "@/components/ui";
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
-import { productsAPI, shopsAPI } from "../../services/api";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { productsAPI } from "../../services/api";
 
 export default function AddProductScreen() {
   const { theme } = useTheme();
   const styles = createStyles(theme);
   const router = useRouter();
+  const { productId } = useLocalSearchParams<{ productId?: string }>();
+  const isEditing = Boolean(productId);
   
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
-  const [category, setCategory] = useState("Flowers");
-  const [shops, setShops] = useState<any[]>([]);
-  const [selectedShop, setSelectedShop] = useState("");
+  const [categories, setCategories] = useState<any[]>([]);
+  const [category, setCategory] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchShops();
-  }, []);
+    fetchOptions();
+    if (productId) loadProduct(productId);
+  }, [productId]);
 
-  const fetchShops = async () => {
+  const loadProduct = async (id: string) => {
+    const response = await productsAPI.getProductById(id);
+    if (response.success && response.product) {
+      const product = response.product;
+      setName(product.name || "");
+      setDescription(product.description || "");
+      setPrice(String(product.price || ""));
+      setImage(product.image || "");
+      setCategory(product.category || "");
+    }
+  };
+
+  const fetchOptions = async () => {
     try {
-      const res = await shopsAPI.getShops();
-      if (res.success && res.shops.length > 0) {
-        setShops(res.shops);
-        setSelectedShop(res.shops[0]._id);
+      const categoryResponse = await productsAPI.getCategories();
+
+      if (categoryResponse.success && categoryResponse.categories?.length > 0) {
+        setCategories(categoryResponse.categories);
+        setCategory(categoryResponse.categories[0].name);
       }
     } catch (e) {
       console.log(e);
@@ -37,8 +52,8 @@ export default function AddProductScreen() {
   };
 
   const handleSave = async () => {
-    if (!name || !price || !image || !selectedShop) {
-      Alert.alert("Error", "Please fill out all required fields (Name, Price, Image, Shop).");
+    if (!name || !price || !image || !category) {
+      Alert.alert("Error", "Please fill out the product name, price, category, and image.");
       return;
     }
 
@@ -50,12 +65,13 @@ export default function AddProductScreen() {
         price: Number(price),
         image,
         category,
-        shop: selectedShop,
       };
 
-      const res = await productsAPI.createProduct(payload);
+      const res = isEditing
+        ? await productsAPI.updateProduct(productId!, payload)
+        : await productsAPI.createProduct(payload);
       if (res.success) {
-        Alert.alert("Success", "Product added successfully!");
+        Alert.alert("Success", isEditing ? "Product updated successfully!" : "Product added successfully!");
         router.back();
       } else {
         Alert.alert("Error", res.message || "Failed to add product");
@@ -72,7 +88,7 @@ export default function AddProductScreen() {
     <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
       <View style={styles.header}>
         <WardaIconButton icon="arrow-left" onPress={() => router.back()} variant="ghost" />
-        <WardaText style={styles.headerTitle}>Add New Product</WardaText>
+        <WardaText style={styles.headerTitle}>{isEditing ? "Edit Product" : "Add New Product"}</WardaText>
         <View style={{ width: 44 }} />
       </View>
 
@@ -99,13 +115,24 @@ export default function AddProductScreen() {
         </View>
 
         <View style={styles.inputGroup}>
-          <WardaText style={styles.label}>Category</WardaText>
-          <TextInput
-            style={styles.input}
-            placeholder="e.g. Flowers"
-            value={category}
-            onChangeText={setCategory}
-          />
+          <WardaText style={styles.label}>Category *</WardaText>
+          {categories.length > 0 ? (
+            <View style={styles.optionList}>
+              {categories.map((item) => (
+                <TouchableOpacity
+                  key={item._id}
+                  style={[styles.option, category === item.name && styles.optionActive]}
+                  onPress={() => setCategory(item.name)}
+                >
+                  <WardaText style={[styles.optionText, category === item.name && styles.optionTextActive]}>
+                    {item.name}
+                  </WardaText>
+                </TouchableOpacity>
+              ))}
+            </View>
+          ) : (
+            <WardaText style={styles.helperText}>No categories available. Create a category first.</WardaText>
+          )}
         </View>
 
         <View style={styles.inputGroup}>
@@ -131,36 +158,8 @@ export default function AddProductScreen() {
           />
         </View>
 
-        {shops.length > 0 && (
-          <View style={styles.inputGroup}>
-            <WardaText style={styles.label}>Shop *</WardaText>
-            {/* Simple selection for MVP since Picker requires an extra package usually */}
-            <View style={styles.shopChips}>
-              {shops.map((shop) => (
-                <TouchableOpacity
-                  key={shop._id}
-                  style={[
-                    styles.shopChip,
-                    selectedShop === shop._id && styles.shopChipActive,
-                  ]}
-                  onPress={() => setSelectedShop(shop._id)}
-                >
-                  <WardaText
-                    style={[
-                      styles.shopChipText,
-                      selectedShop === shop._id && styles.shopChipTextActive,
-                    ]}
-                  >
-                    {shop.name}
-                  </WardaText>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </View>
-        )}
-
         <WardaButton
-          title="Save Product"
+          title={isEditing ? "Update Product" : "Save Product"}
           size="lg"
           loading={loading}
           disabled={loading}
@@ -217,29 +216,33 @@ const createStyles = (theme: any) => StyleSheet.create({
     height: 100,
     paddingTop: 16,
   },
-  shopChips: {
+  optionList: {
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 8,
   },
-  shopChip: {
-    paddingHorizontal: 16,
+  option: {
+    paddingHorizontal: 14,
     paddingVertical: 10,
-    borderRadius: 20,
+    borderRadius: 18,
     backgroundColor: "rgba(0,0,0,0.04)",
     borderWidth: 1,
     borderColor: "transparent",
   },
-  shopChipActive: {
+  optionActive: {
     backgroundColor: theme.colors.brand,
     borderColor: theme.colors.brand,
   },
-  shopChipText: {
+  optionText: {
     fontSize: 14,
     fontWeight: "600",
     color: theme.colors.text,
   },
-  shopChipTextActive: {
+  optionTextActive: {
     color: theme.colors.textInverse,
+  },
+  helperText: {
+    fontSize: 13,
+    color: theme.colors.textMuted,
   },
 });
