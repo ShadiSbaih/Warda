@@ -27,7 +27,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="home"
         options={{
-          href: user?.role === "delivery" ? null : undefined,
+          href: ["delivery", "admin"].includes(user?.role || "") ? null : undefined,
           tabBarIcon: ({ focused }) => (
             <View style={[styles.iconBox, focused && styles.activeIconBox]}>
               <Ionicons
@@ -43,7 +43,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="menu"
         options={{
-          href: user?.role === "delivery" ? null : undefined,
+          href: ["delivery", "admin"].includes(user?.role || "") ? null : undefined,
           tabBarIcon: ({ focused }) => (
             <View style={[styles.iconBox, focused && styles.activeIconBox]}>
               <MaterialCommunityIcons
@@ -59,7 +59,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="cart"
         options={{
-          href: user?.role === "delivery" ? null : undefined,
+          href: ["delivery", "admin"].includes(user?.role || "") ? null : undefined,
           tabBarIcon: ({ focused }) => (
             <View style={[styles.iconBox, focused && styles.activeIconBox]}>
               <Feather
@@ -82,7 +82,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="orders"
         options={{
-          href: user?.role === "delivery" ? null : undefined,
+          href: ["delivery", "admin"].includes(user?.role || "") ? null : undefined,
           tabBarIcon: ({ focused }) => (
             <View style={[styles.iconBox, focused && styles.activeIconBox]}>
               <Feather
@@ -101,7 +101,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="profile"
         options={{
-          href: user?.role === "delivery" ? null : undefined,
+          href: ["delivery", "admin"].includes(user?.role || "") ? null : undefined,
           tabBarIcon: ({ focused }) => (
             <View style={[styles.iconBox, focused && styles.activeIconBox]}>
               <Ionicons

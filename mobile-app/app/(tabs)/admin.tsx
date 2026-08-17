@@ -1,16 +1,18 @@
 import { useTheme } from "@/context/ThemeContext";
 import { WardaText } from "@/components/ui";
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, TouchableOpacity, StatusBar, ScrollView, ActivityIndicator } from "react-native";
+import { Alert, View, StyleSheet, TouchableOpacity, StatusBar, ScrollView, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { adminAPI } from "../../services/api";
+import { useAuth } from "../../context/AuthContext";
 
 export default function AdminDashboardScreen() {
   const { theme } = useTheme();
   const styles = createStyles(theme);
   const router = useRouter();
+  const { logout } = useAuth();
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -31,12 +33,20 @@ export default function AdminDashboardScreen() {
     }
   };
 
+  const signOut = () => Alert.alert("Sign out", "Sign out of the admin account?", [
+    { text: "Cancel", style: "cancel" },
+    { text: "Sign out", style: "destructive", onPress: async () => { await logout(); router.replace("/(auth)/login"); } },
+  ]);
+
   return (
     <>
       <StatusBar backgroundColor={theme.colors.surface} barStyle="dark-content" />
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <WardaText style={styles.headerTitle}>Admin Dashboard</WardaText>
+          <TouchableOpacity onPress={signOut} style={styles.signOutButton}>
+            <Feather name="log-out" size={18} color={theme.colors.text} />
+          </TouchableOpacity>
         </View>
 
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
@@ -156,6 +166,9 @@ const createStyles = (theme: any) => StyleSheet.create({
     backgroundColor: theme.colors.surface,
   },
   header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingTop: 12,
     paddingBottom: 16,
@@ -167,6 +180,14 @@ const createStyles = (theme: any) => StyleSheet.create({
     fontWeight: "800",
     color: theme.colors.text,
     letterSpacing: -0.5,
+  },
+  signOutButton: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: theme.colors.background,
   },
   content: {
     padding: 20,
