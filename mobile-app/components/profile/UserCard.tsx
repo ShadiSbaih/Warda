@@ -19,9 +19,7 @@ export default function UserCard({ name, email, onEditPress }: UserCardProps) {
       style={[
         styles.card,
         {
-          backgroundColor: theme.colors.surface,
-          borderRadius: theme.radii.xl,
-          ...theme.shadows.md,
+          borderBottomColor: theme.colors.borderSubtle,
         },
       ]}
     >
@@ -78,6 +76,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     flexDirection: "row",
     alignItems: "center",
+    borderBottomWidth: 1,
   },
   avatarContainer: {
     position: "relative",

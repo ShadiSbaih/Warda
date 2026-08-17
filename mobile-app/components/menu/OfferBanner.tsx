@@ -17,12 +17,9 @@ export default function OfferBanner() {
     >
       <View style={[styles.banner, { backgroundColor: theme.colors.brandLight }]}>
         <View style={styles.left}>
-          <View style={styles.tagRow}>
-            <View style={[styles.tagDot, { backgroundColor: theme.colors.brand }]} />
-            <WardaText variant="caption" weight="bold" color={theme.colors.brand} style={styles.tagText}>
-              LIMITED OFFER
-            </WardaText>
-          </View>
+          <WardaText variant="caption" weight="bold" color={theme.colors.brand} style={styles.tagText}>
+            LIMITED OFFER
+          </WardaText>
 
           <WardaText variant="h2" weight="bold" color={theme.colors.text} style={styles.title}>
             20% OFF Rose Bouquets
@@ -57,40 +54,31 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   banner: {
-    borderRadius: 20,
-    padding: 18,
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 15,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
   left: {
     flex: 1,
-    paddingRight: 10,
+    paddingRight: 4,
     justifyContent: "center",
   },
-  tagRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-    marginBottom: 6,
-  },
-  tagDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-  },
   tagText: {
-    letterSpacing: 0.8,
-    fontSize: 11,
+    letterSpacing: 0.5,
+    fontSize: 10,
+    marginBottom: 7,
   },
   title: {
-    fontSize: 17,
-    lineHeight: 22,
-    marginBottom: 4,
+    fontSize: 16,
+    lineHeight: 20,
+    marginBottom: 3,
   },
   sub: {
     fontSize: 12,
-    marginBottom: 12,
+    marginBottom: 10,
   },
   actionRow: {
     flexDirection: "row",
@@ -98,7 +86,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   image: {
-    width: 95,
-    height: 95,
+    width: 82,
+    height: 82,
   },
 });

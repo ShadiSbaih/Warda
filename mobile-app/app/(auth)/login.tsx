@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  ActivityIndicator,
   ImageBackground,
   KeyboardAvoidingView,
   Platform,
@@ -22,7 +21,7 @@ import { useAuth } from "../../context/AuthContext";
 export default function LoginScreen() {
   const router = useRouter();
   const { theme } = useTheme();
-  const { login, loginDemoUser } = useAuth();
+  const { login } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,18 +29,18 @@ export default function LoginScreen() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const handleLogin = async () => {
-    if (!email.trim()) {
+  const handleLogin = async (emailValue = email, passwordValue = password) => {
+    if (!emailValue.trim()) {
       setErrorMsg("Please enter your email address");
       return;
     }
-    if (!password) {
+    if (!passwordValue) {
       setErrorMsg("Please enter your password");
       return;
     }
     setErrorMsg(null);
     setLoading(true);
-    const result = await login(email.trim(), password);
+    const result = await login(emailValue.trim(), passwordValue);
     setLoading(false);
     if (result.success) {
       router.replace("/(tabs)/home");
@@ -50,11 +49,11 @@ export default function LoginScreen() {
     }
   };
 
-  const handleDemoSignIn = async () => {
-    setLoading(true);
-    await loginDemoUser();
-    setLoading(false);
-    router.replace("/(tabs)/home");
+  const handleDemoSignIn = (demoEmail: string, demoPassword: string) => {
+    setEmail(demoEmail);
+    setPassword(demoPassword);
+    setErrorMsg(null);
+    handleLogin(demoEmail, demoPassword);
   };
 
   const inputBase = {
@@ -105,7 +104,7 @@ export default function LoginScreen() {
                 keyboardType="email-address"
                 leftIcon="mail"
                 containerStyle={styles.inputGroup}
-                style={[styles.input, inputBase]}
+                style={styles.input}
               />
 
               <View style={styles.inputGroup}>
@@ -146,18 +145,44 @@ export default function LoginScreen() {
                 onPress={handleLogin}
               />
 
-              <WardaButton
-                title="Quick Sign In as Guest"
-                variant="secondary"
-                size="md"
-                disabled={loading}
-                onPress={handleDemoSignIn}
-                style={{ marginTop: 12 }}
-              />
+              <View style={styles.demoSection}>
+                <WardaText variant="caption" weight="bold" color={theme.colors.textMuted} style={styles.demoLabel}>
+                  TRY A DEMO ROLE
+                </WardaText>
+
+                <View style={styles.demoButtons}>
+                  <TouchableOpacity
+                    style={styles.demoButton}
+                    disabled={loading}
+                    onPress={() => handleDemoSignIn("user@warda.app", "password123")}
+                  >
+                    <Feather name="user" size={17} color={theme.colors.brand} />
+                    <WardaText variant="body" weight="semibold">Customer</WardaText>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={styles.demoButton}
+                    disabled={loading}
+                    onPress={() => handleDemoSignIn("admin@warda.app", "password123")}
+                  >
+                    <Feather name="shield" size={17} color={theme.colors.brand} />
+                    <WardaText variant="body" weight="semibold">Admin</WardaText>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={styles.demoButton}
+                    disabled={loading}
+                    onPress={() => handleDemoSignIn("delivery@warda.app", "password123")}
+                  >
+                    <Feather name="truck" size={17} color={theme.colors.brand} />
+                    <WardaText variant="body" weight="semibold">Delivery</WardaText>
+                  </TouchableOpacity>
+                </View>
+              </View>
 
               <View style={styles.bottom}>
                 <WardaText variant="body" color={theme.colors.text} style={{ opacity: 0.8 }}>
-                  Don't have an account?
+                  Don&apos;t have an account?
                 </WardaText>
                 <TouchableOpacity onPress={() => router.push("/(auth)/register")}>
                   <WardaText variant="body" weight="bold" color={theme.colors.brand}>
@@ -208,9 +233,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   input: {
-    height: 56,
-    borderWidth: 1,
-    paddingHorizontal: 16,
+    height: "100%",
+    paddingHorizontal: 0,
   },
   passwordContainer: {
     flexDirection: "row",
@@ -230,6 +254,29 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     marginBottom: 22,
     marginTop: 2,
+  },
+  demoSection: {
+    marginTop: 22,
+  },
+  demoLabel: {
+    letterSpacing: 0.7,
+    marginBottom: 10,
+  },
+  demoButtons: {
+    flexDirection: "row",
+    gap: 8,
+  },
+  demoButton: {
+    flex: 1,
+    minHeight: 44,
+    borderWidth: 1,
+    borderColor: "#F1D9D9",
+    borderRadius: 14,
+    paddingHorizontal: 8,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 5,
   },
   bottom: {
     marginTop: 28,

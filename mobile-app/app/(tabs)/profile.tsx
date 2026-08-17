@@ -10,7 +10,6 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
 import { useTheme } from "../../context/ThemeContext";
@@ -38,7 +37,7 @@ const VOUCHERS = [
 export default function ProfileScreen() {
   const router = useRouter();
   const { theme } = useTheme();
-  const { user, logout, loginDemoUser } = useAuth();
+  const { user, logout } = useAuth();
   const { orders } = useOrders();
   const { favoritesCount } = useFavorites();
   const { reminders } = useReminders();
@@ -152,14 +151,6 @@ export default function ProfileScreen() {
               onPress={() => router.push("/delivery-address")}
             />
             <MenuItem
-              icon="credit-card"
-              title="Payment Methods"
-              subtitle="Apple Pay, Saved Cards, Mada"
-              iconColor={theme.colors.warning}
-              iconBgColor={theme.colors.warningSurface}
-              onPress={() => router.push("/payment")}
-            />
-            <MenuItem
               icon="globe"
               title="Language & Currency"
               subtitle="English · SAR (Saudi Riyal)"
@@ -185,17 +176,6 @@ export default function ProfileScreen() {
           />
 
           <MenuSection title="Account Actions">
-            <MenuItem
-              icon="refresh-cw"
-              title="Quick Switch Demo Account"
-              subtitle="Reset session as VIP customer"
-              iconColor={theme.colors.info}
-              iconBgColor={theme.colors.infoSurface}
-              onPress={async () => {
-                await loginDemoUser();
-                Alert.alert("Demo Account Ready", "Logged in as Sarah (VIP Customer)");
-              }}
-            />
             <MenuItem
               icon="log-out"
               title="Sign Out"

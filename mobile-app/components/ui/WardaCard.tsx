@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, ViewProps, ViewStyle } from "react-native";
+import { View, ViewProps, ViewStyle } from "react-native";
 import { useTheme } from "../../context/ThemeContext";
 
 interface Props extends ViewProps {
@@ -12,8 +12,6 @@ interface Props extends ViewProps {
 }
 
 export default function WardaCard({
-  shadow = "md",
-  radius = "lg",
   padding = "md",
   bordered = false,
   children,
@@ -26,12 +24,13 @@ export default function WardaCard({
     <View
       style={[
         {
-          backgroundColor: theme.colors.surface,
-          borderRadius: theme.radii[radius],
+          backgroundColor: "transparent",
+          borderRadius: 0,
           padding: padding === "none" ? 0 : theme.spacing[padding === "sm" ? 3 : padding === "lg" ? 5 : 4],
         },
-        theme.shadows[shadow],
-        bordered && { borderWidth: 1, borderColor: theme.colors.borderSubtle },
+        // Cards are now flat sections. Keep the props for compatibility while
+        // allowing existing screens to migrate without a visual regression.
+        bordered && { borderBottomWidth: 1, borderBottomColor: theme.colors.borderSubtle },
         style,
       ]}
       {...rest}

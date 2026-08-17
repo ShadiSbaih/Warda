@@ -10,34 +10,48 @@ import { productsAPI } from "../../services/api";
 import GiftCard from "./GiftCard";
 import { useTheme } from "../../context/ThemeContext";
 import { WardaText } from "../ui";
+import { ALL_PRODUCTS } from "../../data/productsData";
 
 interface Props {
   selectedCategoryName?: string | null;
 }
 
+const FALLBACK_PRODUCTS = ALL_PRODUCTS.filter((product) => product.isPopular);
+
 export default function PopularSection({ selectedCategoryName }: Props) {
   const router = useRouter();
   const { theme } = useTheme();
-  const [products, setProducts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Keep the home screen useful while the API is unavailable or has not been seeded yet.
+  const [products, setProducts] = useState<any[]>(FALLBACK_PRODUCTS);
 
   useEffect(() => {
-    setLoading(true);
     productsAPI
       .getProducts()
       .then((res) => {
-        if (res.success && res.products) {
-          setProducts(res.products);
+        if (res.success && Array.isArray(res.products) && res.products.length > 0) {
+          // Prefer products explicitly marked popular, but do not leave the section
+          // empty when an older backend has not added that flag yet.
+          const popularProducts = res.products.filter((product: any) => product.isPopular);
+          setProducts(popularProducts.length > 0 ? popularProducts : res.products);
+        } else {
+          setProducts(FALLBACK_PRODUCTS);
         }
       })
-      .catch(() => {})
-      .finally(() => setLoading(false));
+      .catch(() => setProducts(FALLBACK_PRODUCTS));
   }, []);
 
-  const displayedGifts =
+  const filteredProducts =
     selectedCategoryName && selectedCategoryName !== "All"
       ? products.filter((p) => p.category === selectedCategoryName)
       : products;
+
+  // If live data does not contain the selected category, use the matching local
+  // collection instead of showing a dead-end empty state on the home screen.
+  const displayedGifts = filteredProducts.length > 0
+    ? filteredProducts
+    : selectedCategoryName && selectedCategoryName !== "All"
+      ? ALL_PRODUCTS.filter((p) => p.category === selectedCategoryName && p.isPopular)
+      : FALLBACK_PRODUCTS;
 
   return (
     <View style={styles.container}>
@@ -48,13 +62,11 @@ export default function PopularSection({ selectedCategoryName }: Props) {
             : "Popular Gifts"}
         </WardaText>
 
-        {!loading && (
-          <TouchableOpacity onPress={() => router.push("/(tabs)/menu")}>
-            <WardaText variant="body" weight="bold" color={theme.colors.brand}>
-              See All
-            </WardaText>
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity onPress={() => router.push("/(tabs)/menu")}>
+          <WardaText variant="body" weight="bold" color={theme.colors.brand}>
+            See All
+          </WardaText>
+        </TouchableOpacity>
       </View>
 
       <FlatList
@@ -66,7 +78,7 @@ export default function PopularSection({ selectedCategoryName }: Props) {
         ListEmptyComponent={
           <View style={styles.empty}>
             <WardaText variant="caption" align="center" color={theme.colors.textMuted}>
-              No gifts found for this category.
+              We’re refreshing our collection. Explore all gifts to see more.
             </WardaText>
           </View>
         }

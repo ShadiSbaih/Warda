@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Dimensions,
-  Image,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -19,7 +18,8 @@ import { useTheme } from "../../context/ThemeContext";
 import { useFavorites } from "../../context/FavoritesContext";
 import { useCart } from "../../context/CartContext";
 import { productsAPI } from "../../services/api";
-import { WardaButton, WardaCard, WardaIconButton, WardaText } from "../../components/ui";
+import { WardaButton, WardaIconButton, WardaText } from "../../components/ui";
+import CatalogImage from "../../components/catalog/CatalogImage";
 
 const { width } = Dimensions.get("window");
 
@@ -116,9 +116,6 @@ export default function DynamicDetailsScreen() {
     );
   }
 
-  const imageSource =
-    typeof product.image === "string" ? { uri: product.image } : product.image;
-
   return (
     <>
       <StatusBar barStyle="dark-content" backgroundColor={theme.colors.background} />
@@ -144,50 +141,29 @@ export default function DynamicDetailsScreen() {
           </View>
 
           <View style={[styles.heroBox, { backgroundColor: theme.colors.surface }]}>
-            <Image source={imageSource} style={styles.heroImage} resizeMode="contain" />
-            <View style={[styles.categoryBadge, { backgroundColor: theme.colors.surface }]}>
-              <WardaText variant="label" color={theme.colors.brand} weight="bold">
-                {product.category}
-              </WardaText>
-            </View>
+            <CatalogImage item={product} style={styles.heroImage} resizeMode="contain" />
           </View>
 
-          <WardaCard radius="xl" shadow="lg" padding="lg" style={styles.infoCard}>
+          <View style={styles.infoCard}>
+            <WardaText variant="label" color={theme.colors.brand} weight="bold" style={styles.categoryLabel}>
+              {product.category}
+            </WardaText>
             <View style={styles.titleRow}>
-              <View style={{ flex: 1 }}>
-                <WardaText variant="h2">{product.name}</WardaText>
-                <WardaText variant="h2" color={theme.colors.brand}>
-                  ${product.price}
-                </WardaText>
-              </View>
-              <View style={styles.qtyRow}>
-                <TouchableOpacity
-                  style={[styles.qtyBtn, { backgroundColor: theme.colors.background }]}
-                  onPress={() => setQuantity(Math.max(1, quantity - 1))}
-                >
-                  <Feather name="minus" size={16} color={theme.colors.text} />
-                </TouchableOpacity>
-                <WardaText variant="body" weight="bold">
-                  {quantity}
-                </WardaText>
-                <TouchableOpacity
-                  style={[styles.qtyBtn, { backgroundColor: theme.colors.background }]}
-                  onPress={() => setQuantity(quantity + 1)}
-                >
-                  <Feather name="plus" size={16} color={theme.colors.text} />
-                </TouchableOpacity>
-              </View>
+              <WardaText variant="h2" style={styles.productTitle}>{product.name}</WardaText>
+              <WardaText variant="h2" color={theme.colors.brand} style={styles.productPrice}>
+                ${product.price}
+              </WardaText>
             </View>
 
             <View style={styles.metaRow}>
-              <View style={[styles.metaBadge, { backgroundColor: theme.colors.background }]}>
+              <View style={styles.metaBadge}>
                 <Ionicons name="star" size={13} color="#FFA726" />
                 <WardaText variant="body" weight="bold">
                   {product.rating}
                 </WardaText>
                 <WardaText variant="caption">({product.reviews || 0})</WardaText>
               </View>
-              <View style={[styles.metaBadge, { backgroundColor: theme.colors.background }]}>
+              <View style={styles.metaBadge}>
                 <Feather name="clock" size={13} color={theme.colors.brand} />
                 <WardaText variant="body" weight="bold">
                   {product.time || "45 mins"}
@@ -199,10 +175,31 @@ export default function DynamicDetailsScreen() {
               {product.description}
             </WardaText>
 
+            <View style={styles.quantityRow}>
+              <WardaText variant="caption" color={theme.colors.textMuted}>Quantity</WardaText>
+              <View style={styles.qtyRow}>
+                <TouchableOpacity
+                  accessibilityLabel="Decrease quantity"
+                  style={[styles.qtyBtn, { backgroundColor: theme.colors.background }]}
+                  onPress={() => setQuantity(Math.max(1, quantity - 1))}
+                >
+                  <Feather name="minus" size={16} color={theme.colors.text} />
+                </TouchableOpacity>
+                <WardaText variant="body" weight="bold">{quantity}</WardaText>
+                <TouchableOpacity
+                  accessibilityLabel="Increase quantity"
+                  style={[styles.qtyBtn, { backgroundColor: theme.colors.background }]}
+                  onPress={() => setQuantity(quantity + 1)}
+                >
+                  <Feather name="plus" size={16} color={theme.colors.text} />
+                </TouchableOpacity>
+              </View>
+            </View>
+
             {product.tags?.length > 0 && (
               <View style={styles.tagsRow}>
-                {product.tags.map((tag: string, idx: number) => (
-                  <View key={idx} style={[styles.tag, { backgroundColor: theme.colors.background }]}>
+                {product.tags.slice(0, 4).map((tag: string, idx: number) => (
+                  <View key={idx} style={styles.tag}>
                     <WardaText variant="caption" color={theme.colors.brand}>
                       #{tag}
                     </WardaText>
@@ -210,9 +207,9 @@ export default function DynamicDetailsScreen() {
                 ))}
               </View>
             )}
-          </WardaCard>
+          </View>
 
-          <WardaCard radius="xl" shadow="md" padding="lg" style={styles.sectionCard}>
+          <View style={styles.sectionCard}>
             <View style={styles.sectionHeader}>
               <WardaText variant="h3">Luxury Gift Wrapping</WardaText>
               <WardaText variant="body" weight="bold" color={theme.colors.brand}>
@@ -255,6 +252,8 @@ export default function DynamicDetailsScreen() {
                       variant="caption"
                       color={isSelected ? theme.colors.brand : theme.colors.textMuted}
                       weight={isSelected ? "bold" : "medium"}
+                      numberOfLines={2}
+                      style={styles.colorLabel}
                     >
                       {opt.name}
                     </WardaText>
@@ -262,9 +261,9 @@ export default function DynamicDetailsScreen() {
                 );
               })}
             </View>
-          </WardaCard>
+          </View>
 
-          <WardaCard radius="xl" shadow="md" padding="lg" style={styles.sectionCard}>
+          <View style={styles.sectionCard}>
             <View style={styles.sectionHeader}>
               <WardaText variant="h3">Free Greeting Card & Note</WardaText>
               <Feather name="edit-3" size={16} color={theme.colors.brand} />
@@ -303,7 +302,7 @@ export default function DynamicDetailsScreen() {
                 ]}
               />
             </View>
-          </WardaCard>
+          </View>
 
           <View style={styles.relatedSection}>
             <View style={styles.relatedHeader}>
@@ -324,8 +323,8 @@ export default function DynamicDetailsScreen() {
                   onPress={() => router.push(`/details/${item._id || item.id}` as any)}
                 >
                   <View style={[styles.relatedImageBox, { backgroundColor: theme.colors.background }]}>
-                    <Image
-                      source={typeof item.image === "string" ? { uri: item.image } : item.image}
+                    <CatalogImage
+                      item={item}
                       style={styles.relatedImage}
                       resizeMode="contain"
                     />
@@ -369,7 +368,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scroll: {
-    paddingBottom: 140,
+    paddingBottom: 132,
   },
   toast: {
     position: "absolute",
@@ -402,31 +401,38 @@ const styles = StyleSheet.create({
   },
   heroBox: {
     width: width,
-    height: 280,
+    height: 312,
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
-    marginBottom: -20,
   },
   heroImage: {
-    width: 240,
-    height: 240,
-  },
-  categoryBadge: {
-    position: "absolute",
-    bottom: 24,
-    left: 20,
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    borderRadius: 12,
+    width: 292,
+    height: 292,
   },
   infoCard: {
-    marginHorizontal: 20,
+    marginHorizontal: 0,
+    paddingHorizontal: 20,
+    paddingTop: 26,
+    paddingBottom: 28,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: "#EEEEEE",
   },
   titleRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
+    marginTop: 6,
+  },
+  categoryLabel: {
+    textTransform: "uppercase",
+    letterSpacing: 0.8,
+    fontSize: 11,
+  },
+  productTitle: {
+    fontSize: 25,
+    lineHeight: 30,
+  },
+  productPrice: {
+    marginTop: 4,
   },
   qtyRow: {
     flexDirection: "row",
@@ -434,6 +440,15 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     borderRadius: 20,
     gap: 10,
+  },
+  quantityRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: 18,
+    paddingTop: 14,
+    borderTopWidth: 1,
+    borderTopColor: "#F0F0F0",
   },
   qtyBtn: {
     width: 32,
@@ -451,9 +466,7 @@ const styles = StyleSheet.create({
   metaBadge: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 12,
+    paddingVertical: 2,
     gap: 5,
   },
   tagsRow: {
@@ -463,27 +476,33 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   tag: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 10,
+    paddingVertical: 2,
   },
   sectionCard: {
-    marginHorizontal: 20,
-    marginTop: 16,
+    marginHorizontal: 0,
+    paddingHorizontal: 20,
+    paddingVertical: 28,
+    borderBottomWidth: 1,
+    borderBottomColor: "#EEEEEE",
   },
   sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginBottom: 5,
   },
   colorsRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
+    rowGap: 12,
     marginTop: 14,
   },
   colorOption: {
+    width: "25%",
     alignItems: "center",
-    padding: 8,
+    paddingHorizontal: 2,
+    paddingVertical: 8,
     borderRadius: 16,
   },
   colorCircle: {
@@ -496,6 +515,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+  },
+  colorLabel: {
+    width: "100%",
+    textAlign: "center",
+    lineHeight: 15,
+    marginTop: 6,
   },
   formGroup: {
     marginTop: 14,
@@ -557,8 +582,8 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     paddingHorizontal: 20,
-    paddingVertical: 14,
-    paddingBottom: 28,
+    paddingTop: 12,
+    paddingBottom: 26,
     borderTopWidth: 1,
     flexDirection: "row",
     justifyContent: "space-between",
