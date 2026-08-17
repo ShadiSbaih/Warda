@@ -238,6 +238,20 @@ export const ordersAPI = {
   },
 };
 
+// Delivery workspace API
+export const deliveryAPI = {
+  async getOrders() {
+    return request("/orders/delivery", { method: "GET" });
+  },
+
+  async updateStatus(id: string, status: string, note?: string) {
+    return request(`/orders/${id}/delivery-status`, {
+      method: "PATCH",
+      body: JSON.stringify({ status, note }),
+    });
+  },
+};
+
 // 3.5 Tracking API
 export const trackingAPI = {
   async getDriverLocation(orderId: string) {

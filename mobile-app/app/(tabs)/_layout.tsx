@@ -27,6 +27,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="home"
         options={{
+          href: user?.role === "delivery" ? null : undefined,
           tabBarIcon: ({ focused }) => (
             <View style={[styles.iconBox, focused && styles.activeIconBox]}>
               <Ionicons
@@ -42,6 +43,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="menu"
         options={{
+          href: user?.role === "delivery" ? null : undefined,
           tabBarIcon: ({ focused }) => (
             <View style={[styles.iconBox, focused && styles.activeIconBox]}>
               <MaterialCommunityIcons
@@ -57,6 +59,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="cart"
         options={{
+          href: user?.role === "delivery" ? null : undefined,
           tabBarIcon: ({ focused }) => (
             <View style={[styles.iconBox, focused && styles.activeIconBox]}>
               <Feather
@@ -79,6 +82,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="orders"
         options={{
+          href: user?.role === "delivery" ? null : undefined,
           tabBarIcon: ({ focused }) => (
             <View style={[styles.iconBox, focused && styles.activeIconBox]}>
               <Feather
@@ -97,6 +101,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="profile"
         options={{
+          href: user?.role === "delivery" ? null : undefined,
           tabBarIcon: ({ focused }) => (
             <View style={[styles.iconBox, focused && styles.activeIconBox]}>
               <Ionicons
@@ -121,6 +126,18 @@ export default function TabsLayout() {
                 size={23}
                 color={focused ? theme.colors.brand : theme.colors.textMuted}
               />
+            </View>
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="delivery"
+        options={{
+          href: user?.role === "delivery" ? "/(tabs)/delivery" : null,
+          tabBarIcon: ({ focused }) => (
+            <View style={[styles.iconBox, focused && styles.activeIconBox]}>
+              <Feather name="truck" size={23} color={focused ? theme.colors.brand : theme.colors.textMuted} />
             </View>
           ),
         }}

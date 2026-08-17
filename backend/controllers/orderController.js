@@ -148,6 +148,23 @@ exports.getAllOrders = async (req, res) => {
   }
 };
 
+// Get the delivery queue. Until dispatch assignment is enabled, active orders
+// are the delivery team's queue; this keeps the demo role functional.
+exports.getDeliveryOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({
+      status: { $in: ["confirmed", "preparing", "on_the_way", "delivered"] },
+    })
+      .populate("user", "name email phone")
+      .populate("items.product", "name image price")
+      .sort({ status: 1, createdAt: -1 });
+
+    res.json({ success: true, orders });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 // Get Single Order
 exports.getOrder = async (req, res) => {
   try {

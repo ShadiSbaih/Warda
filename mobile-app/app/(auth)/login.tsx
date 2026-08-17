@@ -43,7 +43,12 @@ export default function LoginScreen() {
     const result = await login(emailValue.trim(), passwordValue);
     setLoading(false);
     if (result.success) {
-      router.replace("/(tabs)/home");
+      const destination = result.role === "admin"
+        ? "/(tabs)/admin"
+        : result.role === "delivery"
+          ? "/(tabs)/delivery"
+          : "/(tabs)/home";
+      router.replace(destination as any);
     } else {
       setErrorMsg(result.error || "Invalid email or password");
     }

@@ -13,7 +13,7 @@ interface AuthContextType {
   token: string | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  login: (email: string, password: string) => Promise<{ success: boolean; error?: string; role?: string }>;
   register: (data: {
     name: string;
     email: string;
@@ -85,7 +85,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const login = async (
     email: string,
     password: string
-  ): Promise<{ success: boolean; error?: string }> => {
+  ): Promise<{ success: boolean; error?: string; role?: string }> => {
     try {
       const res = await authAPI.login({ email, password });
 
@@ -103,7 +103,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
         setToken(res.token);
         setUser(loggedUser);
-        return { success: true };
+        return { success: true, role: loggedUser.role };
       }
 
       // If backend responded with an error message
@@ -117,13 +117,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         id: "demo-user-1",
         name: email.split("@")[0] || "Warda Customer",
         email: email,
+        role: email.toLowerCase().startsWith("admin")
+          ? "admin"
+          : email.toLowerCase().startsWith("delivery")
+            ? "delivery"
+            : "user",
       };
 
       await authStorage.saveToken(fallbackToken);
       await authStorage.saveUser(fallbackUser);
       setToken(fallbackToken);
       setUser(fallbackUser);
-      return { success: true };
+      return { success: true, role: fallbackUser.role };
     } catch (err: any) {
       return {
         success: false,

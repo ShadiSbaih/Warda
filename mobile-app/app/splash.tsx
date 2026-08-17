@@ -17,7 +17,13 @@ import { useAuth } from "../context/AuthContext";
 export default function SplashScreen() {
   const router = useRouter();
   const { theme } = useTheme();
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
+
+  const landingRoute = user?.role === "admin"
+    ? "/(tabs)/admin"
+    : user?.role === "delivery"
+      ? "/(tabs)/delivery"
+      : "/(tabs)/home";
 
   useEffect(() => {
     if (isLoading) return;
@@ -29,13 +35,13 @@ export default function SplashScreen() {
           return;
         }
         if (isAuthenticated) {
-          router.replace("/(tabs)/home");
+          router.replace(landingRoute as any);
         } else {
           router.replace("/(auth)/login");
         }
       } catch {
         if (isAuthenticated) {
-          router.replace("/(tabs)/home");
+          router.replace(landingRoute as any);
         } else {
           router.replace("/(auth)/login");
         }
@@ -43,7 +49,7 @@ export default function SplashScreen() {
     }, 1800);
 
     return () => clearTimeout(timer);
-  }, [isLoading, isAuthenticated, router]);
+  }, [isLoading, isAuthenticated, landingRoute, router]);
 
   return (
     <>

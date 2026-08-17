@@ -10,7 +10,13 @@ import { RemindersProvider } from "../context/RemindersContext";
 function AuthRedirect() {
   const router = useRouter();
   const segments = useSegments();
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
+
+  const landingRoute = user?.role === "admin"
+    ? "/(tabs)/admin"
+    : user?.role === "delivery"
+      ? "/(tabs)/delivery"
+      : "/(tabs)/home";
 
   useEffect(() => {
     if (isLoading) return;
@@ -25,9 +31,17 @@ function AuthRedirect() {
     if (!isAuthenticated && !isPublicRoute) {
       router.replace("/(auth)/login");
     } else if (isAuthenticated && isAuthRoute) {
-      router.replace("/(tabs)/home");
+      router.replace(landingRoute as any);
+    } else if (
+      isAuthenticated &&
+      user?.role === "delivery" &&
+      rootSegment === "(tabs)" &&
+      segments[1] !== "delivery" &&
+      segments[1] !== "profile"
+    ) {
+      router.replace("/(tabs)/delivery");
     }
-  }, [isAuthenticated, isLoading, router, segments]);
+  }, [isAuthenticated, isLoading, landingRoute, router, segments, user?.role]);
 
   return null;
 }
