@@ -1,9 +1,10 @@
 import React from "react";
-import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useFavorites } from "../../context/FavoritesContext";
 import { useCart } from "../../context/CartContext";
 import { useTheme } from "../../context/ThemeContext";
+import CatalogImage from "../catalog/CatalogImage";
 
 interface Props {
   item: any;
@@ -23,11 +24,6 @@ export default function GiftCard({ item, onPress, onFavoriteToggle, onAddToCart 
   const id = item._id || item.id;
   const fav = isFavorite(id);
 
-  const getImageSource = () => {
-    if (typeof item.image === "string" && item.image) return { uri: item.image };
-    return item.image;
-  };
-
   const handleAdd = () => {
     if (onAddToCart) onAddToCart();
     else addToCart(item, 1);
@@ -36,7 +32,7 @@ export default function GiftCard({ item, onPress, onFavoriteToggle, onAddToCart 
   return (
     <TouchableOpacity activeOpacity={0.88} style={styles.card} onPress={onPress}>
       <View style={[styles.imageWrapper, { backgroundColor: theme.colors.background }]}>
-        <Image source={getImageSource()} resizeMode="cover" style={styles.image} />
+        <CatalogImage item={item} resizeMode="contain" style={styles.image} />
 
         <TouchableOpacity
           activeOpacity={0.8}
@@ -60,7 +56,7 @@ export default function GiftCard({ item, onPress, onFavoriteToggle, onAddToCart 
         </Text>
 
         <View style={styles.detailsRow}>
-          <View style={[styles.ratingBadge, { backgroundColor: theme.colors.background }]}>
+          <View style={styles.ratingBadge}>
             <Ionicons name="star" size={12} color={theme.colors.brand} />
             <Text style={[styles.ratingText, { color: theme.colors.text }]}>
               {item.rating || "4.8"}
@@ -73,18 +69,15 @@ export default function GiftCard({ item, onPress, onFavoriteToggle, onAddToCart 
 
         <View style={styles.priceRow}>
           <Text style={[styles.price, { color: theme.colors.text }]}>${item.price}</Text>
-          <Text style={[styles.oldPrice, { color: theme.colors.textMuted }]}>
-            ${Math.floor((item.price || 0) * 1.5)}
-          </Text>
+          <TouchableOpacity
+            accessibilityLabel="Add item to cart"
+            style={[styles.cartButton, { backgroundColor: theme.colors.brand }]}
+            activeOpacity={0.8}
+            onPress={handleAdd}
+          >
+            <Ionicons name="add" size={18} color={theme.colors.textInverse} />
+          </TouchableOpacity>
         </View>
-
-        <TouchableOpacity
-          style={[styles.cartButton, { backgroundColor: theme.colors.brandLight }]}
-          activeOpacity={0.8}
-          onPress={handleAdd}
-        >
-          <Text style={[styles.cartButtonText, { color: theme.colors.brand }]}>Add to cart</Text>
-        </TouchableOpacity>
       </View>
     </TouchableOpacity>
   );
@@ -93,16 +86,13 @@ export default function GiftCard({ item, onPress, onFavoriteToggle, onAddToCart 
 const styles = StyleSheet.create({
   card: {
     width: CARD_WIDTH,
-    backgroundColor: "#fff",
-    borderRadius: 24,
     marginBottom: 16,
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "#f0f0f0",
   },
   imageWrapper: {
     width: "100%",
-    height: 150,
+    height: CARD_WIDTH,
+    borderRadius: 14,
+    overflow: "hidden",
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
@@ -115,34 +105,33 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 10,
     right: 10,
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
     zIndex: 2,
   },
   content: {
-    padding: 12,
+    paddingTop: 11,
   },
   title: {
-    fontSize: 13,
-    fontWeight: "600",
-    marginBottom: 6,
-    lineHeight: 18,
+    fontSize: 14,
+    fontWeight: "700",
+    marginBottom: 5,
+    lineHeight: 19,
   },
   detailsRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 8,
+    marginBottom: 10,
   },
   ratingBadge: {
     flexDirection: "row",
     alignItems: "center",
     gap: 3,
-    paddingHorizontal: 6,
-    paddingVertical: 3,
-    borderRadius: 8,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
   },
   ratingText: {
     fontSize: 11,
@@ -155,26 +144,18 @@ const styles = StyleSheet.create({
   priceRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 12,
+    justifyContent: "space-between",
+    marginTop: 2,
   },
   price: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: "800",
-    marginRight: 6,
-  },
-  oldPrice: {
-    fontSize: 12,
-    textDecorationLine: "line-through",
   },
   cartButton: {
-    width: "100%",
-    height: 36,
-    borderRadius: 12,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     justifyContent: "center",
     alignItems: "center",
-  },
-  cartButtonText: {
-    fontSize: 13,
-    fontWeight: "600",
   },
 });

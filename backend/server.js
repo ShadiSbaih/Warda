@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const path = require("path");
 const http = require("http");
+const querystring = require("node:querystring");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
@@ -46,6 +47,12 @@ connectDB();
 const app = express();
 const server = http.createServer(app);
 
+// Express 5 creates req.query through its configured parser, so sanitize the
+// parsed query before it is exposed to route handlers.
+app.set("query parser", (query) =>
+  mongoSanitize.sanitize(querystring.parse(query))
+);
+
 // Initialize Socket.io
 initializeSocket(server);
 
@@ -72,7 +79,15 @@ app.use(
 app.use(express.json({ limit: "100kb" }));
 app.use(express.urlencoded({ extended: true, limit: "100kb" }));
 
-app.use(mongoSanitize());
+// express-mongo-sanitize 2.x was written for Express 4 and assigns a new
+// object to req.query. Express 5 exposes req.query as getter-only, so sanitize
+// each request object in place instead of using the package middleware wrapper.
+app.use((req, res, next) => {
+  ["body", "params", "headers"].forEach((key) => {
+    if (req[key]) mongoSanitize.sanitize(req[key]);
+  });
+  next();
+});
 app.use(hpp());
 
 if (process.env.NODE_ENV === "development") {

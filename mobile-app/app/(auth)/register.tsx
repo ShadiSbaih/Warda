@@ -106,7 +106,7 @@ export default function RegisterScreen() {
                   if (errorMsg) setErrorMsg(null);
                 }}
                 containerStyle={styles.inputGroup}
-                style={[styles.input, inputBase]}
+                style={styles.input}
               />
 
               <WardaInput
@@ -121,7 +121,7 @@ export default function RegisterScreen() {
                   if (errorMsg) setErrorMsg(null);
                 }}
                 containerStyle={styles.inputGroup}
-                style={[styles.input, inputBase]}
+                style={styles.input}
               />
 
               <WardaInput
@@ -135,7 +135,7 @@ export default function RegisterScreen() {
                   if (errorMsg) setErrorMsg(null);
                 }}
                 containerStyle={styles.inputGroup}
-                style={[styles.input, inputBase]}
+                style={styles.input}
               />
 
               <View style={styles.inputGroup}>
@@ -220,9 +220,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   input: {
-    height: 56,
-    borderWidth: 1,
-    paddingHorizontal: 16,
+    height: "100%",
+    paddingHorizontal: 0,
   },
   passwordContainer: {
     flexDirection: "row",

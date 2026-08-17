@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 
 import { useTheme } from "../../context/ThemeContext";
 import { WardaText } from "../ui";
@@ -60,19 +59,10 @@ export default function StatsCard({
       style={[
         styles.container,
         {
-          backgroundColor: theme.colors.surface,
-          borderRadius: theme.radii.xl,
-          ...theme.shadows.md,
+          borderBottomColor: theme.colors.borderSubtle,
         },
       ]}
     >
-      <LinearGradient
-        colors={[theme.colors.surface, "rgba(255,255,255,0)"]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 0.55 }}
-        style={StyleSheet.absoluteFillObject}
-        pointerEvents="none"
-      />
       <Stat
         theme={theme}
         icon={<Feather name="package" size={20} color={theme.colors.brand} />}
@@ -114,7 +104,6 @@ export default function StatsCard({
 
 const styles = StyleSheet.create({
   container: {
-    overflow: "hidden",
     paddingVertical: 18,
     paddingHorizontal: 10,
     marginHorizontal: 20,
@@ -122,6 +111,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    borderBottomWidth: 1,
   },
   statItem: {
     flex: 1,

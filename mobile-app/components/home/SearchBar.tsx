@@ -16,6 +16,8 @@ export default function SearchBar() {
         {
           backgroundColor: theme.colors.background,
           borderRadius: theme.radii.full,
+          borderWidth: 1,
+          borderColor: theme.colors.borderSubtle,
         },
       ]}
       onPress={() => router.push("/(tabs)/search")}

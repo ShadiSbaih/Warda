@@ -1,6 +1,7 @@
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useTheme } from "../../context/ThemeContext";
+import CatalogImage from "../catalog/CatalogImage";
 
 interface Props {
   item: any;
@@ -24,7 +25,7 @@ export default function CategoryCard({ item, selected, onPress }: Props) {
           !selected && { borderWidth: 1 },
         ]}
       >
-        <Image source={{ uri: item.image }} resizeMode="cover" style={styles.image} />
+        <CatalogImage item={item} type="category" resizeMode="cover" style={styles.image} />
       </View>
       <Text
         numberOfLines={2}

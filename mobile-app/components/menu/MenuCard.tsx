@@ -1,9 +1,10 @@
 import React from "react";
-import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useFavorites } from "../../context/FavoritesContext";
 import { useCart } from "../../context/CartContext";
 import { useTheme } from "../../context/ThemeContext";
+import CatalogImage from "../catalog/CatalogImage";
 
 const { width } = Dimensions.get("window");
 const CARD_WIDTH = (width - 54) / 2;
@@ -21,11 +22,6 @@ export default function MenuCard({ item, onPress }: Props) {
   const id = item._id || item.id;
   const fav = isFavorite(id);
 
-  const getImageSource = () => {
-    if (typeof item.image === "string" && item.image) return { uri: item.image };
-    return item.image;
-  };
-
   return (
     <TouchableOpacity activeOpacity={0.9} style={styles.card} onPress={onPress}>
       <TouchableOpacity
@@ -41,7 +37,7 @@ export default function MenuCard({ item, onPress }: Props) {
       </TouchableOpacity>
 
       <View style={[styles.imageBox, { backgroundColor: theme.colors.background }]}>
-        <Image source={getImageSource()} resizeMode="contain" style={styles.image} />
+        <CatalogImage item={item} resizeMode="contain" style={styles.image} />
       </View>
 
       <Text style={[styles.category, { color: theme.colors.textMuted }]} numberOfLines={1}>
@@ -68,12 +64,8 @@ export default function MenuCard({ item, onPress }: Props) {
 const styles = StyleSheet.create({
   card: {
     width: CARD_WIDTH,
-    backgroundColor: "#fff",
-    borderRadius: 22,
-    padding: 12,
+    padding: 0,
     marginBottom: 16,
-    borderWidth: 1,
-    borderColor: "#f0f0f0",
   },
   favorite: {
     position: "absolute",
@@ -88,31 +80,33 @@ const styles = StyleSheet.create({
   },
   imageBox: {
     width: "100%",
-    height: 120,
-    borderRadius: 16,
+    height: CARD_WIDTH,
+    borderRadius: 14,
+    overflow: "hidden",
     justifyContent: "center",
     alignItems: "center",
     marginTop: 4,
   },
   image: {
-    width: 100,
-    height: 100,
+    width: "100%",
+    height: "100%",
   },
   category: {
-    marginTop: 10,
-    fontSize: 11.5,
+    marginTop: 11,
+    fontSize: 10,
     fontWeight: "600",
     textTransform: "uppercase",
+    letterSpacing: 0.5,
   },
   title: {
-    marginTop: 4,
-    fontSize: 15,
+    marginTop: 5,
+    fontSize: 14,
     fontWeight: "700",
     lineHeight: 20,
     minHeight: 40,
   },
   bottomRow: {
-    marginTop: 10,
+    marginTop: 12,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

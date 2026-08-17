@@ -10,14 +10,13 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { LinearGradient } from "expo-linear-gradient";
 
 import { useTheme } from "../../context/ThemeContext";
 import Header from "../../components/home/Header";
 import SearchBar from "../../components/home/SearchBar";
 import Categories from "../../components/home/Categories";
 import PopularSection from "../../components/home/PopularSection";
-import { WardaText, WardaCard } from "../../components/ui";
+import { WardaText } from "../../components/ui";
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -50,11 +49,9 @@ export default function HomeScreen() {
           >
             <View style={[styles.banner, { backgroundColor: theme.colors.brandLight }]}>
               <View style={styles.bannerContent}>
-                <View style={styles.tagRow}>
-                  <WardaText variant="caption" weight="bold" color={theme.colors.brand} style={[styles.tagText, { textDecorationLine: "underline" }]}>
-                    SPECIAL OFFER
-                  </WardaText>
-                </View>
+                <WardaText variant="caption" weight="bold" color={theme.colors.brand} style={styles.tagText}>
+                  SPECIAL OFFER
+                </WardaText>
 
                 <WardaText variant="h2" weight="bold" color={theme.colors.text} style={styles.bannerTitle}>
                   Send Fresh Roses Today
@@ -104,40 +101,31 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   banner: {
-    borderRadius: 20,
-    padding: 18,
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 15,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
   bannerContent: {
     flex: 1,
-    paddingRight: 10,
+    paddingRight: 4,
     justifyContent: "center",
   },
-  tagRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-    marginBottom: 6,
-  },
-  tagDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-  },
   tagText: {
-    letterSpacing: 0.8,
-    fontSize: 11,
+    letterSpacing: 0.5,
+    fontSize: 10,
+    marginBottom: 7,
   },
   bannerTitle: {
-    fontSize: 18,
-    lineHeight: 24,
-    marginBottom: 4,
+    fontSize: 16,
+    lineHeight: 20,
+    marginBottom: 3,
   },
   bannerSub: {
     fontSize: 13,
-    marginBottom: 12,
+    marginBottom: 10,
   },
   minimalBtn: {
     flexDirection: "row",
@@ -145,7 +133,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   bannerImage: {
-    width: 95,
-    height: 95,
+    width: 82,
+    height: 82,
   },
 });
