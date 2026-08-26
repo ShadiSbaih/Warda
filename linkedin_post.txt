@@ -1,0 +1,22 @@
+🚀 Excited to share Warda (وردة), an enterprise-ready, end-to-end On-Demand Gifts & Flowers Delivery Platform! 🌹
+
+Warda is designed to provide a seamless digital commerce experience for ordering luxury floral arrangements, personalized gift boxes, and celebration essentials.
+
+What makes Warda special?
+✨ Curated Catalogue & Custom Gift Personalization
+🚚 Real-Time Order Tracking & Scheduled Deliveries
+💬 In-app Live Customer Care Chat
+📅 Automated Occasion Reminders
+
+Built as a modular full-stack solution, here's a look at the technology stack powering the platform:
+📱 Mobile Client: Cross-platform app built with React Native 0.81 and Expo SDK 54, leveraging Expo Router for navigation and Expo Vector Icons.
+⚙️ Backend Services: Node.js with Express 5.2, offering secure REST APIs.
+🗄️ Database: MongoDB with Mongoose ODM for persistence.
+⚡ Real-Time Features: Socket.io for live driver tracking and customer support chats.
+🔒 Security: Hardened with Helmet, Express Rate Limit, and strict input validation.
+
+I'm incredibly proud of how this project brings together a robust backend and a high-performance mobile UI to deliver a truly engaging user experience.
+
+Check out the architecture and features if you're interested in full-stack mobile development!
+
+#ReactNative #NodeJS #Expo #MongoDB #SocketIO #SoftwareEngineering #FullStack #MobileDevelopment #WebSockets #TechInnovation #Warda
